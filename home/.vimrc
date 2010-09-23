@@ -3,8 +3,15 @@ filetype off
 call pathogen#runtime_append_all_bundles()
 filetype plugin indent on
 
+
 " Basic configuration
 set nocompatible
+
+
+" Color and theme
+syntax on
+set background=dark
+colorscheme mustang
 
 
 " Textmate compatibility
