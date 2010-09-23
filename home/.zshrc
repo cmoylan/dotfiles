@@ -33,6 +33,9 @@ at_underl=$'\e[4m'
 at_boldoff=$'\e[22m'
 at_italicsoff=$'\e[23m'
 at_underloff=$'\e[24m'
+
+# Pylons env
+export PATH=$PATH:/opt/virt-python/bin
  
 PROMPT="
 ${fg_green}%n@${at_underl}%m${at_underloff}${fg_white}[${fg_cyan}%~${fg_white}]
