@@ -44,7 +44,7 @@ compinit
  
 #Lets set some options
 setopt correctall
-#setopt autocd
+setopt autocd
 setopt auto_resume
  
 ## Enables the extgended globbing features
@@ -73,7 +73,4 @@ alias ...='cd ../../../'
 alias ....='cd ../../../../'
 
 # Initialize rvm
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
-
-setopt autocd
-
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && \. "$HOME/.rvm/scripts/rvm"
