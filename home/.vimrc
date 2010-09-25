@@ -6,12 +6,23 @@ filetype plugin indent on
 
 " Basic configuration
 set nocompatible
+set number
+set mouse=a
+
+
+" Tab settings
+set cindent
+set smartindent
+set autoindent
+set expandtab
+set tabstop=2
+set shiftwidth=2
 
 
 " Color and theme
+set t_Co=256
 syntax on
-set background=dark
-colorscheme mustang
+colorscheme molokai
 
 
 " Textmate compatibility
