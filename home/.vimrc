@@ -44,6 +44,13 @@ nnoremap <tab> %
 vnoremap <tab> %
 
 
+" Fix line wrapping
+set wrap
+set textwidth=82
+set formatoptions=qrn1
+set colorcolumn=85
+
+
 " Nerdtree plugin
 autocmd VimEnter * NERDTree
 autocmd VimEnter * wincmd p
