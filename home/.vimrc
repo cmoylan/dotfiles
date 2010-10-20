@@ -52,5 +52,6 @@ set colorcolumn=85
 
 
 " Nerdtree plugin
-autocmd VimEnter * NERDTree
-autocmd VimEnter * wincmd p
+" autocmd VimEnter * NERDTree
+" autocmd VimEnter * wincmd p
+map <F2> :NERDTreeToggle<CR>
