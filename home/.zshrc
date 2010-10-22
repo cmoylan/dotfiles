@@ -75,5 +75,8 @@ alias ..='cd ../../'
 alias ...='cd ../../../'
 alias ....='cd ../../../../'
 
+# Include z, for easy directory browsing
+. ~/.z/z.sh
+
 # Initialize rvm
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && \. "$HOME/.rvm/scripts/rvm"
