@@ -63,20 +63,20 @@ SAVEHIST=1000
  
 #Aliases
 ##ls, the common ones I use a lot shortened for rapid fire usage
-alias ls='ls --color' #I like color
+alias ls='ls -G' #I like color
 alias l='ls -lFh'     #size,show type,human readable
 alias la='ls -lAFh'   #long list,show almost all,show type,human readable
 alias lr='ls -tRFh'   #sorted by date,recursive,show type,human readable
 alias lt='ls -ltFh'   #long list,sorted by date,show type,human readable
  
+# Include z, for directory browsing
+. ~/.z/z.sh
+
 ##cd, because typing the backslash is ALOT of work!!
 alias .='cd ../'
 alias ..='cd ../../'
 alias ...='cd ../../../'
 alias ....='cd ../../../../'
-
-# Include z, for easy directory browsing
-. ~/.z/z.sh
 
 # Initialize rvm
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && \. "$HOME/.rvm/scripts/rvm"
