@@ -70,7 +70,7 @@ alias lr='ls -tRFh'   #sorted by date,recursive,show type,human readable
 alias lt='ls -ltFh'   #long list,sorted by date,show type,human readable
  
 # Include z, for directory browsing
-. ~/.z/z.sh
+#. ~/.z/z.sh
 
 ##cd, because typing the backslash is ALOT of work!!
 alias .='cd ../'
