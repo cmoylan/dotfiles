@@ -63,4 +63,4 @@ map <C-f> :NERDTreeFind<CR>
 
 
 " Taglist plugin
-nnoremap <silent> <F8> :TlistToggle<CR>
+nnoremap <silent> <F4> :TlistToggle<CR>
