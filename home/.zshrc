@@ -82,7 +82,4 @@ alias ....='cd ../../../../'
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && \. "$HOME/.rvm/scripts/rvm"
 
 # Include system specific settings if they exist
-if [ -e "~/.profile"]
-then
-  source "~/.profile"
-fi
+[[ -s "$HOME/.profile" ]] && source "$HOME/.profile"
