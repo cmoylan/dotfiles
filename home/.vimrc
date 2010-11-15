@@ -60,3 +60,7 @@ map <F2> :NERDTreeToggle<CR>
 " FuzzyFinder key mappins
 map <F3> :FufFile<CR>
 map <C-f> :NERDTreeFind<CR>
+
+
+" Taglist plugin
+nnoremap <silent> <F8> :TlistToggle<CR>
