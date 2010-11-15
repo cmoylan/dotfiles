@@ -64,3 +64,5 @@ map <C-f> :NERDTreeFind<CR>
 
 " Taglist plugin
 nnoremap <silent> <F4> :TlistToggle<CR>
+let Tlist_Ctags_Cmd='/usr/local/bin/ctags'
+set tags=tags
