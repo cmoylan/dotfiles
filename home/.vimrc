@@ -70,5 +70,6 @@ let Tlist_WinWidth=50
 set tags=tags
 
 " Buftab plugin
+let g:buftabs_only_basename=1
 map <C-h> :bprev<CR>
 map <C-l> :bnext<CR>
