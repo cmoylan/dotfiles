@@ -68,3 +68,7 @@ let Tlist_Ctags_Cmd='/usr/local/bin/ctags'
 let Tlist_Use_Right_Window=1
 let Tlist_WinWidth=50
 set tags=tags
+
+" Buftab plugin
+map <C-h> :bprev<CR>
+map <C-l> :bnext<CR>
