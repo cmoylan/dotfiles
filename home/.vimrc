@@ -74,3 +74,6 @@ set tags=tags
 let g:buftabs_only_basename=1
 map <C-h> :bprev<CR>
 map <C-l> :bnext<CR>
+
+" Remove trailing whitespace
+:nnoremap <leader> <s> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
