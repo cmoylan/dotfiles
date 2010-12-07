@@ -67,6 +67,7 @@ nnoremap <silent> <F4> :TlistToggle<CR>
 let Tlist_Ctags_Cmd='/usr/local/bin/ctags'
 let Tlist_Use_Right_Window=1
 let Tlist_WinWidth=50
+let Tlist_Show_One_File=1
 set tags=tags
 
 " Buftab plugin
