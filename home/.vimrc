@@ -8,6 +8,7 @@ filetype plugin indent on
 set nocompatible
 set number
 set mouse=a
+set nowrap
 
 
 " Tab settings
