@@ -8,7 +8,6 @@ filetype plugin indent on
 set nocompatible
 set number
 set mouse=a
-set nowrap
 
 
 " Tab settings
@@ -46,7 +45,7 @@ vnoremap <tab> %
 
 
 " Fix line wrapping
-set wrap
+set nowrap
 set textwidth=82
 set formatoptions=qrn1
 " set colorcolumn=85
