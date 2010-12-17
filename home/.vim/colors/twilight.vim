@@ -72,7 +72,7 @@ hi NonText guifg=#808080
 "hi Macro guifg=#a0b0c0 gui=underline
 
 "Tabs, trailing spaces, etc (lcs)
-hi SpecialKey guifg=#808080 guibg=#343434
+hi SpecialKey guifg=#808080
 
 "hi TooLong guibg=#ff0000 guifg=#f8f8f8
 
