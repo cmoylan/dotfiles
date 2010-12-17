@@ -67,7 +67,7 @@ hi PreProc guifg=#8fbfdc
 
 hi Type guifg=#f9ee98 gui=NONE
 
-hi NonText guifg=#808080 guibg=#303030
+hi NonText guifg=#808080
 
 "hi Macro guifg=#a0b0c0 gui=underline
 
