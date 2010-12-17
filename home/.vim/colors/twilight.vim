@@ -9,6 +9,7 @@ endif
 
 let colors_name = "twilight"
 
+let s:black = '#000000'
 let s:grey_blue = '#8a9597'
 let s:light_grey_blue = '#a0a8b0'
 let s:dark_grey_blue = '#34383c'
@@ -21,7 +22,7 @@ let s:green = '#a2a96f'
 let s:lightgreen = '#c2c98f'
 let s:red = '#d08356'
 let s:cyan = '#74dad9'
-let s:darkgrey = '#1a1a1a'
+let s:darkgrey = '#000000'
 let s:grey = '#303030'
 let s:lightgrey = '#605958'
 let s:white = '#fffedc'
@@ -51,7 +52,7 @@ hi Cursor guibg=#b0d0f0
 
 exe 'hi Normal         guifg='.s:white             .' guibg='.s:darkgrey
 exe 'hi Underlined     guifg='.s:white             .' guibg='.s:darkgrey        .' gui=underline'
-exe 'hi NonText        guifg='.s:lightgrey         .' guibg='.s:grey
+exe 'hi NonText        guifg='.s:lightgrey         .' guibg='.s:darkgrey
 exe 'hi SpecialKey     guifg='.s:grey              .' guibg='.s:darkgrey
 
 exe 'hi LineNr         guifg='.s:mid_grey_blue     .' guibg='.s:dark_grey_blue  .' gui=none'
