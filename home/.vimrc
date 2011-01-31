@@ -7,7 +7,7 @@ filetype plugin indent on
 " Basic configuration
 set nocompatible
 set number
-set mouse=a
+"set mouse=a
 
 
 " Tab settings
@@ -55,11 +55,11 @@ set formatoptions=qrn1
 " autocmd VimEnter * NERDTree
 " autocmd VimEnter * wincmd p
 map <F2> :NERDTreeToggle<CR>
+map <C-f> :NERDTreeFind<CR>
 
 
 " FuzzyFinder key mappins
 map <F3> :FufFile<CR>
-map <C-f> :NERDTreeFind<CR>
 
 
 " Taglist plugin
