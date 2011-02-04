@@ -70,10 +70,12 @@ let Tlist_WinWidth=50
 let Tlist_Show_One_File=1
 set tags=tags
 
+
 " Buftab plugin
 let g:buftabs_only_basename=1
-map <C-h> :bprev<CR>
-map <C-l> :bnext<CR>
+map <C-p> :bprev<CR>
+map <C-n> :bnext<CR>
+
 
 " Remove trailing whitespace
 :nnoremap <leader>s :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
