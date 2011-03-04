@@ -75,6 +75,9 @@ alias ..='cd ../../'
 alias ...='cd ../../../'
 alias ....='cd ../../../../'
 
+# add come COLOR to grep
+alias grep='GREP_COLOR="1;37;41" LANG=C grep --color=auto'
+
 # Initialize rvm
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && \. "$HOME/.rvm/scripts/rvm"
 
