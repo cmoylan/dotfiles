@@ -1,0 +1,7 @@
+" Options
+set guioptions+=mT
+
+
+" Keys
+noremap <C-c> <C-v><C-c>
+noremap <C-v> <C-v><C-v>
