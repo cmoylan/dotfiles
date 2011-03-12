@@ -3,5 +3,6 @@ set guioptions+=mT
 
 
 " Keys
+noremap <C-a> <C-v><C-a>
 noremap <C-c> <C-v><C-c>
-noremap <C-v> <C-v><C-v>
+inoremap <C-v> <C-v><C-v>
