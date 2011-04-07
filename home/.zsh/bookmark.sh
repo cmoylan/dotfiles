@@ -1,6 +1,6 @@
 ZSH_BOOKMARKS="$HOME/.zsh/cdbookmarks"
 
-function cdb_edit() {
+function c_edit() {
   $EDITOR "$ZSH_BOOKMARKS"
 }
 
