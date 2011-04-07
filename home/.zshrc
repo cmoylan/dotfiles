@@ -1,5 +1,7 @@
-# Borrowed from http://jeff.robbins.ws/reference/my-zshrc-file
+# Set some globals
+export EDITOR='vim'
 
+# Borrowed from http://jeff.robbins.ws/reference/my-zshrc-file
 #Color table from: http://www.understudy.net/custom.html
 fg_black=$'\e[0;30m'
 fg_red=$'\e[0;31m'
@@ -53,7 +55,8 @@ setopt extendedglob
 #Set some ZSH styles
 zstyle ':completion:*:descriptions' format '%U%B%d%b%u'
 zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
- 
+
+# History
 HISTFILE=~/.zsh-histfile
 HISTSIZE=1000
 SAVEHIST=1000
@@ -66,9 +69,6 @@ alias la='ls -lAFh'   #long list,show almost all,show type,human readable
 alias lr='ls -tRFh'   #sorted by date,recursive,show type,human readable
 alias lt='ls -ltFh'   #long list,sorted by date,show type,human readable
  
-# Include z, for directory browsing
-#. ~/.z/z.sh
-
 ##cd, because typing the backslash is ALOT of work!!
 alias .='cd ../'
 alias ..='cd ../../'
@@ -77,6 +77,9 @@ alias ....='cd ../../../../'
 
 # add come COLOR to grep
 alias grep='GREP_COLOR="1;37;41" LANG=C grep --color=auto'
+
+# Include directory bookmarks if they exist
+[[ -s "$HOME/.zsh/bookmark.sh" ]] && source "$HOME/.zsh/bookmark.sh"
 
 # Initialize rvm
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && \. "$HOME/.rvm/scripts/rvm"
