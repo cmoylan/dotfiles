@@ -1,1 +1,15 @@
-[[ -s .mailboxes ]] && source .mailboxes
+# General config here
+
+
+
+
+
+
+
+
+##########################
+# Source external configs
+
+source $HOME/.mutt/muttrc.mailboxes
+
+##########################
