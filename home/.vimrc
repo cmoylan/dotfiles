@@ -22,7 +22,7 @@ set shiftwidth=2
 " Color and theme
 set t_Co=256
 syntax on
-colorscheme molokai
+colorscheme sunburst
 
 
 " Textmate compatibility
