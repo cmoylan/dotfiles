@@ -79,3 +79,6 @@ map <C-n> :bnext<CR>
 
 " Remove trailing whitespace
 :nnoremap <leader>s :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
+
+" don't use cindent for javascript
+autocmd FileType javascript setlocal nocindent
