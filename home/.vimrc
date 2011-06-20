@@ -46,7 +46,7 @@ vnoremap <tab> %
 
 " Fix line wrapping
 set nowrap
-set textwidth=82
+set textwidth=80
 set formatoptions=qrn1
 " set colorcolumn=85
 
@@ -72,7 +72,7 @@ set tags=tags
 
 
 " Buftab plugin
-let g:buftabs_only_basename=1
+"let g:buftabs_only_basename=1
 map <C-p> :bprev<CR>
 map <C-n> :bnext<CR>
 
