@@ -7,3 +7,6 @@
 [submodule "home/.vim/bundle/l9"]
 	path = home/.vim/bundle/l9
 	url = https://github.com/vim-scripts/L9.git
+[submodule "home/.vim/bundle/taglist"]
+	path = home/.vim/bundle/taglist
+	url = https://github.com/vim-scripts/taglist.vim.git
