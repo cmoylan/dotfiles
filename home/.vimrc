@@ -57,11 +57,6 @@ set foldmethod=indent
 set foldlevel=99
 
 
-" Windowing
-map <c-w>| :vsplit
-map <c-w>- <c-w>n
-
-
 " Nerdtree plugin
 " autocmd VimEnter * NERDTree
 " autocmd VimEnter * wincmd p
