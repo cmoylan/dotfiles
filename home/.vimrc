@@ -9,6 +9,7 @@ filetype plugin indent on
 set nocompatible
 set number
 "set mouse=a
+inoremap jj <ESC>
 
 
 " Tab settings
