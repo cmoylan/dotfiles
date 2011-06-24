@@ -1,8 +1,8 @@
 " Options
-set guioptions+=mT
+"set guioptions+=mT
 
 
 " Keys
-noremap <C-a> <C-v><C-a>
-noremap <C-c> <C-v><C-c>
-inoremap <C-v> <C-v><C-v>
+"noremap <C-a> <C-v><C-a>
+"noremap <C-c> <C-v><C-c>
+"inoremap <C-v> <C-v><C-v>
