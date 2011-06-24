@@ -78,6 +78,10 @@ let Tlist_Show_One_File=1
 set tags=tags
 
 
+" Gundo plugin
+nooremap <F5> :GundoToggle<CR>
+
+
 " Buftab plugin
 "let g:buftabs_only_basename=1
 map <C-p> :bprev<CR>
