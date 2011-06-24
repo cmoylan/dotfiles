@@ -79,7 +79,7 @@ set tags=tags
 
 
 " Gundo plugin
-nooremap <F5> :GundoToggle<CR>
+nnoremap <F5> :GundoToggle<CR>
 
 
 " Buftab plugin
