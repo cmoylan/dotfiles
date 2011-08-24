@@ -93,3 +93,10 @@ map <C-n> :bnext<CR>
 
 " don't use cindent for javascript
 autocmd FileType javascript setlocal nocindent
+
+
+" Vimwiki
+let wiki = {}
+let wiki.path = '~/vimwiki/'
+let wiki.nested_syntaxes = {'python': 'python', 'c++': 'cpp'}
+let g:vimwiki_list = [wiki]
