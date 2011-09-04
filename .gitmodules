@@ -19,3 +19,6 @@
 [submodule "home/.vim/bundle/vimwiki"]
 	path = home/.vim/bundle/vimwiki
 	url = https://github.com/vim-scripts/vimwiki.git
+[submodule "home/.vim/bundle/coffeescript"]
+	path = home/.vim/bundle/coffeescript
+	url = https://github.com/kchmck/vim-coffee-script.git
