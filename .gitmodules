@@ -22,3 +22,6 @@
 [submodule "home/.vim/bundle/coffeescript"]
 	path = home/.vim/bundle/coffeescript
 	url = https://github.com/kchmck/vim-coffee-script.git
+[submodule "home/.vim/bundle/rails.vim"]
+	path = home/.vim/bundle/rails.vim
+	url = https://github.com/tpope/vim-rails.git
