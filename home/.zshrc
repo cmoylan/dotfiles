@@ -86,3 +86,8 @@ alias grep='GREP_COLOR="1;37;41" LANG=C grep --color=auto'
 
 # Include system specific settings if they exist
 [[ -s "$HOME/.profile" ]] && source "$HOME/.profile"
+
+# for tmux: export 256color
+# [ -n "$TMUX" ] && export TERM=screen-256color
+# but it doesn't work, so i'm resorting to this:
+alias tmux='tmux -2'
