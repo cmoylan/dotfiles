@@ -22,3 +22,6 @@
 [submodule "home/.vim/bundle/rails.vim"]
 	path = home/.vim/bundle/rails.vim
 	url = https://github.com/tpope/vim-rails.git
+[submodule "home/.vim/bundle/tslime"]
+	path = home/.vim/bundle/tslime
+	url = git://github.com/jgdavey/tslime.vim.git
