@@ -39,19 +39,19 @@ at_underloff=$'\e[24m'
 PROMPT="
 ${fg_green}%n@${at_underl}%m${at_underloff}${fg_white}[${fg_cyan}%~${fg_white}]
 [${fg_green}%T${fg_white}]:${at_normal}"
- 
+
 #Set the auto completion on
 autoload -U compinit
 compinit
- 
+
 #Lets set some options
 setopt correctall
 setopt autocd
 setopt auto_resume
- 
+
 ## Enables the extgended globbing features
 setopt extendedglob
- 
+
 #Set some ZSH styles
 zstyle ':completion:*:descriptions' format '%U%B%d%b%u'
 zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
@@ -60,7 +60,7 @@ zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
 HISTFILE=~/.zsh-histfile
 HISTSIZE=1000
 SAVEHIST=1000
- 
+
 #Aliases
 ##ls, the common ones I use a lot shortened for rapid fire usage
 alias ls='ls' #I like color, -G
@@ -68,7 +68,10 @@ alias l='ls -lFh'     #size,show type,human readable
 alias la='ls -lAFh'   #long list,show almost all,show type,human readable
 alias lr='ls -tRFh'   #sorted by date,recursive,show type,human readable
 alias lt='ls -ltFh'   #long list,sorted by date,show type,human readable
- 
+
+# Ignore autocorrect on a few commands
+alias git="nocorrect git"
+
 ##cd, because typing the backslash is ALOT of work!!
 alias .='cd ../'
 alias ..='cd ../../'
@@ -91,3 +94,7 @@ alias grep='GREP_COLOR="1;37;41" LANG=C grep --color=auto'
 # [ -n "$TMUX" ] && export TERM=screen-256color
 # but it doesn't work, so i'm resorting to this:
 alias tmux='tmux -2'
+
+# import local zsh customizations, if present
+zrcl="$HOME/.zshrc.local"
+[[ ! -a $zrcl ]] || source $zrcl
