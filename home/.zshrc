@@ -78,6 +78,10 @@ alias ..='cd ../../'
 alias ...='cd ../../../'
 alias ....='cd ../../../../'
 
+# alias random commands that I use a lot
+alias f='fg'
+alias v='vim'
+
 # add come COLOR to grep
 alias grep='GREP_COLOR="1;37;41" LANG=C grep --color=auto'
 
