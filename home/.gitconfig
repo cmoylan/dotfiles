@@ -1,3 +1,7 @@
+[alias]
+  st = status
+  br = branch
+  tree = log --graph --oneline --decorate --color --all
 [user]
   name = Chris Moylan
   email = chris@chrismoylan.com
