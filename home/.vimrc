@@ -54,7 +54,7 @@ set formatoptions=qrn1
 
 
 " Code Folding
-set foldmethod=indent
+set foldmethod=syntax
 set foldlevel=99
 
 
