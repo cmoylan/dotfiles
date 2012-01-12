@@ -27,3 +27,6 @@
   added = yellow
   changed = green
   untracked = cyan
+
+[merge]
+  tool = kdiff3
