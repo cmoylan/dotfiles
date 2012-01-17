@@ -4,4 +4,4 @@
 --follow
 
 # ignore tmp folders
---ignore-dir tmp
+--ignore-dir=tmp/
