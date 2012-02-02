@@ -98,6 +98,8 @@ set laststatus=2  " always show the statusline
 " don't use cindent for javascript
 autocmd FileType javascript setlocal nocindent
 
+" highlight .ru files like .rb files
+au BufRead,BufNewFile *.ru setfiletype ruby
 
 " Vimwiki
 let wiki = {}
