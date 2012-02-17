@@ -28,3 +28,6 @@
 [submodule "home/.vim/bundle/tslime"]
 	path = home/.vim/bundle/tslime
 	url = git://github.com/jgdavey/tslime.vim.git
+[submodule "home/.vim/haml.vim"]
+	path = home/.vim/haml.vim
+	url = https://github.com/tpope/vim-haml
