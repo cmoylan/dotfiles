@@ -54,7 +54,7 @@ set formatoptions=qrn1
 
 
 " Code Folding
-set foldmethod=indent
+set foldmethod=syntax
 set foldlevel=99
 
 
@@ -88,15 +88,21 @@ map <C-p> :bprev<CR>
 map <C-n> :bnext<CR>
 
 
+" Powerline plugin
+set laststatus=2  " always show the statusline
+
+
 " Remove trailing whitespace
 :nnoremap <leader>s :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
 
 " don't use cindent for javascript
 autocmd FileType javascript setlocal nocindent
 
+" highlight .ru files like .rb files
+au BufRead,BufNewFile *.ru setfiletype ruby
 
 " Vimwiki
 let wiki = {}
 let wiki.path = '~/vimwiki/'
-let wiki.nested_syntaxes = {'python': 'python', 'c++': 'cpp'}
+let wiki.nested_syntaxes = {'python': 'python', 'c++': 'cpp', 'ruby': 'ruby'}
 let g:vimwiki_list = [wiki]

@@ -1,9 +1,6 @@
 [submodule "home/.vim/bundle/nerdtree"]
 	path = home/.vim/bundle/nerdtree
 	url = https://github.com/vim-scripts/The-NERD-tree.git
-[submodule "home/.vim/bundle/ack.vim"]
-	path = home/.vim/bundle/ack.vim
-	url = https://github.com/vim-scripts/ack.vim.git
 [submodule "home/.vim/bundle/l9"]
 	path = home/.vim/bundle/l9
 	url = https://github.com/vim-scripts/L9.git
@@ -28,6 +25,9 @@
 [submodule "home/.vim/bundle/tslime"]
 	path = home/.vim/bundle/tslime
 	url = git://github.com/jgdavey/tslime.vim.git
+[submodule "home/.vim/bundle/powerline"]
+	path = home/.vim/bundle/powerline
+	url = git://github.com/Lokaltog/vim-powerline.git
 [submodule "home/.vim/haml.vim"]
 	path = home/.vim/haml.vim
 	url = https://github.com/tpope/vim-haml
