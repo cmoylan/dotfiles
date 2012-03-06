@@ -5,3 +5,9 @@
 
 # ignore tmp folders
 --ignore-dir=tmp/
+
+# add haml and sass to supported filetypes
+--type-add
+html=.haml
+--type-add
+css=.sass,.scss
