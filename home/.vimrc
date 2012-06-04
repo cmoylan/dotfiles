@@ -67,6 +67,7 @@ map <C-f> :NERDTreeFind<CR>
 
 " FuzzyFinder key mappins
 map <F3> :FufFile<CR>
+map <leader><f> :FufCoverageFile<CR>
 
 
 " Taglist plugin
