@@ -1,5 +1,6 @@
 # Set some globals
 export EDITOR='vim'
+export LESS='-FX'
 
 # Borrowed from http://jeff.robbins.ws/reference/my-zshrc-file
 #Color table from: http://www.understudy.net/custom.html
