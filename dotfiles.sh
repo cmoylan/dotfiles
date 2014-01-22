@@ -1,6 +1,9 @@
 #!/bin/bash
 
 
+#
+DIR="$( cd "$( dirname "$0" )" && pwd )"
+
 # Help text
 show_usage() {
   echo "Usage:"
@@ -9,6 +12,18 @@ show_usage() {
 # Create symlinks from home directory to files
 symlink_files() {
   echo "symlinking..."
+
+  for x in $(ls -A $DIR/home)
+  do
+    # see if symlink already exists in $HOME
+    if [ -e $HOME/$x ]
+    then
+      echo 'skipping ' $x ' because it exists'
+    else
+      echo 'symlinking ' $x
+      ln -s $DIR/home/$x $HOME/$x
+    fi
+  done
 }
 
 # Parse command line args
