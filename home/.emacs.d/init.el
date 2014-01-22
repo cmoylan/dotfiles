@@ -6,7 +6,15 @@
 ;; Load the color-theme plugin
 (require 'color-theme)
 (color-theme-initialize)
-(color-theme-calm-forest)
+;;(color-theme-anothermonokai)
+(require 'color-theme-solarized)
+;;(load-theme 'solarized-dark t)
 
 ;; Make the default font a bit bigger
 (set-face-attribute 'default (selected-frame) :height 140)
+
+;; Enable line numbering
+(global-linum-mode t)
+
+;; Disable graphical toolbar
+(tool-bar-mode -1)
