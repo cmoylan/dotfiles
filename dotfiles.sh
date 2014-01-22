@@ -1,18 +1,20 @@
 #!/bin/bash
 
 
-#
+# Determine which directory the dotfiles occupy
 DIR="$( cd "$( dirname "$0" )" && pwd )"
+
 
 # Help text
 show_usage() {
-  echo "Usage:"
+  echo 'COMMANDS:'
+  echo '  s - symlink files into HOME'
+  echo '  h - display this message'
 }
+
 
 # Create symlinks from home directory to files
 symlink_files() {
-  echo "symlinking..."
-
   for x in $(ls -A $DIR/home)
   do
     # see if symlink already exists in $HOME
@@ -26,13 +28,23 @@ symlink_files() {
   done
 }
 
+
+# Show usage and exit if no arguments were passed
+if [ ! -n "$1" ]
+then
+  show_usage
+  exit 1
+fi
+
+
 # Parse command line args
 for arg in "$@"
 do
   case "$arg" in
     "s" | "symlink" ) symlink_files;;
+    "h" | "help"    ) show_usage;;
     * )
-      echo "EROR: Invalid argument."
+      echo "Error: Invalid argument."
       echo ""
       show_usage
     ;;
