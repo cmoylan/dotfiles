@@ -8,7 +8,7 @@
 (color-theme-initialize)
 ;;(color-theme-anothermonokai)
 (require 'color-theme-solarized)
-;;(load-theme 'solarized-dark t)
+(color-theme-solarized-light)
 
 ;; Make the default font a bit bigger
 (set-face-attribute 'default (selected-frame) :height 140)
@@ -18,3 +18,7 @@
 
 ;; Disable graphical toolbar
 (tool-bar-mode -1)
+
+;; Enable whitespace butler
+(require 'ws-butler)
+(add-hook 'prog-mode-hook 'ws-butler-mode)
