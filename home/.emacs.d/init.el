@@ -22,3 +22,13 @@
 ;; Enable whitespace butler
 (require 'ws-butler)
 (add-hook 'prog-mode-hook 'ws-butler-mode)
+
+;; Enable rspec-mode
+(require 'rspec-mode)
+
+;; Use bash instead of the default shell
+(defadvice rspec-compile (around rspec-compile-around)
+  "Use BASH shell for running the specs because of ZSH issues."
+  (let ((shell-file-name "/bin/bash"))
+    ad-do-it))
+(ad-activate 'rspec-compile)
