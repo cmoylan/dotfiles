@@ -3,15 +3,20 @@
   (normal-top-level-add-to-load-path '("."))
   (normal-top-level-add-subdirs-to-load-path))
 
+;; Load the new themes directory
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+;; Load zenburn on start
+(load-theme 'zenburn t)
+
 ;; Load the color-theme plugin
-(require 'color-theme)
-(color-theme-initialize)
+;;(require 'color-theme)
+;;(color-theme-initialize)
 ;;(color-theme-anothermonokai)
-(require 'color-theme-solarized)
-(color-theme-solarized-light)
+;;(require 'color-theme-solarized)
+;;(color-theme-solarized-light)
 
 ;; Make the default font a bit bigger
-(set-face-attribute 'default (selected-frame) :height 140)
+(set-face-attribute 'default (selected-frame) :height 150)
 
 ;; Enable line numbering
 (global-linum-mode t)
@@ -23,6 +28,13 @@
 (require 'ws-butler)
 (add-hook 'prog-mode-hook 'ws-butler-mode)
 
+;; Enable rvm integration
+(require 'rvm)
+(setq rspec-use-rake-when-possible nil)
+;; Use the ruby specified by .rvmrc or .ruby-version
+(add-hook 'ruby-mode-hook
+	  (lambda () (rvm-activate-corresponding-ruby)))
+
 ;; Enable rspec-mode
 (require 'rspec-mode)
 
@@ -32,3 +44,36 @@
   (let ((shell-file-name "/bin/bash"))
     ad-do-it))
 (ad-activate 'rspec-compile)
+
+;; Rudel
+;;(load-file "~/.emacs.d/lisp/rudel/rudel-loaddefs.el")
+;;;;(require 'rudel)
+;;;;(global-rudel-minor-mode 1)
+;;(custom-set-variables
+;; ;; custom-set-variables was added by Custom.
+;; ;; If you edit it by hand, you could mess it up, so be careful.
+;; ;; Your init file should contain only one such instance.
+;; ;; If there is more than one, they won't work right.
+;; '(custom-safe-themes
+;;   (quote
+;;    ("0603fb5696ab4af05e7c8bb11498bd189bdb7930c7c88dd6ac1e5ec2fc3efb2b" default))))
+;;(custom-set-faces
+;; ;; custom-set-faces was added by Custom.
+;; ;; If you edit it by hand, you could mess it up, so be careful.
+;; ;; Your init file should contain only one such instance.
+;; ;; If there is more than one, they won't work right.
+;; )
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("9fd20670758db15cc4d0b4442a74543888d2e445646b25f2755c65dcd6f1504b" "0603fb5696ab4af05e7c8bb11498bd189bdb7930c7c88dd6ac1e5ec2fc3efb2b" default))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
