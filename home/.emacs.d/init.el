@@ -8,13 +8,6 @@
 ;; Load zenburn on start
 (load-theme 'zenburn t)
 
-;; Load the color-theme plugin
-;;(require 'color-theme)
-;;(color-theme-initialize)
-;;(color-theme-anothermonokai)
-;;(require 'color-theme-solarized)
-;;(color-theme-solarized-light)
-
 ;; Make the default font a bit bigger
 (set-face-attribute 'default (selected-frame) :height 150)
 
@@ -45,10 +38,6 @@
     ad-do-it))
 (ad-activate 'rspec-compile)
 
-;; Rudel
-;;(load-file "~/.emacs.d/lisp/rudel/rudel-loaddefs.el")
-;;;;(require 'rudel)
-;;;;(global-rudel-minor-mode 1)
 ;;(custom-set-variables
 ;; ;; custom-set-variables was added by Custom.
 ;; ;; If you edit it by hand, you could mess it up, so be careful.
