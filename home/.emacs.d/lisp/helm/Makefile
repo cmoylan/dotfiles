@@ -26,7 +26,7 @@
 EMACS		:= emacs -Q -batch
 
 # additional emacs loadpath
-LOADPATH	:= -L .
+LOADPATH	:= -L . -L ../cl-lib/
 
 # files to compile
 EL			:= $(wildcard helm*.el)
