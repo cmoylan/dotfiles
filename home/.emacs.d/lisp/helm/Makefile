@@ -23,7 +23,7 @@
 ## Floor, Boston, MA 02110-1301, USA.
 
 # emacs invocation
-EMACS		:= emacs -Q -batch
+EMACS		:= ~/Applications/Emacs.app/Contents/MacOS/Emacs -Q -batch
 
 # additional emacs loadpath
 LOADPATH	:= -L . -L ../cl-lib/
