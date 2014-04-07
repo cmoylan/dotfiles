@@ -37,21 +37,21 @@
 (helm-mode 1)
 
 ;; Enable rvm integration
-(require 'rvm)
-(setq rspec-use-rake-when-possible nil)
+;;(require 'rvm)
+;;(setq rspec-use-rake-when-possible nil)
 ;; Use the ruby specified by .rvmrc or .ruby-version
-(add-hook 'ruby-mode-hook
-	  (lambda () (rvm-activate-corresponding-ruby)))
+;;(add-hook 'ruby-mode-hook
+;;	  (lambda () (rvm-activate-corresponding-ruby)))
 
 ;; Enable rspec-mode
-(require 'rspec-mode)
+;;(require 'rspec-mode)
 
 ;; Use bash instead of the default shell
-(defadvice rspec-compile (around rspec-compile-around)
-  "Use BASH shell for running the specs because of ZSH issues."
-  (let ((shell-file-name "/bin/bash"))
-    ad-do-it))
-(ad-activate 'rspec-compile)
+;;defadvice rspec-compile (around rspec-compile-around)
+;; "Use BASH shell for running the specs because of ZSH issues."
+;; (let ((shell-file-name "/bin/bash"))
+;;   ad-do-it))
+;;ad-activate 'rspec-compile)
 
 ;; Projectile
 (setq projectile-global-mode 1)
