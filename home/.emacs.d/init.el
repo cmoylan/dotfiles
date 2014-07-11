@@ -45,7 +45,7 @@
 (setq projectile-global-mode 1)
 
 ;; Org Mode
-(load "./org.el")
+(load-file "./org.el")
 
 
 ;;(custom-set-variables
