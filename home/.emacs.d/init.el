@@ -13,6 +13,19 @@
 ;; Load zenburn on start
 (load-theme 'zenburn t)
 
+;; Make it easy to modularize configuration
+(defconst user-init-dir
+  (cond ((boundp 'user-emacs-directory)
+	 user-emacs-directory)
+	((boundp 'user-init-directory)
+	 user-init-directory)
+	(t "~/.emacs.d/")))
+
+(defun load-user-file (file)
+  (interactive "f")
+  "Load a file in current user's configuration directory"
+  (load-file (expand-file-name file user-init-dir)))
+
 ;; Make the default font a bit bigger
 ;; TODO: use different height on linux
 (set-face-attribute 'default (selected-frame) :height 150)
@@ -45,7 +58,7 @@
 (setq projectile-global-mode 1)
 
 ;; Org Mode
-(load-file "./org.el")
+(load-user-file "org-config.el")
 
 
 ;;(custom-set-variables
