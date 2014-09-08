@@ -55,7 +55,9 @@
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
 ;; Projectile
-(setq projectile-global-mode 1)
+;;(projectile-global-mode)
+(add-hook 'after-init-hook #'projectile-global-mode)
+(setq projectile-completion-system 'grizzl)
 
 ;; Org Mode
 (load-user-file "org-config.el")
