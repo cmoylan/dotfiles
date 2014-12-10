@@ -6,7 +6,7 @@
 ;; MELPA package repo
 (require 'package)
 (add-to-list 'package-archives
-  '("melpa" . "http://melpa.milkbox.net/packages/") t)
+  '("melpa" . "http://melpa.org/packages/") t)
 
 ;; Load the new themes directory
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
