@@ -17,7 +17,7 @@
 ;;
 ;; ----------------------------
 
-(unless (>= 24 emacs-major-version)
+(unless (< 23 emacs-major-version)
   (error "requires Emacs 24 or later."))
 
 (deftheme graham "A dark color theme for Emacs")

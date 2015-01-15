@@ -17,7 +17,7 @@
 ;;
 ;; *****************************************************************************************
 
-(unless (>= 24 emacs-major-version)
+(unless (< 24 emacs-major-version)
   (error "requires Emacs 24 or later."))
 
 (deftheme brin "Space Grey theme for Emacs")

@@ -20,7 +20,7 @@
 
 ;;; Code:
 
-(unless (>= 24 emacs-major-version)
+(unless (< 24 emacs-major-version)
   (error "requires Emacs 24 or later."))
 
 (deftheme ritchie "Uncertain amount of shades of blue.")
