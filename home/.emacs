@@ -38,13 +38,14 @@
 
 
 ;; Install useful packages
-(let ((package-list (list 'ws-butler 'helm 'rainbow-delimiters 'grizzl 'projectile 'neotree 'base16-theme))
+(let ((package-list (list 'ws-butler 'helm 'rainbow-delimiters 'grizzl
+                          'projectile 'neotree 'base16-theme 'solarized-theme))
       (contents-refreshed 0))
   (dolist (package package-list )
    (unless (package-installed-p package)
-     (unless (contents-refreshed)
+     (unless (eq contents-refreshed 0)
        (package-refresh-contents)
-       (setq contents-refeshed t))
+       (setq contents-refreshed t))
      (package-install package))))
 
 ;; Enable whitespace butler
