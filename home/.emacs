@@ -35,10 +35,11 @@
 (setq js-indent-level 2) ; Use 2 spaces for javascript
 (setq-default c-basic-offset 4) ; Use 4 spaces for CC-mode (c, c++, java)
 (setq-default truncate-lines t) ; Enable line truncation rather than wrapping
+(setq shell-file-name "/bin/bash") ; Use bash as the shell in emacs
 
 
 ;; Install useful packages
-(let ((package-list (list 'ws-butler 'helm 'rainbow-delimiters 'grizzl
+(let ((package-list (list 'ws-butler 'helm 'rainbow-delimiters 'ivy
                           'projectile 'neotree 'base16-theme ))
       (contents-refreshed 0))
   (dolist (package package-list )
@@ -72,7 +73,8 @@
 (use-package projectile
   :config
   (use-package grizzl)
-  (setq projectile-completion-system 'grizzl)
+  ;;(setq projectile-completion-system 'grizzl)
+  (setq projectile-completion-system 'ivy)
   (projectile-global-mode))
 
 ;; Org Mode

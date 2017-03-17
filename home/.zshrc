@@ -103,3 +103,6 @@ alias tmux='tmux -2'
 # import local zsh customizations, if present
 zrcl="$HOME/.zshrc.local"
 [[ ! -a $zrcl ]] || source $zrcl
+
+# add $HOME/path to $PATH, if present
+[[ -s "$HOME/bin" ]] && export PATH=$PATH:$HOME/bin
