@@ -11,19 +11,6 @@
 (eval-when-compile
  (require 'use-package))
 
-;; Make it easy to modularize configuration
-;;(defconst user-init-dir
-;;  (cond ((boundp 'user-emacs-directory)
-;;	 user-emacs-directory)
-;;	((boundp 'user-init-directory)
-;;	 user-init-directory)
-;;	(t "~/.emacs.d/")))
-;;
-;;(defun load-user-file (file)
-;;  (interactive "f")
-;;  "Load a file in current user's configuration directory"
-;;  (load-file (expand-file-name file user-init-dir)))
-
 ;; Make the default font a bit bigger
 ;; TODO: use different height on linux
 (set-face-attribute 'default (selected-frame) :height 150)
@@ -36,11 +23,13 @@
 (setq-default c-basic-offset 4) ; Use 4 spaces for CC-mode (c, c++, java)
 (setq-default truncate-lines t) ; Enable line truncation rather than wrapping
 (setq shell-file-name "/bin/bash") ; Use bash as the shell in emacs
-
+(setq confirm-kill-emacs 'y-or-n-p) ; Ask for confirmation when quitting
+(setq ruby-insert-encoding-magic-comment nil) ;; do not insert the encoding comment in utf-8 files
+(setq recenter-positions '(top bottom)) ;; only recenter to top and bottom, ignore middle...i find it annoying
 
 ;; Install useful packages
 (let ((package-list (list 'ws-butler 'helm 'rainbow-delimiters 'ivy
-                          'projectile 'neotree 'base16-theme ))
+                          'projectile 'neotree 'base16-theme 'robe))
       (contents-refreshed 0))
   (dolist (package package-list )
    (unless (package-installed-p package)
@@ -72,7 +61,7 @@
 ;;(projectile-global-mode)
 (use-package projectile
   :config
-  (use-package grizzl)
+  ;;(use-package grizzl)
   ;;(setq projectile-completion-system 'grizzl)
   (setq projectile-completion-system 'ivy)
   (projectile-global-mode))
@@ -82,7 +71,24 @@
 
 ;; Neotree
 (use-package neotree
-             :config (global-set-key [f2] 'neotree-toggle))
+  :config
+  (global-set-key [f2] 'neotree-toggle)
+
+  (defun neotree-project-dir ()
+    "Open NeoTree using the git root."
+    (interactive)
+    (let ((project-dir (projectile-project-root))
+          (file-name (buffer-file-name)))
+      (neotree-toggle)
+      (if project-dir
+          (if (neo-global--window-exists-p)
+              (progn
+                (neotree-dir project-dir)
+                (neotree-find file-name)))
+        (message "Could not find git project root."))))
+
+  (global-set-key [f8] 'neotree-project-dir))
+
 ;; Set a defaule theme
 ;;(load-theme ' t)
 (custom-set-variables
