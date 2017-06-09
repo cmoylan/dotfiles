@@ -11,13 +11,17 @@
 (eval-when-compile
  (require 'use-package))
 
+
+;;                              ;;
+;; ----- Global settings  ----- ;;
+;;                              ;;
 ;; Make the default font a bit bigger
 ;; TODO: use different height on linux
 (set-face-attribute 'default (selected-frame) :height 150)
-
 (global-linum-mode t) ; Enable line numbering
 (tool-bar-mode 0) ; Disable graphical toolbar
 (menu-bar-mode 0) ; Disable menu bar
+(electric-pair-mode 1) ; enable closing paren auto-insertion
 (setq-default indent-tabs-mode nil) ; Use soft tabs
 (setq js-indent-level 2) ; Use 2 spaces for javascript
 (setq-default c-basic-offset 4) ; Use 4 spaces for CC-mode (c, c++, java)
@@ -27,9 +31,14 @@
 (setq ruby-insert-encoding-magic-comment nil) ;; do not insert the encoding comment in utf-8 files
 (setq recenter-positions '(top bottom)) ;; only recenter to top and bottom, ignore middle...i find it annoying
 
+
+;;                                              ;;
+;; ----- Automatically installed packages ----- ;;
+;;                                              ;;
 ;; Install useful packages
 (let ((package-list (list 'ws-butler 'helm 'rainbow-delimiters 'ivy
-                          'projectile 'neotree 'base16-theme 'robe))
+                          'projectile 'neotree 'base16-theme 'robe
+                          'smart-mode-line 'exec-path-from-shell))
       (contents-refreshed 0))
   (dolist (package package-list )
    (unless (package-installed-p package)
@@ -38,11 +47,16 @@
        (setq contents-refreshed t))
      (package-install package))))
 
-;; Enable whitespace butler
+
+;;                                    ;;
+;; ----- Package configurations ----- ;;
+;;                                    ;;
+(use-package exec-path-from-shell
+  :init (exec-use-path-from-shell-initialize))
+
 (use-package ws-butler
   :config (add-hook 'prog-mode-hook 'ws-butler-mode))
 
-;; Enable HELM
 (use-package helm
   :config
   (require 'helm-config)
@@ -52,13 +66,11 @@
    ("M-x" . helm-M-x)
    ))
 
-;; Enable Rainbow Delimiters in 'programming-like' modes
 (use-package rainbow-delimiters
   :config
+  ;; Enable Rainbow Delimiters in 'programming-like' modes
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 
-;; Projectile
-;;(projectile-global-mode)
 (use-package projectile
   :config
   ;;(use-package grizzl)
@@ -69,7 +81,6 @@
 ;; Org Mode
 ;;(load-user-file "org-config.el")
 
-;; Neotree
 (use-package neotree
   :config
   (global-set-key [f2] 'neotree-toggle)
@@ -89,8 +100,29 @@
 
   (global-set-key [f8] 'neotree-project-dir))
 
-;; Set a defaule theme
-;;(load-theme ' t)
+;; testing out wanderlust
+;;(autoload 'wl "wl" "Wanderlust" t)
+(setq jabber-account-list
+      '(("cmoylan@gmail.com"
+         (:network-server . "talk.google.com")
+         (:connection-type . ssl)
+         (:port . 443))))
+(setq jabber-vcard-avatars-retreive nil)
+(setq jabber-roster-line-format " %c %-25n %u %-8s (%r)")
+
+(use-package robe
+  :config
+  (defadvice inf-ruby-console-auto (before activate-rvm-for-robe activate)
+  (rvm-activate-corresponding-ruby)))
+
+(use-package smart-mode-line
+  :config
+  (sml/setup))
+
+
+;;
+;; ----- auto-generated stuff follows ----- ;;
+;;
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
