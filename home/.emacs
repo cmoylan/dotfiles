@@ -21,7 +21,7 @@
 (global-linum-mode t) ; Enable line numbering
 (tool-bar-mode 0) ; Disable graphical toolbar
 (menu-bar-mode 0) ; Disable menu bar
-(electric-pair-mode 1) ; enable closing paren auto-insertion
+;(electric-pair-mode 1) ; enable closing paren auto-insertion
 (setq-default indent-tabs-mode nil) ; Use soft tabs
 (setq js-indent-level 2) ; Use 2 spaces for javascript
 (setq-default c-basic-offset 4) ; Use 4 spaces for CC-mode (c, c++, java)
@@ -100,16 +100,6 @@
 
   (global-set-key [f8] 'neotree-project-dir))
 
-;; testing out wanderlust
-;;(autoload 'wl "wl" "Wanderlust" t)
-(setq jabber-account-list
-      '(("cmoylan@gmail.com"
-         (:network-server . "talk.google.com")
-         (:connection-type . ssl)
-         (:port . 443))))
-(setq jabber-vcard-avatars-retreive nil)
-(setq jabber-roster-line-format " %c %-25n %u %-8s (%r)")
-
 (use-package robe
   :config
   (defadvice inf-ruby-console-auto (before activate-rvm-for-robe activate)
@@ -118,6 +108,19 @@
 (use-package smart-mode-line
   :config
   (sml/setup))
+
+(use-package evil
+  :config
+  (require 'evil)
+  (evil-mode 1)
+  (evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
+  (evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-quick-look)
+  (evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
+  (evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter))
+
+(use-package slime
+  :config
+  (setq inferior-lisp-program "/usr/local/bin/sbcl"))
 
 
 ;;
