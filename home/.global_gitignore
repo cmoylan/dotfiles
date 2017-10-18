@@ -1,0 +1,11 @@
+*.swp
+.rvmrc
+database.yml
+bin/*
+
+# Emacs crap
+auto-save-list
+\#*
+*~
+.#*
+\#*\#

@@ -5,6 +5,10 @@
 
 # ignore tmp folders
 --ignore-dir=tmp/
+--ignore-dir=coverage/
+
+# ignore tags file
+--ignore-file=match:/^tags$/
 
 # add haml and sass to supported filetypes
 --type-add
