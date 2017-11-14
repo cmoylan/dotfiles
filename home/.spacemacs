@@ -1,6 +1,8 @@
 ;; -*- mode: emacs-lisp -*-
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
+
+;;; --- move this somewhere else
 (defun my-setup-indent (n)
   ;; java/c/c++
   (setq c-basic-offset n)
@@ -15,6 +17,42 @@
   (setq css-indent-offset n) ; css-mode
   )
 
+
+(defconst pcmpl-git-commands
+  '("add" "bisect" "branch" "checkout" "clone"
+    "commit" "diff" "fetch" "grep"
+    "init" "log" "merge" "mv" "pull" "push" "rebase"
+    "reset" "rm" "show" "status" "tag" )
+  "List of `git' commands")
+
+(defvar pcmpl-git-ref-list-cmd "git for-each-ref refs/ --format='%(refname)'"
+  "The `git' command to run to get a list of refs")
+
+(defun pcmpl-git-get-refs (type)
+  "Return a list of `git' refs filtered by TYPE"
+  (with-temp-buffer
+    (insert (shell-command-to-string pcmpl-git-ref-list-cmd))
+    (goto-char (point-min))
+    (let ((ref-list))
+      (while (re-search-forward (concat "^refs/" type "/\\(.+\\)$") nil t)
+        (add-to-list 'ref-list (match-string 1)))
+      ref-list)))
+
+(defun pcomplete/git ()
+  "Completion for `git'"
+  ;; Completion for the command argument.
+  (pcomplete-here* pcmpl-git-commands)
+  ;; complete files/dirs forever if the command is `add' or `rm'
+  (cond
+   ((pcomplete-match (regexp-opt '("add" "rm")) 1)
+    (while (pcomplete-here (pcomplete-entries))))
+   ;; provide branch completion for the command `checkout'.
+   ((pcomplete-match "checkout" 1)
+    (pcomplete-here* (pcmpl-git-get-refs "heads")))))
+
+
+
+;;; Begin actual spacemacs
 
 (defun dotspacemacs/layers ()
   "Configuration Layers declaration.
@@ -51,7 +89,7 @@ values."
      sql
      html
      ruby
-     selectric
+     ;; selectric
      yaml
      python
      ;; ----------------------------------------------------------------
@@ -109,7 +147,7 @@ values."
    ;; This variable has no effect if Emacs is launched with the parameter
    ;; `--insecure' which forces the value of this variable to nil.
    ;; (default t)
-   dotspacemacs-elpa-https t
+   dotspacemacs-elpa-https nil
    ;; Maximum allowed time in seconds to contact an ELPA repository.
    dotspacemacs-elpa-timeout 5
    ;; If non nil then spacemacs will check for updates at startup
@@ -328,6 +366,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
   (my-setup-indent 2) ; indent 2 spaces width
 
+
   )
 
 
@@ -347,6 +386,14 @@ you should place your code here."
   (slime-setup '(slime-fancy slime-tramp slime-asdf))
   (slime-require :swank-listener-hooks)
 
+  ;; set up shell autocomplete
+  (setq explicit-shell-file-name "bash")
+  (setq explicit-bash-args '("-c" "export EMACS=; stty echo; bash"))
+  (setq comint-process-echoes t)
+  (require 'readline-complete)
+  (add-to-list 'ac-modes 'shell-mode)
+  (add-hook 'shell-mode-hook 'ac-rlc-setup-sources)
+
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -362,11 +409,16 @@ you should place your code here."
    [unspecified "#f5f5f5" "#ac4142" "#90a959" "#f4bf75" "#6a9fb5" "#aa759f" "#6a9fb5" "#303030"] t)
  '(custom-safe-themes
    (quote
-    ("c968804189e0fc963c641f5c9ad64bca431d41af2fb7e1d01a2a6666376f819c" "7a2ac0611ded83cdd60fc4de55ba57d36600eae261f55a551b380606345ee922" "aded4ec996e438a5e002439d58f09610b330bbc18f580c83ebaba026bbef6c82" "25c06a000382b6239999582dfa2b81cc0649f3897b394a75ad5a670329600b45" "d2bd16a8bcf295dce0b70e1d2b5c17bb34cb28224a86ee770d56e6c22a565013" "f5f3a6fb685fe5e1587bafd07db3bf25a0655f3ddc579ed9d331b6b19827ea46" "4a91a64af7ff1182ed04f7453bb5a4b0c3d82148d27db699df89a5f1d449e2a4" "ef04dd1e33f7cbd5aa3187981b18652b8d5ac9e680997b45dc5d00443e6a46e3" "d9850d120be9d94dd7ae69053630e89af8767c36b131a3aa7b06f14007a24656" "f984e2f9765a69f7394527b44eaa28052ff3664a505f9ec9c60c088ca4e9fc0b" "b3bcf1b12ef2a7606c7697d71b934ca0bdd495d52f901e73ce008c4c9825a3aa" "527df6ab42b54d2e5f4eec8b091bd79b2fa9a1da38f5addd297d1c91aa19b616" "60e09d2e58343186a59d9ed52a9b13d822a174b33f20bdc1d4abb86e6b17f45b" "5a39d2a29906ab273f7900a2ae843e9aa29ed5d205873e1199af4c9ec921aaab" "4bf5c18667c48f2979ead0f0bdaaa12c2b52014a6abaa38558a207a65caeb8ad" "8be07a2c1b3a7300860c7a65c0ad148be6d127671be04d3d2120f1ac541ac103" "d96587ec2c7bf278269b8ec2b800c7d9af9e22d816827639b332b0e613314dfd" "50b64810ed1c36dfb72d74a61ae08e5869edc554102f20e078b21f84209c08d1" "93268bf5365f22c685550a3cbb8c687a1211e827edc76ce7be3c4bd764054bad" "4182c491b5cc235ba5f27d3c1804fc9f11f51bf56fb6d961f94788be034179ad" "50d07ab55e2b5322b2a8b13bc15ddf76d7f5985268833762c500a90e2a09e7aa" "808b47c5c5583b5e439d8532da736b5e6b0552f6e89f8dafaab5631aace601dd" "36282815a2eaab9ba67d7653cf23b1a4e230e4907c7f110eebf3cdf1445d8370" "146061a7ceea4ccc75d975a3bb41432382f656c50b9989c7dc1a7bb6952f6eb4" "9c4acf7b5801f25501f0db26ac3eee3dc263ed51afd01f9dcfda706a15234733" "840db7f67ce92c39deb38f38fbc5a990b8f89b0f47b77b96d98e4bf400ee590a" "350dc341799fbbb81e59d1e6fff2b2c8772d7000e352a5c070aa4317127eee94" "446cc97923e30dec43f10573ac085e384975d8a0c55159464ea6ef001f4a16ba" "d9dab332207600e49400d798ed05f38372ec32132b3f7d2ba697e59088021555" "196df8815910c1a3422b5f7c1f45a72edfa851f6a1d672b7b727d9551bb7c7ba" "8543b328ed10bc7c16a8a35c523699befac0de00753824d7e90148bca583f986" "fec45178b55ad0258c5f68f61c9c8fd1a47d73b08fb7a51c15558d42c376083d" "6271fc9740379f8e2722f1510d481c1df1fcc43e48fa6641a5c19e954c21cc8f" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" default)))
+    ("fc7fd2530b82a722ceb5b211f9e732d15ad41d5306c011253a0ba43aaf93dccc" "0c3b1358ea01895e56d1c0193f72559449462e5952bded28c81a8e09b53f103f" "604648621aebec024d47c352b8e3411e63bdb384367c3dd2e8db39df81b475f5" "73ad471d5ae9355a7fa28675014ae45a0589c14492f52c32a4e9b393fcc333fd" "85e6bb2425cbfeed2f2b367246ad11a62fb0f6d525c157038a0d0eaaabc1bfee" "c968804189e0fc963c641f5c9ad64bca431d41af2fb7e1d01a2a6666376f819c" "7a2ac0611ded83cdd60fc4de55ba57d36600eae261f55a551b380606345ee922" "aded4ec996e438a5e002439d58f09610b330bbc18f580c83ebaba026bbef6c82" "25c06a000382b6239999582dfa2b81cc0649f3897b394a75ad5a670329600b45" "d2bd16a8bcf295dce0b70e1d2b5c17bb34cb28224a86ee770d56e6c22a565013" "f5f3a6fb685fe5e1587bafd07db3bf25a0655f3ddc579ed9d331b6b19827ea46" "4a91a64af7ff1182ed04f7453bb5a4b0c3d82148d27db699df89a5f1d449e2a4" "ef04dd1e33f7cbd5aa3187981b18652b8d5ac9e680997b45dc5d00443e6a46e3" "d9850d120be9d94dd7ae69053630e89af8767c36b131a3aa7b06f14007a24656" "f984e2f9765a69f7394527b44eaa28052ff3664a505f9ec9c60c088ca4e9fc0b" "b3bcf1b12ef2a7606c7697d71b934ca0bdd495d52f901e73ce008c4c9825a3aa" "527df6ab42b54d2e5f4eec8b091bd79b2fa9a1da38f5addd297d1c91aa19b616" "60e09d2e58343186a59d9ed52a9b13d822a174b33f20bdc1d4abb86e6b17f45b" "5a39d2a29906ab273f7900a2ae843e9aa29ed5d205873e1199af4c9ec921aaab" "4bf5c18667c48f2979ead0f0bdaaa12c2b52014a6abaa38558a207a65caeb8ad" "8be07a2c1b3a7300860c7a65c0ad148be6d127671be04d3d2120f1ac541ac103" "d96587ec2c7bf278269b8ec2b800c7d9af9e22d816827639b332b0e613314dfd" "50b64810ed1c36dfb72d74a61ae08e5869edc554102f20e078b21f84209c08d1" "93268bf5365f22c685550a3cbb8c687a1211e827edc76ce7be3c4bd764054bad" "4182c491b5cc235ba5f27d3c1804fc9f11f51bf56fb6d961f94788be034179ad" "50d07ab55e2b5322b2a8b13bc15ddf76d7f5985268833762c500a90e2a09e7aa" "808b47c5c5583b5e439d8532da736b5e6b0552f6e89f8dafaab5631aace601dd" "36282815a2eaab9ba67d7653cf23b1a4e230e4907c7f110eebf3cdf1445d8370" "146061a7ceea4ccc75d975a3bb41432382f656c50b9989c7dc1a7bb6952f6eb4" "9c4acf7b5801f25501f0db26ac3eee3dc263ed51afd01f9dcfda706a15234733" "840db7f67ce92c39deb38f38fbc5a990b8f89b0f47b77b96d98e4bf400ee590a" "350dc341799fbbb81e59d1e6fff2b2c8772d7000e352a5c070aa4317127eee94" "446cc97923e30dec43f10573ac085e384975d8a0c55159464ea6ef001f4a16ba" "d9dab332207600e49400d798ed05f38372ec32132b3f7d2ba697e59088021555" "196df8815910c1a3422b5f7c1f45a72edfa851f6a1d672b7b727d9551bb7c7ba" "8543b328ed10bc7c16a8a35c523699befac0de00753824d7e90148bca583f986" "fec45178b55ad0258c5f68f61c9c8fd1a47d73b08fb7a51c15558d42c376083d" "6271fc9740379f8e2722f1510d481c1df1fcc43e48fa6641a5c19e954c21cc8f" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" default)))
  '(evil-want-Y-yank-to-eol nil)
+ '(notmuch-search-line-faces
+   (quote
+    (("unread" :foreground "#aeee00")
+     ("flagged" :foreground "#0a9dff")
+     ("deleted" :foreground "#ff2c4b" :bold t))))
  '(package-selected-packages
    (quote
-    (slime markdown-toc js2-refactor flycheck-mix flycheck-credo diminish bind-key pkg-info epl popup org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download htmlize gnuplot dash-functional helm-core async yasnippet doom-themes web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat multiple-cursors js2-mode js-doc coffee-mode markdown-mode+ mmm-mode markdown-mode gh-md ob-elixir flycheck alchemist company elixir-mode sql-indent web-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode selectric-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode rbenv rake minitest chruby bundler inf-ruby yaml-mode yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode anaconda-mode pythonic winum which-key volatile-highlights vi-tilde-fringe uuidgen toc-org spaceline powerline restart-emacs request popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s define-word column-enforce-mode clean-aindent-mode bind-map auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line avy ws-butler use-package smart-mode-line robe rainbow-delimiters projectile neotree ivy helm exec-path-from-shell base16-theme))))
+    (auto-complete readline-complete badwolf-theme slime markdown-toc js2-refactor flycheck-mix flycheck-credo diminish bind-key pkg-info epl popup org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download htmlize gnuplot dash-functional helm-core async yasnippet doom-themes web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat multiple-cursors js2-mode js-doc coffee-mode markdown-mode+ mmm-mode markdown-mode gh-md ob-elixir flycheck alchemist company elixir-mode sql-indent web-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode selectric-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode rbenv rake minitest chruby bundler inf-ruby yaml-mode yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode anaconda-mode pythonic winum which-key volatile-highlights vi-tilde-fringe uuidgen toc-org spaceline powerline restart-emacs request popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s define-word column-enforce-mode clean-aindent-mode bind-map auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line avy ws-butler use-package smart-mode-line robe rainbow-delimiters projectile neotree ivy helm exec-path-from-shell base16-theme))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
