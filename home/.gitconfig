@@ -33,5 +33,5 @@
   tool = kdiff3
 
 [core]
-  excludesfile = ~/.gitignore
+  excludesfile = ~/.global_gitignore
   pager = less -r
