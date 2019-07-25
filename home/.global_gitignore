@@ -1,8 +1,9 @@
 *.swp
 .rvmrc
-database.yml
+#database.yml
 node_modules/*
 coverage/*
+.envrc
 
 # Emacs crap
 auto-save-list
@@ -18,3 +19,6 @@ secrets.yml
 interactive_selector.rb
 .ruby-version
 .ruby-gemset
+
+# python
+*.pyc
