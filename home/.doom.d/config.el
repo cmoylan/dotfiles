@@ -46,8 +46,3 @@
 ; (string-prefix-p "*lsp" name)
 ; (and (string-prefix-p "magit" name)
 ;      (not (file-name-extension name))))))
-
-
-;; Saved keyboard macros
-;(fset 'ruby-debug
-;   [?o ?r ?e ?q ?u ?i ?r ?e ?  ?\' ?p ?r ?y right ?\; ?  ?b ?i ?n ?d ?i ?n ?g ?. ?p ?r ?y])

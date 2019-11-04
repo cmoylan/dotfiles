@@ -30,8 +30,12 @@
   untracked = cyan
 
 [merge]
-  tool = kdiff3
+  tool = vimdiff
+  conflictstyle = diff3
+  prompt = false
 
 [core]
   excludesfile = ~/.global_gitignore
   pager = less -r
+[diff]
+  tool = vimdiff
