@@ -17,17 +17,6 @@
 (setq inferior-lisp-program "sbcl")
 (load "/Users/cmoylan/quicklisp/clhs-use-local.el" t)
 
-;; set robe-mode in ruby
-;; trying ramdon stuff for ruby code navigation
-(add-hook 'ruby-mode-hook 'robe-mode)
-;;(projectile-rails-global-mode)
-
-
-;; org-tree-slide
-(with-eval-after-load "org-tree-slide"
-  (define-key org-tree-slide-mode-map (kbd "<f9>") 'org-tree-slide-move-previous-tree)
-  (define-key org-tree-slide-mode-map (kbd "<f10>") 'org-tree-slide-move-next-tree)
-  )
 
 ;;; Centaur Tabs
 ;(use-package centaur-tabs
