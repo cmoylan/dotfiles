@@ -9,6 +9,7 @@
 
 * Table of Contents :TOC_3:noexport:
 - [[#org-mode][Org mode]]
+  - [[#org-keys-set-by-doom][Org keys set by doom]]
 - [[#treemacs][Treemacs]]
 - [[#slime][Slime]]
 - [[#centaur-tabs][Centaur tabs]]
@@ -19,6 +20,12 @@ Log when a TODO is completed
 #+BEGIN_SRC elisp
 (setq org-log-done :time)
 #+END_SRC
+
+** Org keys set by doom
+~org-store-link~ (SPC n l)
+~org-agenda~ (SPC o A)
+~org-capture~ (SPC X)
+~org-switchb~ (SPC m ,)
 
 * Treemacs
 Use fancy Treemacs icons inside dired
