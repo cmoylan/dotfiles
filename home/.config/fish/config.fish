@@ -11,7 +11,7 @@ source /usr/local/share/chruby/chruby.fish
 source /usr/local/share/chruby/auto.fish
 
 # google cloud
-source /usr/local/src/google-cloud-sdk/path.fish.inc
+# source /usr/local/src/google-cloud-sdk/path.fish.inc
 
 # add executables in ~/bin
 set PATH ~/bin $PATH
@@ -21,3 +21,5 @@ set PATH ~/.emacs.d/bin $PATH
 set PATH $GOPATH/bin $PATH
 
 eval (python -m virtualfish)
+
+alias nf "new_function"
