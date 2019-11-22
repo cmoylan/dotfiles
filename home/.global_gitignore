@@ -19,6 +19,11 @@ secrets.yml
 interactive_selector.rb
 .ruby-version
 .ruby-gemset
+.travis/*
 
 # python
 *.pyc
+
+# SC stuff
+docker-compose-dev.yml
+.env.dev

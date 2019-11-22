@@ -1,42 +1,83 @@
 #+TITLE:   Literate Emacs Configuration
 #+DATE:    October 24, 2019
-#+SINCE:   {replace with next tagged release version}
+#+AUTHOR:  cmoylan
+#+SINCE:   1.0.0
 #+STARTUP: inlineimages
+#+PROPERTY: header-args:elisp :tangle (concat (file-name-directory (buffer-file-name)) "custom/user-config-example.el")
+
+
 
 * Table of Contents :TOC_3:noexport:
-- [[#description][Description]]
-  - [[#module-flags][Module Flags]]
-  - [[#plugins][Plugins]]
-  - [[#hacks][Hacks]]
-- [[#prerequisites][Prerequisites]]
-- [[#features][Features]]
-- [[#configuration][Configuration]]
-- [[#troubleshooting][Troubleshooting]]
+- [[#org-mode][Org mode]]
+  - [[#org-keys-set-by-doom][Org keys set by doom]]
+- [[#treemacs][Treemacs]]
+- [[#slime][Slime]]
+- [[#centaur-tabs][Centaur tabs]]
+- [[#meta][Meta]]
 
-* Description
-A summary of what this module does.
+* Org mode
+Log when a TODO is completed
+#+BEGIN_SRC elisp
+(setq org-log-done :time)
+#+END_SRC
 
-+ If possible, include a brief list of feature highlights here
-+ Like code completion, syntax checking or available snippets
-+ Include links to packages & external things where possible
+** Org keys set by doom
+~org-store-link~ (SPC n l)
+~org-agenda~ (SPC o A)
+~org-capture~ (SPC X)
+~org-switchb~ (SPC m ,)
 
-** Module Flags
-This module provides no flags.
+* Treemacs
+Use fancy Treemacs icons inside dired
+#+BEGIN_SRC elisp
+(treemacs-icons-dired-mode)
+#+END_SRC
 
-** Plugins
-{A list of linked plugins}
+* Slime
+Load quicklisp and set the default lisp interpreter to SBCL
+#+BEGIN_SRC elisp
+(load (expand-file-name "~/quicklisp/slime-helper.el"))
+(setq inferior-lisp-program "sbcl")
+#+END_SRC
 
-** Hacks
-{A list of internal modifications to included packages}
+* Centaur tabs
+Archived config from fiddling with Centaur tabs
+#+BEGIN_SRC elisp
+;;; Centaur Tabs
+;(use-package centaur-tabs
+;  :demand
+;  :config
+;  (centaur-tabs-mode t)
+;  :bind
+;  (:map evil-normal-state-map
+;    ("g t" . centaur-tabs-forward)
+;    ("g T" . centaur-tabs-backward)))
+;
+;(setq centaur-tabs-set-icons t)            ; show icons
+;(setq centaur-tabs-cycle-scope 'tabs)      ; only cycle through tabs in current group
+;;(centaur-tabs-group-by-projectile-project) ; group tabs by projectile project
+;
+;;; hide certain buffers
+;(defun centaur-tabs-hide-tab (x)
+;  (let ((name (format "%s" x)))
+;(or
+; (string-prefix-p "*epc" name)
+; (string-prefix-p "*helm" name)
+; (string-prefix-p "*Compile-Log*" name)
+; (string-prefix-p "*lsp" name)
+; (and (string-prefix-p "magit" name)
+;      (not (file-name-extension name))))))
+#+END_SRC
 
-* Prerequisites
-This module has no prereqisites.
+#+RESULTS:
 
-* Features
-An in-depth list of features, how to use them, and their dependencies.
 
-* Configuration
-How to configure this module, including common problems and how to address them.
+* Meta
+Set the html theme for exports
+#+BEGIN_SRC orgmode
+#+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-readtheorg.setup
+#+END_SRC
 
-* Troubleshooting
-Common issues and their solution, or places to look for help.
+Evaluate code blocks with: =<C-c><C-e>=
+
+Compile this file as HTML with: =<C-c><C-c> h h=

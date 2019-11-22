@@ -15,11 +15,7 @@
 ;; Slime
 (load (expand-file-name "~/quicklisp/slime-helper.el"))
 (setq inferior-lisp-program "sbcl")
-
-;; set robe-mode in ruby
-;; trying ramdon stuff for ruby code navigation
-(add-hook 'ruby-mode-hook 'robe-mode)
-;;(projectile-rails-global-mode)
+(load "/Users/cmoylan/quicklisp/clhs-use-local.el" t)
 
 
 ;;; Centaur Tabs
@@ -46,8 +42,3 @@
 ; (string-prefix-p "*lsp" name)
 ; (and (string-prefix-p "magit" name)
 ;      (not (file-name-extension name))))))
-
-
-;; Saved keyboard macros
-;(fset 'ruby-debug
-;   [?o ?r ?e ?q ?u ?i ?r ?e ?  ?\' ?p ?r ?y right ?\; ?  ?b ?i ?n ?d ?i ?n ?g ?. ?p ?r ?y])
