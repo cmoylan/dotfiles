@@ -6,6 +6,7 @@
   - [[#org-mode][Org mode]]
   - [[#slyslime][Sly/Slime]]
   - [[#treemacs][Treemacs]]
+- [[#meta][Meta]]
 
 * Tasks
 
@@ -28,5 +29,17 @@ Use quicklisp
 ** Treemacs
 Use the fancy icons in ~dired~ mode
 #+BEGIN_SRC emacs-lisp
-;(treemacs-icons-dired-mode)
+(after! treemacs
+  (treemacs-icons-dired-mode))
 #+END_SRC
+
+
+* Meta
+Set the html theme for exports
+#+BEGIN_SRC orgmode
+#+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-readtheorg.setup
+#+END_SRC
+
+Evaluate code blocks with: =<C-c><C-e>=
+
+Compile this file as HTML with: =<C-c><C-c> h h=
