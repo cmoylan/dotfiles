@@ -1,4 +1,7 @@
 #+TITLE: Doom Emacs configuration
+#+VERSION: 1.0
+#+PROPERTY: header-args :results silent
+#+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-readtheorg.setup
 
 * Table of Contents :TOC_3_gh:
 - [[#tasks][Tasks]]
@@ -29,17 +32,12 @@ Use quicklisp
 ** Treemacs
 Use the fancy icons in ~dired~ mode
 #+BEGIN_SRC emacs-lisp
-(after! treemacs
+(after! treemacs-icons-dired
   (treemacs-icons-dired-mode))
 #+END_SRC
 
 
 * Meta
-Set the html theme for exports
-#+BEGIN_SRC orgmode
-#+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-readtheorg.setup
-#+END_SRC
-
 Evaluate code blocks with: =<C-c><C-e>=
 
-Compile this file as HTML with: =<C-c><C-c> h h=
+Compile this file as HTML with: =<C-c><C-e> h h=
