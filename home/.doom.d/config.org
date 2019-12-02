@@ -1,0 +1,32 @@
+#+TITLE: Doom Emacs configuration
+
+* Table of Contents :TOC_3_gh:
+- [[#tasks][Tasks]]
+- [[#configuration][Configuration]]
+  - [[#org-mode][Org mode]]
+  - [[#slyslime][Sly/Slime]]
+  - [[#treemacs][Treemacs]]
+
+* Tasks
+
+* Configuration
+
+** Org mode
+Record the timestamp when a TODO item was completed
+#+BEGIN_SRC emacs-lisp
+(setq org-log-done t)
+#+END_SRC
+
+** Sly/Slime
+Use quicklisp
+#+BEGIN_SRC emacs-lisp
+(load (expand-file-name "~/quicklisp/slime-helper.el"))
+(setq inferior-lisp-program "sbcl")
+(load "/Users/cmoylan/quicklisp/clhs-use-local.el" t)
+#+END_SRC
+
+** Treemacs
+Use the fancy icons in ~dired~ mode
+#+BEGIN_SRC emacs-lisp
+;(treemacs-icons-dired-mode)
+#+END_SRC
