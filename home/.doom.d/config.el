@@ -9,7 +9,7 @@
 
 
 ;; Treemacs config
-(treemacs-icons-dired-mode)
+;(treemacs-icons-dired-mode)
 
 
 ;; Slime
