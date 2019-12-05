@@ -1,4 +1,3 @@
 function funced
-  cd ~/.config/fish/functions
-  vi $argv.fish
+  vi ~/.config/fish/functions/$argv.fish
 end
