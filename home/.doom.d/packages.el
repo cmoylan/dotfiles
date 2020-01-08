@@ -7,3 +7,7 @@
 ;; (package! builtin-package :disable t)
 (package! kaolin-themes)
 (package! treemacs-icons-dired)
+(package! go-mode)
+(package! web-mode)
+(package! zenburn-theme)
+(package! badwolf-theme)
