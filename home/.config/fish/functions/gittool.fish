@@ -4,20 +4,23 @@ function gittool -a cmd opts -d "git utilities"
       case bc
         git-branch-clean
       case bs
-        echo $opts
-        echo "in here"
         git-branch-save $opts
+      case '*'
+        echo "unknown command: " $cmd
     end
-
   else
-    echo "Available commands:"
-    echo "branch clean - bc"
-    echo "branch save  - bs"
-    read -l -P "Enter a command and arguments: " command
-    echo "entered command:"
-    echo $command
-    gittool $command
+    _show-help-and-prompt
   end
+end
+
+
+function _show-help-and-prompt
+  echo "Available commands:"
+  echo "branch clean - bc"
+  echo "branch save  - bs"
+  read -l -P "Enter a command and arguments: " command
+  echo "got command: " $command
+  gittool (string split ' ' $command)
 end
 
 
@@ -33,14 +36,14 @@ function git-branch-clean --d "clean old git branches"
     end
 end
 
+
 function git-branch-save -a branch --d "add --save onto the branch name"
-echo "got branch"
-echo $branch
-  # TODO: should be reversable now
-#git branch -m $branch $branch--save
-  if string match -r '\-\-save$' $branch
-    echo 'matches'
+  set -l branches (git branch)
+  set -l save_name (string join '' $branch '__save') 
+
+  if string match -q -r (string join '' $branch '__save$') $branches
+    git branch -m $save_name $branch
   else
-  echo 'does not match'
+    git branch -m $branch $save_name
   end
 end

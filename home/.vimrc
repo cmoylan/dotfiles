@@ -7,6 +7,12 @@ endif
 " ----- Plugins ----- "
 call plug#begin()
 Plug 'https://github.com/dag/vim-fish.git'
+Plug 'https://github.com/vim-scripts/FuzzyFinder.git'
+Plug 'https://github.com/sjl/gundo.vim.git'
+Plug 'https://github.com/vim-scripts/L9.git'
+Plug 'https://github.com/preservim/nerdtree.git'
+Plug 'https://github.com/vim-scripts/taglist.vim.git'
+Plug 'https://github.com/vimwiki/vimwiki.git'
 call plug#end()
 
 
