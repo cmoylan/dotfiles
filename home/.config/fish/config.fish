@@ -20,6 +20,10 @@ set PATH ~/.emacs.d/bin $PATH
 # add go stuff
 set PATH $GOPATH/bin $PATH
 
+# add roswell executables
+set PATH ~/.roswell/bin $PATH
+
 eval (python -m virtualfish)
 
 alias nf "new_function"
+alias gt "gittool"
