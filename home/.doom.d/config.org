@@ -10,6 +10,7 @@
   - [[#slyslime][Sly/Slime]]
   - [[#treemacs][Treemacs]]
   - [[#web-mode][Web-mode]]
+  - [[#golang][Golang]]
 - [[#meta][Meta]]
 
 * Tasks
@@ -45,6 +46,14 @@ Set indentation to 2 spaces
            (setq web-mode-css-indent-offset 2)
            (setq web-mode-code-indent-offset 2))
 #+END_SRC
+
+** Golang
+Add the go bin directory to emacs executable path
+#+BEGIN_SRC emacs-lisp
+(setenv "PATH" (concat (getenv "PATH") ":~/go/bin"))
+(setq exec-path (append exec-path '("~/go/bin")))
+#+END_SRC
+
 
 * Meta
 Evaluate code blocks with: =<C-c><C-e>=
