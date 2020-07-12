@@ -21,7 +21,7 @@ set PATH ~/.emacs.d/bin $PATH
 set PATH $GOPATH/bin $PATH
 
 # add roswell executables
-set PATH ~/.roswell/bin $PATH
+#set PATH ~/.roswell/bin $PATH
 
 eval (python -m virtualfish)
 
