@@ -1,3 +1,7 @@
+(if (string-equal system-type "gnu/linux")
+    (set-face-attribute 'default nil :height 120)
+  (set-face-attribute 'default nil :height 100))
+
 (setq org-log-done t)
 
 (load (expand-file-name "~/quicklisp/slime-helper.el"))

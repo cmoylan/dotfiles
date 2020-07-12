@@ -6,6 +6,7 @@
 * Table of Contents :TOC_3_gh:
 - [[#tasks][Tasks]]
 - [[#configuration][Configuration]]
+  - [[#general][General]]
   - [[#org-mode][Org mode]]
   - [[#slyslime][Sly/Slime]]
   - [[#treemacs][Treemacs]]
@@ -16,6 +17,13 @@
 
 * Configuration
 
+** General
+Set the font size
+#+BEGIN_SRC emacs-lisp
+(if (string-equal system-type "gnu/linux")
+    (set-face-attribute 'default nil :height 120)
+  (set-face-attribute 'default nil :height 100))
+#+END_SRC
 ** Org mode
 Record the timestamp when a TODO item was completed
 #+BEGIN_SRC emacs-lisp
