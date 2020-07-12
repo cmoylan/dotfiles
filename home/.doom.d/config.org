@@ -6,6 +6,7 @@
 * Table of Contents :TOC_3_gh:
 - [[#tasks][Tasks]]
 - [[#configuration][Configuration]]
+  - [[#general][General]]
   - [[#org-mode][Org mode]]
   - [[#slyslime][Sly/Slime]]
   - [[#treemacs][Treemacs]]
@@ -16,6 +17,23 @@
 * Tasks
 
 * Configuration
+** General
+Set the default theme
+#+BEGIN_SRC emacs-lisp
+(setq doom-theme 'doom-opera)
+#+END_SRC
+
+Use golden ratio mode
+#+BEGIN_SRC emacs-lisp
+(use-package! golden-ratio
+  :after-call pre-command-hook
+  :config
+  (golden-ratio-mode +1)
+  ;; Using this hook for resizing windows is less precise than
+  ;; `doom-switch-window-hook'.
+  (remove-hook 'window-configuration-change-hook #'golden-ratio)
+  (add-hook 'doom-switch-window-hook #'golden-ratio))
+#+END_SRC
 
 ** Org mode
 Record the timestamp when a TODO item was completed

@@ -25,5 +25,9 @@ interactive_selector.rb
 *.pyc
 
 # SC stuff
-docker-compose-dev.yml
+docker-compose.yml.dev
 .env.dev
+
+
+_NOTES.org
+

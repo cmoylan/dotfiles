@@ -131,7 +131,8 @@
         +dragndrop       ; file drag & drop support
         +ipython         ; ipython support for babel
         +pandoc          ; pandoc integration into org's exporter
-        +present)        ; using Emacs for presentations
+        +present         ; using Emacs for presentations
+        +roam)
        ;;perl              ; write code no one else can comprehend
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
