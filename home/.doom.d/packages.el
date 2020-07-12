@@ -11,3 +11,7 @@
 (package! web-mode)
 (package! zenburn-theme)
 (package! badwolf-theme)
+(package! gotest)
+(package! feature-mode)
+(package! org-roam)
+(package! golden-ratio)

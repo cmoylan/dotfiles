@@ -11,11 +11,29 @@
   - [[#slyslime][Sly/Slime]]
   - [[#treemacs][Treemacs]]
   - [[#web-mode][Web-mode]]
+  - [[#golang][Golang]]
 - [[#meta][Meta]]
 
 * Tasks
 
 * Configuration
+** General
+Set the default theme
+#+BEGIN_SRC emacs-lisp
+(setq doom-theme 'doom-opera)
+#+END_SRC
+
+Use golden ratio mode
+#+BEGIN_SRC emacs-lisp
+(use-package! golden-ratio
+  :after-call pre-command-hook
+  :config
+  (golden-ratio-mode +1)
+  ;; Using this hook for resizing windows is less precise than
+  ;; `doom-switch-window-hook'.
+  (remove-hook 'window-configuration-change-hook #'golden-ratio)
+  (add-hook 'doom-switch-window-hook #'golden-ratio))
+#+END_SRC
 
 ** General
 Set the font size
@@ -53,6 +71,14 @@ Set indentation to 2 spaces
            (setq web-mode-css-indent-offset 2)
            (setq web-mode-code-indent-offset 2))
 #+END_SRC
+
+** Golang
+Add the go bin directory to emacs executable path
+#+BEGIN_SRC emacs-lisp
+(setenv "PATH" (concat (getenv "PATH") ":~/go/bin"))
+(setq exec-path (append exec-path '("~/go/bin")))
+#+END_SRC
+
 
 * Meta
 Evaluate code blocks with: =<C-c><C-e>=
