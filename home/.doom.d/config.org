@@ -8,6 +8,7 @@
 - [[#configuration][Configuration]]
   - [[#general][General]]
   - [[#org-mode][Org mode]]
+    - [[#roam][Roam]]
   - [[#slyslime][Sly/Slime]]
   - [[#treemacs][Treemacs]]
   - [[#web-mode][Web-mode]]
@@ -47,6 +48,28 @@
     #+BEGIN_SRC emacs-lisp
     (setq org-log-done t)
     #+END_SRC
+
+*** Roam
+    Set the org directory
+    #+BEGIN_SRC emacs-lisp
+    (setq org-roam-directory "~/Dropbox/org")
+    #+END_SRC
+
+
+    Shortcuts
+    #+BEGIN_SRC emacs-lisp
+    (after! org-roam
+            (map! :leader
+                :prefix "n"
+                :desc "org-roam" "l" #'org-roam
+                :desc "org-roam-insert" "i" #'org-roam-insert
+                :desc "org-roam-switch-to-buffer" "b" #'org-roam-switch-to-buffer
+                :desc "org-roam-find-file" "f" #'org-roam-find-file
+                :desc "org-roam-show-graph" "g" #'org-roam-show-graph
+                :desc "org-roam-insert" "i" #'org-roam-insert
+                :desc "org-roam-capture" "c" #'org-roam-capture))
+    #+END_SRC
+
 
 ** Sly/Slime
     Use quicklisp

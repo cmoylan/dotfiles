@@ -13,5 +13,4 @@
 (package! badwolf-theme)
 (package! gotest)
 (package! feature-mode)
-(package! org-roam)
 (package! golden-ratio)
