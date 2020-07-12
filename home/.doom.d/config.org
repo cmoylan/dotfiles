@@ -18,69 +18,69 @@
 
 * Configuration
 ** General
-Set the default theme
-#+BEGIN_SRC emacs-lisp
-(setq doom-theme 'doom-opera)
-#+END_SRC
+    Set the default theme
+    #+BEGIN_SRC emacs-lisp
+    (setq doom-theme 'doom-opera)
+    #+END_SRC
 
-Use golden ratio mode
-#+BEGIN_SRC emacs-lisp
-(use-package! golden-ratio
-  :after-call pre-command-hook
-  :config
-  (golden-ratio-mode +1)
-  ;; Using this hook for resizing windows is less precise than
-  ;; `doom-switch-window-hook'.
-  (remove-hook 'window-configuration-change-hook #'golden-ratio)
-  (add-hook 'doom-switch-window-hook #'golden-ratio))
-#+END_SRC
+    Use golden ratio mode
+    #+BEGIN_SRC emacs-lisp
+    (use-package! golden-ratio
+      :after-call pre-command-hook
+      :config
+      (golden-ratio-mode +1)
+      ;; Using this hook for resizing windows is less precise than
+      ;; `doom-switch-window-hook'.
+      (remove-hook 'window-configuration-change-hook #'golden-ratio)
+      (add-hook 'doom-switch-window-hook #'golden-ratio))
+    #+END_SRC
 
-** General
-Set the font size
-#+BEGIN_SRC emacs-lisp
-(if (string-equal system-type "gnu/linux")
-    (set-face-attribute 'default nil :height 120)
-  (set-face-attribute 'default nil :height 100))
-#+END_SRC
+    Set the font size
+    #+BEGIN_SRC emacs-lisp
+    (if (string-equal system-type "gnu/linux")
+        (set-face-attribute 'default nil :height 120)
+      (set-face-attribute 'default nil :height 100))
+    #+END_SRC
+
 ** Org mode
-Record the timestamp when a TODO item was completed
-#+BEGIN_SRC emacs-lisp
-(setq org-log-done t)
-#+END_SRC
+    Record the timestamp when a TODO item was completed
+    #+BEGIN_SRC emacs-lisp
+    (setq org-log-done t)
+    #+END_SRC
 
 ** Sly/Slime
-Use quicklisp
-#+BEGIN_SRC emacs-lisp
-(load (expand-file-name "~/quicklisp/slime-helper.el"))
-(setq inferior-lisp-program "sbcl")
-(load "/Users/cmoylan/quicklisp/clhs-use-local.el" t)
-#+END_SRC
+    Use quicklisp
+    #+BEGIN_SRC emacs-lisp
+    (load (expand-file-name "~/quicklisp/slime-helper.el"))
+    (setq inferior-lisp-program "sbcl")
+    (load "/Users/cmoylan/quicklisp/clhs-use-local.el" t)
+    #+END_SRC
 
 ** Treemacs
-Use the fancy icons in ~dired~ mode
-#+BEGIN_SRC emacs-lisp
-(after! treemacs-icons-dired
-  (treemacs-icons-dired-mode))
-#+END_SRC
+    Use the fancy icons in ~dired~ mode
+    #+BEGIN_SRC emacs-lisp
+    (after! treemacs-icons-dired
+      (treemacs-icons-dired-mode))
+    #+END_SRC
 
 ** Web-mode
-Set indentation to 2 spaces
-#+BEGIN_SRC emacs-lisp
-(add-hook! web-mode
-           (setq web-mode-markup-indent-offset 2)
-           (setq web-mode-css-indent-offset 2)
-           (setq web-mode-code-indent-offset 2))
-#+END_SRC
+    Set indentation to 2 spaces
+    #+BEGIN_SRC emacs-lisp
+    (add-hook! web-mode
+               (setq web-mode-markup-indent-offset 2)
+               (setq web-mode-css-indent-offset 2)
+               (setq web-mode-code-indent-offset 2))
+    #+END_SRC
 
 ** Golang
-Add the go bin directory to emacs executable path
-#+BEGIN_SRC emacs-lisp
-(setenv "PATH" (concat (getenv "PATH") ":~/go/bin"))
-(setq exec-path (append exec-path '("~/go/bin")))
-#+END_SRC
+    Add the go bin directory to emacs executable path
+    #+BEGIN_SRC emacs-lisp
+    (setenv "PATH" (concat (getenv "PATH") ":~/go/bin"))
+    (setq exec-path (append exec-path '("~/go/bin")))
+    #+END_SRC
 
 
 * Meta
-Evaluate code blocks with: =<C-c><C-e>=
+  Evaluate code blocks with: =<C-c><C-e>=
 
-Compile this file as HTML with: =<C-c><C-e> h h=
+  Compile this file as HTML with: =<C-c><C-e> h h=

@@ -1,7 +1,3 @@
-(if (string-equal system-type "gnu/linux")
-    (set-face-attribute 'default nil :height 120)
-  (set-face-attribute 'default nil :height 100))
-
 (setq doom-theme 'doom-opera)
 
 (use-package! golden-ratio
@@ -12,6 +8,10 @@
   ;; `doom-switch-window-hook'.
   (remove-hook 'window-configuration-change-hook #'golden-ratio)
   (add-hook 'doom-switch-window-hook #'golden-ratio))
+
+(if (string-equal system-type "gnu/linux")
+    (set-face-attribute 'default nil :height 120)
+  (set-face-attribute 'default nil :height 100))
 
 (setq org-log-done t)
 
