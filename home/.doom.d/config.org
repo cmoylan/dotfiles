@@ -9,6 +9,7 @@
   - [[#general][General]]
   - [[#org-mode][Org mode]]
     - [[#roam][Roam]]
+    - [[#journal][Journal]]
   - [[#slyslime][Sly/Slime]]
   - [[#treemacs][Treemacs]]
   - [[#web-mode][Web-mode]]
@@ -26,21 +27,21 @@
 
     Use golden ratio mode
     #+BEGIN_SRC emacs-lisp
-    (use-package! golden-ratio
-      :after-call pre-command-hook
-      :config
-      (golden-ratio-mode +1)
-      ;; Using this hook for resizing windows is less precise than
-      ;; `doom-switch-window-hook'.
-      (remove-hook 'window-configuration-change-hook #'golden-ratio)
-      (add-hook 'doom-switch-window-hook #'golden-ratio))
+    ;;(use-package! golden-ratio
+    ;;  :after-call pre-command-hook
+    ;;  :config
+    ;;  (golden-ratio-mode +1)
+    ;;  ;; Using this hook for resizing windows is less precise than
+    ;;  ;; `doom-switch-window-hook'.
+    ;;  (remove-hook 'window-configuration-change-hook #'golden-ratio)
+    ;;  (add-hook 'doom-switch-window-hook #'golden-ratio))
     #+END_SRC
 
     Set the font size
     #+BEGIN_SRC emacs-lisp
     (if (string-equal system-type "gnu/linux")
-        (set-face-attribute 'default nil :height 120)
-      (set-face-attribute 'default nil :height 100))
+        (set-face-attribute 'default nil :height 120))
+      ;;(set-face-attribute 'default nil :height 130))
     #+END_SRC
 
 ** Org mode
@@ -71,6 +72,18 @@
                 :desc "org-roam-capture" "c" #'org-roam-capture))
     #+END_SRC
 
+*** Journal
+#+BEGIN_SRC emacs-lisp
+(use-package org-journal
+      :bind
+      ("C-c n j" . org-journal-new-entry)
+      :custom
+      (org-journal-dir org-roam-directory)
+      (org-journal-date-prefix "#+TITLE: ")
+      (org-journal-file-format "%Y-%m-%d.org")
+      (org-journal-date-format "%A, %d %B %Y"))
+    (setq org-journal-enable-agenda-integration t)
+#+END_SRC
 
 ** Sly/Slime
     Use quicklisp

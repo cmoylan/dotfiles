@@ -1,17 +1,17 @@
 (setq doom-theme 'doom-opera)
 
-(use-package! golden-ratio
-  :after-call pre-command-hook
-  :config
-  (golden-ratio-mode +1)
-  ;; Using this hook for resizing windows is less precise than
-  ;; `doom-switch-window-hook'.
-  (remove-hook 'window-configuration-change-hook #'golden-ratio)
-  (add-hook 'doom-switch-window-hook #'golden-ratio))
+;;(use-package! golden-ratio
+;;  :after-call pre-command-hook
+;;  :config
+;;  (golden-ratio-mode +1)
+;;  ;; Using this hook for resizing windows is less precise than
+;;  ;; `doom-switch-window-hook'.
+;;  (remove-hook 'window-configuration-change-hook #'golden-ratio)
+;;  (add-hook 'doom-switch-window-hook #'golden-ratio))
 
 (if (string-equal system-type "gnu/linux")
-    (set-face-attribute 'default nil :height 120)
-  (set-face-attribute 'default nil :height 100))
+    (set-face-attribute 'default nil :height 120))
+  ;;(set-face-attribute 'default nil :height 130))
 
 (setq org-log-done t)
 
@@ -28,6 +28,16 @@
             :desc "org-roam-show-graph" "g" #'org-roam-show-graph
             :desc "org-roam-insert" "i" #'org-roam-insert
             :desc "org-roam-capture" "c" #'org-roam-capture))
+
+(use-package org-journal
+      :bind
+      ("C-c n j" . org-journal-new-entry)
+      :custom
+      (org-journal-dir org-roam-directory)
+      (org-journal-date-prefix "#+TITLE: ")
+      (org-journal-file-format "%Y-%m-%d.org")
+      (org-journal-date-format "%A, %d %B %Y"))
+    (setq org-journal-enable-agenda-integration t)
 
 (load (expand-file-name "~/quicklisp/slime-helper.el"))
 (setq inferior-lisp-program "sbcl")

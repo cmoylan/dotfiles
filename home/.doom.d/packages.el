@@ -13,4 +13,3 @@
 (package! badwolf-theme)
 (package! gotest)
 (package! feature-mode)
-(package! golden-ratio)
