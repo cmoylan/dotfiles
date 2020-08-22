@@ -50,9 +50,10 @@
     #+END_SRC
 
 *** Roam
-    Set the org directory
+    Basic configuration
     #+BEGIN_SRC emacs-lisp
     (setq org-roam-directory "~/Dropbox/org")
+    (setq org-roam-completion-system 'ivy)
     #+END_SRC
 
 

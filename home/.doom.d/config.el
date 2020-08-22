@@ -16,6 +16,7 @@
 (setq org-log-done t)
 
 (setq org-roam-directory "~/Dropbox/org")
+(setq org-roam-completion-system 'ivy)
 
 (after! org-roam
         (map! :leader
