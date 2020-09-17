@@ -39,9 +39,11 @@
       (org-journal-date-format "%A, %d %B %Y"))
     (setq org-journal-enable-agenda-integration t)
 
-(load (expand-file-name "~/quicklisp/slime-helper.el"))
-(setq inferior-lisp-program "sbcl")
-(load "/Users/cmoylan/quicklisp/clhs-use-local.el" t)
+(if (file-directory-p "~/quicklisp")
+    (progn
+      (load (expand-file-name "~/quicklisp/slime-helper.el"))
+      (setq inferior-lisp-program "sbcl")
+      (load "/Users/cmoylan/quicklisp/clhs-use-local.el" t)))
 
 (after! treemacs-icons-dired
   (treemacs-icons-dired-mode))
