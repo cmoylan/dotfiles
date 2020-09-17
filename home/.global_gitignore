@@ -27,6 +27,7 @@ interactive_selector.rb
 # SC stuff
 docker-compose.yml.dev
 .env.dev
+.docker_compose_volumes
 
 
 _NOTES.org
