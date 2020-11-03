@@ -1,9 +1,10 @@
 *.swp
 .rvmrc
-#database.yml
+config/database.yml
 node_modules/*
 coverage/*
 .envrc
+.rspec
 
 # Emacs crap
 auto-save-list
@@ -28,6 +29,7 @@ interactive_selector.rb
 docker-compose.yml.dev
 .env.dev
 .docker_compose_volumes
+docker-compose.yml
 
 
 _NOTES.org

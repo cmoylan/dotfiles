@@ -7,9 +7,6 @@
 # Load fishmarks (http://github.com/techwizrd/fishmarks)
 . $HOME/.fishmarks/marks.fish
 
-# chruby
-source /usr/local/share/chruby/chruby.fish
-source /usr/local/share/chruby/auto.fish
 
 # google cloud
 # source /usr/local/src/google-cloud-sdk/path.fish.inc
@@ -27,14 +24,18 @@ alias gt "gittool"
 
 
 # ----- Plugins ----- #
-eval (python -m virtualfish)
-eval (direnv hook fish)
+#eval (python -m virtualfish)
+#eval (direnv hook fish)
+
+# chruby
+source /usr/local/share/chruby/chruby.fish
+source /usr/local/share/chruby/auto.fish
 
 
 # ----- OS-specific ----- #
 switch (uname)
     case Linux
-       set custom_path $HOME/bin $HOME/.emacs.d/bin $PATH
+        set custom_path $HOME/bin $HOME/.emacs.d/bin $PATH
         set -gx PATH $custom_path $default_path $PATH
     case Darwin
         set homebrew /usr/local/bin /usr/local/sbin
@@ -45,3 +46,8 @@ switch (uname)
         set -gx GOPATH $HOME/Programs
         #set -gx PATH $GOROOT/bin $GOPATH/bin $PATH
 end
+
+
+# ----- Work things ----- #
+set -x PRINTAVO_DEV_LOCALHOST "printavo-dev.com"
+
