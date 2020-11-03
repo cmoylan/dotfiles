@@ -1,4 +1,4 @@
-(setq doom-theme 'doom-opera)
+(setq doom-theme 'kaolin-bubblegum)
 
 ;;(use-package! golden-ratio
 ;;  :after-call pre-command-hook
@@ -95,18 +95,18 @@
 
 ; TODO put this behind a flag
 ;(setenv "PATH" (concat (getenv "PATH") ":~/go/bin"))
-;(setq exec-path (append exec-path '("~/go/bin")))
 
-;(use-package enh-ruby-mode
-;  :ensure t
-;  :defer t
-;  :config
-;  (setq enh-ruby-deep-indent-paren nil)
-;  (setq enh-ruby-add-encoding-comment-on-save nil)
-;  :mode (("\\.rb\\'" . enh-ruby-mode)
-;         ("\\.ru\\'" . enh-ruby-mode)
-;         ("\\.gemspec\\'" . enh-ruby-mode)
-;         ("Rakefile\\'" . enh-ruby-mode)
-;         ("Gemfile\\'" . enh-ruby-mode)
-;         ("Capfile\\'" . enh-ruby-mode)
+(defun hh/toggle-debugger (name)
+  "Toggles a debugging statement depending on language."
+  (interactive "p")
+
+  ;(message "this goes to *Messages*")
+
+  (let (message-log-max) ; minibuffer only, don't log to *Messages*
+    (message "Debugger toggled"))
+)
+(map! :leader
+  (:prefix-map ("a" . "applications")
+   (:prefix ("j" . "journal")
+    :desc "New journal entry" "j" #'hh/toggle-debugger)))
 ;         ("Guardfile\\'" . enh-ruby-mode)))

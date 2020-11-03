@@ -13,6 +13,8 @@
 (package! badwolf-theme)
 (package! gotest)
 (package! feature-mode)
+(package! typescript-mode)
+(package! vue-mode)
 (package! base16-theme)
 (package! yaml-mode)
 (package! chruby)
