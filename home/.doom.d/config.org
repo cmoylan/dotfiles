@@ -22,7 +22,7 @@
 ** General
     Set the default theme
     #+BEGIN_SRC emacs-lisp
-    (setq doom-theme 'doom-opera)
+    (setq doom-theme 'kaolin-bubblegum)
     #+END_SRC
 
     Use golden ratio mode
@@ -114,6 +114,23 @@
     #+BEGIN_SRC emacs-lisp
     (setenv "PATH" (concat (getenv "PATH") ":~/go/bin"))
     (setq exec-path (append exec-path '("~/go/bin")))
+    #+END_SRC
+
+** Custom key chords
+    #+BEGIN_SRC emacs-lisp
+    (defun hh/toggle-debugger (name)
+      "Toggles a debugging statement depending on language."
+      (interactive "p")
+
+      (message "this goes to *Messages*")
+
+      (let (message-log-max) ; minibuffer only, don't log to *Messages*
+        (message "Debugger toggled"))
+    )
+    ;(map! :leader
+    ;  (:prefix-map ("a" . "applications")
+    ;   (:prefix ("j" . "journal")
+    ;    :desc "New journal entry" "j" #'hh/toggle-debugger)))
     #+END_SRC
 
 

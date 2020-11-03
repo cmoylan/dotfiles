@@ -13,3 +13,5 @@
 (package! badwolf-theme)
 (package! gotest)
 (package! feature-mode)
+(package! typescript-mode)
+(package! vue-mode)

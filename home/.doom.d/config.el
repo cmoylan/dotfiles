@@ -1,4 +1,4 @@
-(setq doom-theme 'doom-opera)
+(setq doom-theme 'kaolin-bubblegum)
 
 ;;(use-package! golden-ratio
 ;;  :after-call pre-command-hook
@@ -53,3 +53,17 @@
 
 (setenv "PATH" (concat (getenv "PATH") ":~/go/bin"))
 (setq exec-path (append exec-path '("~/go/bin")))
+
+(defun hh/toggle-debugger (name)
+  "Toggles a debugging statement depending on language."
+  (interactive "p")
+
+  ;(message "this goes to *Messages*")
+
+  (let (message-log-max) ; minibuffer only, don't log to *Messages*
+    (message "Debugger toggled"))
+)
+(map! :leader
+  (:prefix-map ("a" . "applications")
+   (:prefix ("j" . "journal")
+    :desc "New journal entry" "j" #'hh/toggle-debugger)))
