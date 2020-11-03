@@ -10,13 +10,14 @@
 ;;  (add-hook 'doom-switch-window-hook #'golden-ratio))
 
 (if (string-equal system-type "gnu/linux")
-    (set-face-attribute 'default nil :height 120))
-  ;;(set-face-attribute 'default nil :height 130))
+    (set-face-attribute 'default nil :height 120)
+  (set-face-attribute 'default nil :height 130))
 
 (setq org-log-done t)
 
 (setq org-roam-directory "~/Dropbox/org")
 (setq org-roam-completion-system 'ivy)
+(add-hook 'after-init-hook 'org-roam-mode)
 
 (after! org-roam
         (map! :leader
@@ -28,6 +29,42 @@
             :desc "org-roam-show-graph" "g" #'org-roam-show-graph
             :desc "org-roam-insert" "i" #'org-roam-insert
             :desc "org-roam-capture" "c" #'org-roam-capture))
+
+(defun org-cycle-hide-drawers (state)
+  "Re-hide all drawers after a visibility state change."
+  (when (and (derived-mode-p 'org-mode)
+             (not (memq state '(overview folded contents))))
+    (save-excursion
+      (let* ((globalp (memq state '(contents all)))
+             (beg (if globalp
+                      (point-min)
+                    (point)))
+             (end (if globalp
+                      (point-max)
+                    (if (eq state 'children)
+                        (save-excursion
+                          (outline-next-heading)
+                       (point))
+                     (org-end-of-subtree t)))))
+        (goto-char beg)
+        (while (re-search-forward org-drawer-regexp end t)
+          (save-excursion
+            (beginning-of-line 1)
+            (when (looking-at org-drawer-regexp)
+              (let* ((start (1- (match-beginning 0)))
+                     (limit
+                       (save-excursion
+                         (outline-next-heading)
+                           (point)))
+                     (msg (format
+                            (concat
+                              "org-cycle-hide-drawers:  "
+                              "`:END:`"
+                              " line missing at position %s")
+                            (1+ start))))
+                (if (re-search-forward "^[ \t]*:END:" limit t)
+                  (outline-flag-region start (point-at-eol) t)
+                  (user-error msg))))))))))
 
 (use-package org-journal
       :bind
@@ -42,16 +79,34 @@
 (if (file-directory-p "~/quicklisp")
     (progn
       (load (expand-file-name "~/quicklisp/slime-helper.el"))
-      (setq inferior-lisp-program "sbcl")
+      ;(setq inferior-lisp-program "sbcl")
       (load "/Users/cmoylan/quicklisp/clhs-use-local.el" t)))
 
 (after! treemacs-icons-dired
   (treemacs-icons-dired-mode))
 
+(use-package web-mode
+  :ensure t
+  :mode "\\.erb\\'")
 (add-hook! web-mode
            (setq web-mode-markup-indent-offset 2)
            (setq web-mode-css-indent-offset 2)
            (setq web-mode-code-indent-offset 2))
 
-(setenv "PATH" (concat (getenv "PATH") ":~/go/bin"))
-(setq exec-path (append exec-path '("~/go/bin")))
+; TODO put this behind a flag
+;(setenv "PATH" (concat (getenv "PATH") ":~/go/bin"))
+;(setq exec-path (append exec-path '("~/go/bin")))
+
+;(use-package enh-ruby-mode
+;  :ensure t
+;  :defer t
+;  :config
+;  (setq enh-ruby-deep-indent-paren nil)
+;  (setq enh-ruby-add-encoding-comment-on-save nil)
+;  :mode (("\\.rb\\'" . enh-ruby-mode)
+;         ("\\.ru\\'" . enh-ruby-mode)
+;         ("\\.gemspec\\'" . enh-ruby-mode)
+;         ("Rakefile\\'" . enh-ruby-mode)
+;         ("Gemfile\\'" . enh-ruby-mode)
+;         ("Capfile\\'" . enh-ruby-mode)
+;         ("Guardfile\\'" . enh-ruby-mode)))
