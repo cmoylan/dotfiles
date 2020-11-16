@@ -1,3 +1,4 @@
 home/.vim/plugged
 home/.vim/bundle
-hom/.config/fish/functions/_pure*
+home/.config/fish/functions/_pure*
+home/.doom.d/custom.el
