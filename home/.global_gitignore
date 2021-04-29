@@ -21,6 +21,7 @@ interactive_selector.rb
 .ruby-version
 .ruby-gemset
 .travis/*
+.ignore
 
 # python
 *.pyc

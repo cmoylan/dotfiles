@@ -35,19 +35,15 @@ source /usr/local/share/chruby/auto.fish
 # ----- OS-specific ----- #
 switch (uname)
     case Linux
-        set custom_path $HOME/bin $HOME/.emacs.d/bin $PATH
-        set -gx PATH $custom_path $default_path $PATH
+        set custom_paths $HOME/bin $HOME/.emacs.d/bin $PATH
+        set -gx PATH $custom_paths $default_path $PATH
     case Darwin
         set homebrew /usr/local/bin /usr/local/sbin
-        set -gx PATH $homebrew $default_path $PATH
-
-        # ----- Golang ----- #
-        set -gx GOROOT (brew --prefix golang)/libexec
-        set -gx GOPATH $HOME/Programs
-        #set -gx PATH $GOROOT/bin $GOPATH/bin $PATH
+        set custom_paths $HOME/bin $HOME/bin/ziglang
+        set -gx PATH $custom_paths $homebrew $default_path $PATH
 end
 
 
 # ----- Work things ----- #
 set -x PRINTAVO_DEV_LOCALHOST "printavo-dev.com"
-
+set -x DISABLE_SPRING true

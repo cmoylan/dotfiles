@@ -1,4 +1,4 @@
-(setq doom-theme 'kaolin-bubblegum)
+(setq doom-theme 'doom-snazzy)
 
 (if (string-equal system-type "gnu/linux")
     (set-face-attribute 'default nil :height 120)
@@ -34,14 +34,13 @@
 (if (file-directory-p "~/quicklisp")
     (progn
       (load (expand-file-name "~/quicklisp/slime-helper.el"))
-      ;(setq inferior-lisp-program "sbcl")
-      (load "/Users/cmoylan/quicklisp/clhs-use-local.el" t)))
+      (setq inferior-lisp-program "sbcl")
+      (load "~/quicklisp/clhs-use-local.el" t)))
 
 (after! treemacs-icons-dired
   (treemacs-icons-dired-mode))
 
 (use-package web-mode
-  :ensure t
   :mode "\\.erb\\'")
 (add-hook! web-mode
            (setq web-mode-markup-indent-offset 2)
@@ -75,3 +74,7 @@
 ;         ("Gemfile\\'" . enh-ruby-mode)
 ;         ("Capfile\\'" . enh-ruby-mode)
 ;         ("Guardfile\\'" . enh-ruby-mode)))
+
+;(setq flycheck-command-wrapper-function
+;      (lambda (command)
+;        (append '("bundle" "exec") command)))

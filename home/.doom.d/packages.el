@@ -20,4 +20,6 @@
 (package! chruby)
 (package! rubocop)
 (package! solaire-mode :disable t)
+(package! envrc)
+(package! zig-mode)
 ;(package! enh-ruby-mode)

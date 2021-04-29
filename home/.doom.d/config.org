@@ -1,7 +1,7 @@
 #+TITLE: Doom Emacs configuration
 #+VERSION: 1.0
 #+PROPERTY: header-args :results silent
-#+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-readtheorg.setup
+# +SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-readtheorg.setup
 
 * Table of Contents :TOC_3_gh:
 - [[#tasks][Tasks]]
@@ -16,6 +16,7 @@
   - [[#golang][Golang]]
   - [[#custom-key-chords][Custom key chords]]
   - [[#ruby][Ruby]]
+  - [[#rubocop][Rubocop]]
 - [[#meta][Meta]]
 
 * Tasks
@@ -24,7 +25,7 @@
 ** General
     Set the default theme
     #+BEGIN_SRC emacs-lisp
-    (setq doom-theme 'kaolin-bubblegum)
+    (setq doom-theme 'doom-snazzy)
     #+END_SRC
 
     Set the font size
@@ -82,8 +83,8 @@
     (if (file-directory-p "~/quicklisp")
         (progn
           (load (expand-file-name "~/quicklisp/slime-helper.el"))
-          ;(setq inferior-lisp-program "sbcl")
-          (load "/Users/cmoylan/quicklisp/clhs-use-local.el" t)))
+          (setq inferior-lisp-program "sbcl")
+          (load "~/quicklisp/clhs-use-local.el" t)))
     #+END_SRC
 
 ** Treemacs
@@ -97,7 +98,6 @@
     Set indentation to 2 spaces
     #+BEGIN_SRC emacs-lisp
     (use-package web-mode
-      :ensure t
       :mode "\\.erb\\'")
     (add-hook! web-mode
                (setq web-mode-markup-indent-offset 2)
@@ -147,6 +147,13 @@
     ;         ("Gemfile\\'" . enh-ruby-mode)
     ;         ("Capfile\\'" . enh-ruby-mode)
     ;         ("Guardfile\\'" . enh-ruby-mode)))
+    #+END_SRC
+** Rubocop
+    Use bundler
+    #+BEGIN_SRC emacs-lisp
+    ;(setq flycheck-command-wrapper-function
+    ;      (lambda (command)
+    ;        (append '("bundle" "exec") command)))
     #+END_SRC
 
 * Meta
