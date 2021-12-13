@@ -7,6 +7,7 @@
 - [[#tasks][Tasks]]
 - [[#configuration][Configuration]]
   - [[#general][General]]
+  - [[#hotkeys][Hotkeys]]
   - [[#org-mode][Org mode]]
     - [[#roam][Roam]]
     - [[#journal][Journal]]
@@ -17,6 +18,8 @@
   - [[#custom-key-chords][Custom key chords]]
   - [[#ruby][Ruby]]
   - [[#rubocop][Rubocop]]
+  - [[#custom-packages][Custom packages]]
+  - [[#external-hooks][External hooks]]
 - [[#meta][Meta]]
 
 * Tasks
@@ -34,7 +37,12 @@
         (set-face-attribute 'default nil :height 120)
       (set-face-attribute 'default nil :height 130))
     #+END_SRC
-
+** Hotkeys
+- search at point
+    #+BEGIN_SRC
+      (global-set-key (kbd "C-*") 'evil-search-symbol-forward)
+      (global-set-key (kbd "C-#") 'evil-search-symbol-backward)
+    #+END_SRC
 ** Org mode
     Record the timestamp when a TODO item was completed
     #+BEGIN_SRC emacs-lisp
@@ -134,6 +142,8 @@
 ** Ruby
     Set up ruby packages
     #+BEGIN_SRC emacs-lisp
+    ;(require 'chruby)
+    ;(chruby "ruby-2.7.4")
     ;(use-package enh-ruby-mode
     ;  :ensure t
     ;  :defer t
@@ -156,7 +166,47 @@
     ;        (append '("bundle" "exec") command)))
     #+END_SRC
 
+** Custom packages
+Add custom packages to load path.
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'load-path "~/.doom.d/lisp/")
+; add descendant directories
+(let ((default-directory  "~/.doom.d/lisp/"))
+  (normal-top-level-add-subdirs-to-load-path))
+#+END_SRC
+
+** External hooks
+#+BEGIN_SRC emacs-lisp
+(defun tt-get-heading-info ()
+  "show org-heading-components result"
+  (interactive)
+  (let ((x (org-heading-components)))
+    (with-output-to-temp-buffer "*xah temp out*"
+      (print x))))
+
+(defun tt-show-all-prop-keys ()
+  "show all properties in buffer 2019-01-18"
+  (interactive)
+  (let ((x (org-buffer-property-keys )))
+    (with-output-to-temp-buffer "*xah temp out*"
+      (print x))))
+
+(defun work/log-ticket (number description)
+  (interactive)
+  (message (number-to-string number))
+  (message description)
+  ; add a line under Task heading on work.org
+  ;(with-current-buffer "work.org"
+  ;  (org-element-parse-buffer))
+  ; add a line under Task heading on work.org
+  ;
+  ; (write-region <STRING> nil <FILENAME> 'append)
+  )
+#+END_SRC
+
 * Meta
   Evaluate code blocks with: =<C-c><C-e>=
 
   Compile this file as HTML with: =<C-c><C-e> h h=
+
+  Eval buffer with : SPC m e b

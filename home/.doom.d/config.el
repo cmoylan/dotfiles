@@ -61,6 +61,8 @@
 ;   (:prefix ("j" . "journal")
 ;    :desc "New journal entry" "j" #'hh/toggle-debugger)))
 
+;(require 'chruby)
+;(chruby "ruby-2.7.4")
 ;(use-package enh-ruby-mode
 ;  :ensure t
 ;  :defer t
@@ -78,3 +80,34 @@
 ;(setq flycheck-command-wrapper-function
 ;      (lambda (command)
 ;        (append '("bundle" "exec") command)))
+
+(add-to-list 'load-path "~/.doom.d/lisp/")
+; add descendant directories
+(let ((default-directory  "~/.doom.d/lisp/"))
+  (normal-top-level-add-subdirs-to-load-path))
+
+(defun tt-get-heading-info ()
+  "show org-heading-components result"
+  (interactive)
+  (let ((x (org-heading-components)))
+    (with-output-to-temp-buffer "*xah temp out*"
+      (print x))))
+
+(defun tt-show-all-prop-keys ()
+  "show all properties in buffer 2019-01-18"
+  (interactive)
+  (let ((x (org-buffer-property-keys )))
+    (with-output-to-temp-buffer "*xah temp out*"
+      (print x))))
+
+(defun work/log-ticket (number description)
+  (interactive)
+  (message (number-to-string number))
+  (message description)
+  ; add a line under Task heading on work.org
+  ;(with-current-buffer "work.org"
+  ;  (org-element-parse-buffer))
+  ; add a line under Task heading on work.org
+  ;
+  ; (write-region <STRING> nil <FILENAME> 'append)
+  )

@@ -1,3 +1,4 @@
 function grm
-	git branch | grep -v "master" | xargs git branch -D
+	print "commented out"
+	#git branch | grep -v "master" | xargs git branch -D
 end

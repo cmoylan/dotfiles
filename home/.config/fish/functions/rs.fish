@@ -1,3 +1,3 @@
 function rs
-	be rails s
+    be rails s -u webrick
 end

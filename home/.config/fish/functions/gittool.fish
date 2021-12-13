@@ -7,6 +7,8 @@ function gittool -a cmd opts -d "git utilities"
                 gittool-branch-save $opts
             case bn
                 gittool-branch-create $opts
+	    case rb
+	    	gittool-rebase
             case '*'
                 echo "unknown command: " $cmd
         end
@@ -67,4 +69,18 @@ function gittool-branch-create -a ticket -d "create a branch with the correct wo
     git checkout master
     git pull
     git checkout -b $branch_name
+    emacsclient -q --eval "(work/log-ticket $ticket)"
+end
+
+function gittool-rebase -d "rebase current branch against master"
+    set -l branch_name (git branch --show-current)
+    set -l stash_name (string join ' ' "stashed for rebase" $branch_name)
+    #echo $stash_name
+    git stash save $stash_name
+    git checkout master
+    git pull origin master
+    git checkout $branch_name
+    git rebase master
+    git stash pop
+    bdb
 end
