@@ -5,5 +5,5 @@ function rr -a search_term -d "rails routes"
     #    echo "123123123asdf"
     #	echo $search_term
     #end
-    be rails routes
+    be rails routes | less
 end

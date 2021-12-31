@@ -1,25 +1,29 @@
-(setq doom-theme 'doom-snazzy)
+    (setq doom-theme 'doom-snazzy)
 
-(if (string-equal system-type "gnu/linux")
-    (set-face-attribute 'default nil :height 120)
-  (set-face-attribute 'default nil :height 130))
+    (if (string-equal system-type "gnu/linux")
+        (set-face-attribute 'default nil :height 120)
+      (set-face-attribute 'default nil :height 130))
 
-(setq org-log-done t)
+(defmacro csetq (sym val)
+  `(funcall (or (get ',sym 'custom-set) 'set-default) ',sym ,val))
 
-(setq org-roam-directory "~/Dropbox/org")
-(setq org-roam-completion-system 'ivy)
-(add-hook 'after-init-hook 'org-roam-mode)
+    (csetq org-log-done t)
+    (csetq org-directory "~/Dropbox/org")
 
-(after! org-roam
-        (map! :leader
-            :prefix "n"
-            :desc "org-roam" "l" #'org-roam
-            :desc "org-roam-insert" "i" #'org-roam-insert
-            :desc "org-roam-switch-to-buffer" "b" #'org-roam-switch-to-buffer
-            :desc "org-roam-find-file" "f" #'org-roam-find-file
-            :desc "org-roam-show-graph" "g" #'org-roam-show-graph
-            :desc "org-roam-insert" "i" #'org-roam-insert
-            :desc "org-roam-capture" "c" #'org-roam-capture ))
+    (csetq org-roam-directory "~/Dropbox/org")
+    (csetq org-roam-completion-system 'ivy)
+    (add-hook 'after-init-hook 'org-roam-mode)
+
+    (after! org-roam
+            (map! :leader
+                :prefix "n"
+                :desc "org-roam" "l" #'org-roam
+                :desc "org-roam-insert" "i" #'org-roam-insert
+                :desc "org-roam-switch-to-buffer" "b" #'org-roam-switch-to-buffer
+                :desc "org-roam-find-file" "f" #'org-roam-find-file
+                :desc "org-roam-show-graph" "g" #'org-roam-show-graph
+                :desc "org-roam-insert" "i" #'org-roam-insert
+                :desc "org-roam-capture" "c" #'org-roam-capture ))
 
 (use-package org-journal
       :bind
@@ -31,55 +35,55 @@
       (org-journal-date-format "%A, %d %B %Y"))
     (setq org-journal-enable-agenda-integration t)
 
-(if (file-directory-p "~/quicklisp")
-    (progn
-      (load (expand-file-name "~/quicklisp/slime-helper.el"))
-      (setq inferior-lisp-program "sbcl")
-      (load "~/quicklisp/clhs-use-local.el" t)))
+    (if (file-directory-p "~/quicklisp")
+        (progn
+          (load (expand-file-name "~/quicklisp/slime-helper.el"))
+          (setq inferior-lisp-program "sbcl")
+          (load "~/quicklisp/clhs-use-local.el" t)))
 
-(after! treemacs-icons-dired
-  (treemacs-icons-dired-mode))
+    (after! treemacs-icons-dired
+      (treemacs-icons-dired-mode))
 
-(use-package web-mode
-  :mode "\\.erb\\'")
-(add-hook! web-mode
-           (setq web-mode-markup-indent-offset 2)
-           (setq web-mode-css-indent-offset 2)
-           (setq web-mode-code-indent-offset 2))
+    (use-package web-mode
+      :mode "\\.erb\\'")
+    (add-hook! web-mode
+               (setq web-mode-markup-indent-offset 2)
+               (setq web-mode-css-indent-offset 2)
+               (setq web-mode-code-indent-offset 2))
 
-(defun hh/toggle-debugger (name)
-  "Toggles a debugging statement depending on language."
-  (interactive "p")
+    (defun hh/toggle-debugger (name)
+      "Toggles a debugging statement depending on language."
+      (interactive "p")
 
-  (message "this goes to *Messages*")
+      (message "this goes to *Messages*")
 
-  (let (message-log-max) ; minibuffer only, don't log to *Messages*
-    (message "Debugger toggled"))
-)
-;(map! :leader
-;  (:prefix-map ("a" . "applications")
-;   (:prefix ("j" . "journal")
-;    :desc "New journal entry" "j" #'hh/toggle-debugger)))
+      (let (message-log-max) ; minibuffer only, don't log to *Messages*
+        (message "Debugger toggled"))
+    )
+    ;(map! :leader
+    ;  (:prefix-map ("a" . "applications")
+    ;   (:prefix ("j" . "journal")
+    ;    :desc "New journal entry" "j" #'hh/toggle-debugger)))
 
-;(require 'chruby)
-;(chruby "ruby-2.7.4")
-;(use-package enh-ruby-mode
-;  :ensure t
-;  :defer t
-;  :config
-;  (setq enh-ruby-deep-indent-paren nil)
-;  (setq enh-ruby-add-encoding-comment-on-save nil)
-;  :mode (("\\.rb\\'" . enh-ruby-mode)
-;         ("\\.ru\\'" . enh-ruby-mode)
-;         ("\\.gemspec\\'" . enh-ruby-mode)
-;         ("Rakefile\\'" . enh-ruby-mode)
-;         ("Gemfile\\'" . enh-ruby-mode)
-;         ("Capfile\\'" . enh-ruby-mode)
-;         ("Guardfile\\'" . enh-ruby-mode)))
+    ;(require 'chruby)
+    ;(chruby "ruby-2.7.4")
+    ;(use-package enh-ruby-mode
+    ;  :ensure t
+    ;  :defer t
+    ;  :config
+    ;  (setq enh-ruby-deep-indent-paren nil)
+    ;  (setq enh-ruby-add-encoding-comment-on-save nil)
+    ;  :mode (("\\.rb\\'" . enh-ruby-mode)
+    ;         ("\\.ru\\'" . enh-ruby-mode)
+    ;         ("\\.gemspec\\'" . enh-ruby-mode)
+    ;         ("Rakefile\\'" . enh-ruby-mode)
+    ;         ("Gemfile\\'" . enh-ruby-mode)
+    ;         ("Capfile\\'" . enh-ruby-mode)
+    ;         ("Guardfile\\'" . enh-ruby-mode)))
 
-;(setq flycheck-command-wrapper-function
-;      (lambda (command)
-;        (append '("bundle" "exec") command)))
+    ;(setq flycheck-command-wrapper-function
+    ;      (lambda (command)
+    ;        (append '("bundle" "exec") command)))
 
 (add-to-list 'load-path "~/.doom.d/lisp/")
 ; add descendant directories
@@ -110,4 +114,25 @@
   ; add a line under Task heading on work.org
   ;
   ; (write-region <STRING> nil <FILENAME> 'append)
+  )
+
+(defun bujo/finalize-month ()
+  (interactive)
+  (let* ((filename (downcase (format-time-string "%B-%Y.org")))
+         (filepath (concat (file-name-as-directory org-directory) filename))
+         (next-filename)
+         (next-filepath))
+    (setq next-filename (read-string "Enter next month's file name: " filename))
+    (setq next-filepath (concat (file-name-as-directory org-directory) next-filename))
+
+    (if (file-exists-p next-filepath)
+        (progn
+          (message "file already exists")
+          (user-error "file already exists")))
+
+    (with-temp-file next-filepath "almost works")
+
+    ; copy a template over
+    (message "got to the end")
+     )
   )
