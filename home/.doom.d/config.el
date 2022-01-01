@@ -120,19 +120,30 @@
   (interactive)
   (let* ((filename (downcase (format-time-string "%B-%Y.org")))
          (filepath (concat (file-name-as-directory org-directory) filename))
+         (next-month)
+         (next-year)
          (next-filename)
          (next-filepath))
-    (setq next-filename (read-string "Enter next month's file name: " filename))
-    (setq next-filepath (concat (file-name-as-directory org-directory) next-filename))
+    (setq next-month (read-string "Enter next month: "))
+
+    (if (string= next-month "january")
+        (setq next-year (read-string "Enter year: "))
+      (setq next-year (format-time-string "%Y")))
+
+    (setq next-filepath (concat (file-name-as-directory org-directory) next-month "-" next-year ".org" ))
 
     (if (file-exists-p next-filepath)
         (progn
           (message "file already exists")
           (user-error "file already exists")))
 
-    (with-temp-file next-filepath "almost works")
-
-    ; copy a template over
-    (message "got to the end")
-     )
-  )
+    (with-temp-file next-filepath
+      (insert (concat "#+TITLE: " next-month " " next-year))
+      (insert "\n\n")
+      (insert "* Ongoing\n")
+      (insert "* Tasks\n")
+      (insert "* Notes\n")
+      (insert "* Quotes\n")
+      (insert "* Days\n")
+      )
+    (message "got to the end")))
