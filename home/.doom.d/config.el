@@ -117,6 +117,7 @@
   )
 
 (defun bujo/finalize-month ()
+  "Finalize the last month and create the next month"
   (interactive)
   (let* ((filename (downcase (format-time-string "%B-%Y.org")))
          (filepath (concat (file-name-as-directory org-directory) filename))
@@ -146,4 +147,12 @@
       (insert "* Quotes\n")
       (insert "* Days\n")
       )
+    ; TODO: copy over in-progress, incomplete items
+    ; TODO: copy birthdays and holidays into events
+    ; TODO: move monthly notes to central notes doc
     (message "got to the end")))
+
+(defun bujo/new-day ()
+  "Start a new day in the current month"
+  (interactive)
+  )
