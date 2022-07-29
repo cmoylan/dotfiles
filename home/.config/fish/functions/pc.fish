@@ -1,3 +1,4 @@
 function pc
   heroku run console -a printavo
-  end
+   #heroku run -a printavo -- rails console -- --nomultiline
+end

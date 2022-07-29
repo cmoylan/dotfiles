@@ -6,9 +6,20 @@ function gittool -a cmd opts -d "git utilities"
             case bs
                 gittool-branch-save $opts
             case bn
-                gittool-branch-create $opts
+	        echo "using new package"
+                git_tool branch
 	    case rb
-	    	gittool-rebase
+	        echo "using new package"
+	    	git_tool rebase
+            case fp
+                gittool-force-push
+            case lb
+                gittool-last-branch
+	    case ca
+	        echo "using new package"
+	        git_tool commit-ammend
+	    case t 
+	        gt-test
             case '*'
                 echo "unknown command: " $cmd
         end
@@ -17,12 +28,17 @@ function gittool -a cmd opts -d "git utilities"
     end
 end
 
+function gt-test
+end
+
 
 function _show-help-and-prompt
     echo "Available commands:"
     echo "branch clean - bc"
     echo "branch save  - bs"
-    echo "branch new  - bn"
+    echo "branch new   - bn"
+    echo "rebase       - rb"
+    echo "force push   - fp"
     read -l -P "Enter a command and arguments: " command
     echo "got command: " $command
     gittool (string split ' ' $command)
@@ -60,8 +76,8 @@ function gittool-branch-create -a ticket -d "create a branch with the correct wo
     end
     set -l ticket (string trim (string replace -a '#' '' $ticket))
 
-    read -l -P "Enter a short description > " description
-    set -l description (string trim (string replace -a ' ' _ $description))
+    read -l -P "Enter a short description > " raw_description
+    set -l description (string trim (string replace -a ' ' _ $raw_description))
 
     set -l branch_name (string join '' "chris/" $ticket "-" $description)
 
@@ -69,7 +85,23 @@ function gittool-branch-create -a ticket -d "create a branch with the correct wo
     git checkout master
     git pull
     git checkout -b $branch_name
-    emacsclient -q --eval "(work/log-ticket $ticket)"
+
+    set -l cmd  "(work/log-ticket \"$ticket\" \"$raw_description\")"
+    emacsclient -q --eval $cmd
+end
+
+function gittool-force-push 
+  set -l branch_name (git branch --show-current)
+  if test $branch_name = "master"
+    echo 'no'
+    return
+  end
+  if test $branch_name = "release"
+    echo 'no'
+    return
+  end
+
+  git push -f origin $branch_name
 end
 
 function gittool-rebase -d "rebase current branch against master"
@@ -81,6 +113,15 @@ function gittool-rebase -d "rebase current branch against master"
     git pull origin master
     git checkout $branch_name
     git rebase master
+    # FIXME only do this if something was stashed, maybe with git status -s
     git stash pop
-    bdb
+    #bdb
+end
+
+function gittool-last-branch -d "switch to the last non-master branch used"
+    echo "write me"
+end
+
+function gittool-commit-amend -d "commit the staged changes to the current commit"
+    git commit --amend
 end
