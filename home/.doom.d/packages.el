@@ -22,4 +22,5 @@
 (package! solaire-mode :disable t)
 (package! envrc)
 (package! zig-mode)
+(package! tea-time)
 ;(package! enh-ruby-mode)

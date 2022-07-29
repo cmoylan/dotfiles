@@ -1,29 +1,39 @@
-    (setq doom-theme 'doom-snazzy)
 
-    (if (string-equal system-type "gnu/linux")
-        (set-face-attribute 'default nil :height 120)
-      (set-face-attribute 'default nil :height 130))
+
+(setq doom-theme 'doom-snazzy)
+
+(if (string-equal system-type "gnu/linux")
+    (set-face-attribute 'default nil :height 120)
+  (set-face-attribute 'default nil :height 130))
+
+(setq confirm-kill-emacs nil)
 
 (defmacro csetq (sym val)
   `(funcall (or (get ',sym 'custom-set) 'set-default) ',sym ,val))
 
-    (csetq org-log-done t)
-    (csetq org-directory "~/Dropbox/org")
+(csetq org-log-done t)
+(csetq org-directory "~/Dropbox/org")
 
-    (csetq org-roam-directory "~/Dropbox/org")
-    (csetq org-roam-completion-system 'ivy)
-    (add-hook 'after-init-hook 'org-roam-mode)
+(setq org-capture-templates
+  '(("t" "Todo" entry (file+headline "~/Dropbox/org/gtd.org" "Tasks")
+     "* TODO %?\n  %i\n  %a")
+    ("j" "Journal" entry (file+datetree "~/Dropbox/org/journal.org")
+     "* %?\nEntered on %U\n  %i\n  %a")))
 
-    (after! org-roam
-            (map! :leader
-                :prefix "n"
-                :desc "org-roam" "l" #'org-roam
-                :desc "org-roam-insert" "i" #'org-roam-insert
-                :desc "org-roam-switch-to-buffer" "b" #'org-roam-switch-to-buffer
-                :desc "org-roam-find-file" "f" #'org-roam-find-file
-                :desc "org-roam-show-graph" "g" #'org-roam-show-graph
-                :desc "org-roam-insert" "i" #'org-roam-insert
-                :desc "org-roam-capture" "c" #'org-roam-capture ))
+(csetq org-roam-directory "~/Dropbox/org")
+(csetq org-roam-completion-system 'ivy)
+(add-hook 'after-init-hook 'org-roam-mode)
+
+(after! org-roam
+        (map! :leader
+            :prefix "n"
+            :desc "org-roam" "l" #'org-roam
+            :desc "org-roam-insert" "i" #'org-roam-insert
+            :desc "org-roam-switch-to-buffer" "b" #'org-roam-switch-to-buffer
+            :desc "org-roam-find-file" "f" #'org-roam-find-file
+            :desc "org-roam-show-graph" "g" #'org-roam-show-graph
+            :desc "org-roam-insert" "i" #'org-roam-insert
+            :desc "org-roam-capture" "c" #'org-roam-capture ))
 
 (use-package org-journal
       :bind
@@ -35,55 +45,66 @@
       (org-journal-date-format "%A, %d %B %Y"))
     (setq org-journal-enable-agenda-integration t)
 
-    (if (file-directory-p "~/quicklisp")
-        (progn
-          (load (expand-file-name "~/quicklisp/slime-helper.el"))
-          (setq inferior-lisp-program "sbcl")
-          (load "~/quicklisp/clhs-use-local.el" t)))
+;(if (file-directory-p "~/quicklisp")
+;    (progn
+;      (load (expand-file-name "~/quicklisp/slime-helper.el"))
+;      (setq inferior-lisp-program "sbcl")
+;      (load "~/quicklisp/clhs-use-local.el" t)))
 
-    (after! treemacs-icons-dired
-      (treemacs-icons-dired-mode))
+;      ;("quicklisp-slime-helper")
 
-    (use-package web-mode
-      :mode "\\.erb\\'")
-    (add-hook! web-mode
-               (setq web-mode-markup-indent-offset 2)
-               (setq web-mode-css-indent-offset 2)
-               (setq web-mode-code-indent-offset 2))
+(after! treemacs-icons-dired
+  (treemacs-icons-dired-mode))
 
-    (defun hh/toggle-debugger (name)
-      "Toggles a debugging statement depending on language."
-      (interactive "p")
+(global-set-key (kbd "C-x w") 'elfeed)
 
-      (message "this goes to *Messages*")
+(setq elfeed-feeds
+  '("http://nullprogram.com/feed/"
+    "https://hnrss.org/frontpage?points=100&comments=25"
+    ))
 
-      (let (message-log-max) ; minibuffer only, don't log to *Messages*
-        (message "Debugger toggled"))
-    )
-    ;(map! :leader
-    ;  (:prefix-map ("a" . "applications")
-    ;   (:prefix ("j" . "journal")
-    ;    :desc "New journal entry" "j" #'hh/toggle-debugger)))
+(add-hook! 'elfeed-search-mode-hook #'elfeed-update)
 
-    ;(require 'chruby)
-    ;(chruby "ruby-2.7.4")
-    ;(use-package enh-ruby-mode
-    ;  :ensure t
-    ;  :defer t
-    ;  :config
-    ;  (setq enh-ruby-deep-indent-paren nil)
-    ;  (setq enh-ruby-add-encoding-comment-on-save nil)
-    ;  :mode (("\\.rb\\'" . enh-ruby-mode)
-    ;         ("\\.ru\\'" . enh-ruby-mode)
-    ;         ("\\.gemspec\\'" . enh-ruby-mode)
-    ;         ("Rakefile\\'" . enh-ruby-mode)
-    ;         ("Gemfile\\'" . enh-ruby-mode)
-    ;         ("Capfile\\'" . enh-ruby-mode)
-    ;         ("Guardfile\\'" . enh-ruby-mode)))
+(use-package web-mode
+  :mode "\\.erb\\'")
+(add-hook! web-mode
+           (setq web-mode-markup-indent-offset 2)
+           (setq web-mode-css-indent-offset 2)
+           (setq web-mode-code-indent-offset 2))
 
-    ;(setq flycheck-command-wrapper-function
-    ;      (lambda (command)
-    ;        (append '("bundle" "exec") command)))
+(defun hh/toggle-debugger (name)
+  "Toggles a debugging statement depending on language."
+  (interactive "p")
+
+  (message "this goes to *Messages*")
+
+  (let (message-log-max) ; minibuffer only, don't log to *Messages*
+    (message "Debugger toggled"))
+)
+;(map! :leader
+;  (:prefix-map ("a" . "applications")
+;   (:prefix ("j" . "journal")
+;    :desc "New journal entry" "j" #'hh/toggle-debugger)))
+
+;(require 'chruby)
+;(chruby "ruby-2.7.4")
+;(use-package enh-ruby-mode
+;  :ensure t
+;  :defer t
+;  :config
+;  (setq enh-ruby-deep-indent-paren nil)
+;  (setq enh-ruby-add-encoding-comment-on-save nil)
+;  :mode (("\\.rb\\'" . enh-ruby-mode)
+;         ("\\.ru\\'" . enh-ruby-mode)
+;         ("\\.gemspec\\'" . enh-ruby-mode)
+;         ("Rakefile\\'" . enh-ruby-mode)
+;         ("Gemfile\\'" . enh-ruby-mode)
+;         ("Capfile\\'" . enh-ruby-mode)
+;         ("Guardfile\\'" . enh-ruby-mode)))
+
+;(setq flycheck-command-wrapper-function
+;      (lambda (command)
+;        (append '("bundle" "exec") command)))
 
 (add-to-list 'load-path "~/.doom.d/lisp/")
 ; add descendant directories
@@ -106,7 +127,7 @@
 
 (defun work/log-ticket (number description)
   (interactive)
-  (message (number-to-string number))
+  (message number)
   (message description)
   ; add a line under Task heading on work.org
   ;(with-current-buffer "work.org"

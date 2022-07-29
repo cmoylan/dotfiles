@@ -9,11 +9,12 @@
   - [[#general][General]]
     - [[#setq][setq]]
   - [[#hotkeys][Hotkeys]]
-  - [[#org-mode][Org mode]]
+  - [[#org-mode-config][Org mode config]]
     - [[#roam][Roam]]
     - [[#journal][Journal]]
   - [[#slyslime][Sly/Slime]]
   - [[#treemacs][Treemacs]]
+  - [[#elfeed][Elfeed]]
   - [[#web-mode][Web-mode]]
   - [[#golang][Golang]]
   - [[#custom-key-chords][Custom key chords]]
@@ -27,17 +28,28 @@
 
 * Configuration
 ** General
-    Set the default theme
-    #+BEGIN_SRC emacs-lisp
-    (setq doom-theme 'doom-snazzy)
-    #+END_SRC
+Empty code block
+#+BEGIN_SRC emacs-lisp
 
-    Set the font size
-    #+BEGIN_SRC emacs-lisp
-    (if (string-equal system-type "gnu/linux")
-        (set-face-attribute 'default nil :height 120)
-      (set-face-attribute 'default nil :height 130))
-    #+END_SRC
+#+END_SRC
+
+Set the default theme
+#+BEGIN_SRC emacs-lisp
+(setq doom-theme 'doom-snazzy)
+#+END_SRC
+
+Set the font size
+#+BEGIN_SRC emacs-lisp
+(if (string-equal system-type "gnu/linux")
+    (set-face-attribute 'default nil :height 120)
+  (set-face-attribute 'default nil :height 130))
+#+END_SRC
+
+Do not confirm to quit
+#+BEGIN_SRC emacs-lisp
+(setq confirm-kill-emacs nil)
+#+END_SRC
+
 *** setq
 If you use setq in your init file, to change the value of such an option, the setter function will not run. To set such an option correctly with Elisp, you need to use the function customize-set-variable. Alternatively, people use various versions of csetq macros in their configs to automatically take care of this (you can use GitHub code search to discover more sophisticated variants if you like):
 #+BEGIN_SRC emacs-lisp
@@ -45,41 +57,53 @@ If you use setq in your init file, to change the value of such an option, the se
   `(funcall (or (get ',sym 'custom-set) 'set-default) ',sym ,val))
 #+END_SRC
 If you are using the use-package macro, the :custom keyword will handle this for you.
+
 ** Hotkeys
 - search at point
     #+BEGIN_SRC
       (global-set-key (kbd "C-*") 'evil-search-symbol-forward)
       (global-set-key (kbd "C-#") 'evil-search-symbol-backward)
     #+END_SRC
-** Org mode
-    Record the timestamp when a TODO item was completed
-    #+BEGIN_SRC emacs-lisp
-    (csetq org-log-done t)
-    (csetq org-directory "~/Dropbox/org")
-    #+END_SRC
+
+** Org mode config
+Record the timestamp when a TODO item was completed
+#+BEGIN_SRC emacs-lisp
+(csetq org-log-done t)
+(csetq org-directory "~/Dropbox/org")
+#+END_SRC
+
+Setup some capture templates
+- TODO fix the hardcoded Dropbox path
+#+BEGIN_SRC emacs-lisp
+(setq org-capture-templates
+  '(("t" "Todo" entry (file+headline "~/Dropbox/org/gtd.org" "Tasks")
+     "* TODO %?\n  %i\n  %a")
+    ("j" "Journal" entry (file+datetree "~/Dropbox/org/journal.org")
+     "* %?\nEntered on %U\n  %i\n  %a")))
+#+END_SRC
 
 *** Roam
-    Set the org directory and general options
-    #+BEGIN_SRC emacs-lisp
-    (csetq org-roam-directory "~/Dropbox/org")
-    (csetq org-roam-completion-system 'ivy)
-    (add-hook 'after-init-hook 'org-roam-mode)
-    #+END_SRC
+Set the org directory and general options
+#+BEGIN_SRC emacs-lisp
+(csetq org-roam-directory "~/Dropbox/org")
+(csetq org-roam-completion-system 'ivy)
+(add-hook 'after-init-hook 'org-roam-mode)
+#+END_SRC
 
 
-    Shortcuts
-    #+BEGIN_SRC emacs-lisp
-    (after! org-roam
-            (map! :leader
-                :prefix "n"
-                :desc "org-roam" "l" #'org-roam
-                :desc "org-roam-insert" "i" #'org-roam-insert
-                :desc "org-roam-switch-to-buffer" "b" #'org-roam-switch-to-buffer
-                :desc "org-roam-find-file" "f" #'org-roam-find-file
-                :desc "org-roam-show-graph" "g" #'org-roam-show-graph
-                :desc "org-roam-insert" "i" #'org-roam-insert
-                :desc "org-roam-capture" "c" #'org-roam-capture ))
-    #+END_SRC
+Shortcuts
+#+BEGIN_SRC emacs-lisp
+(after! org-roam
+        (map! :leader
+            :prefix "n"
+            :desc "org-roam" "l" #'org-roam
+            :desc "org-roam-insert" "i" #'org-roam-insert
+            :desc "org-roam-switch-to-buffer" "b" #'org-roam-switch-to-buffer
+            :desc "org-roam-find-file" "f" #'org-roam-find-file
+            :desc "org-roam-show-graph" "g" #'org-roam-show-graph
+            :desc "org-roam-insert" "i" #'org-roam-insert
+            :desc "org-roam-capture" "c" #'org-roam-capture ))
+#+END_SRC
 
 *** Journal
 #+BEGIN_SRC emacs-lisp
@@ -97,86 +121,109 @@ If you are using the use-package macro, the :custom keyword will handle this for
 ** Sly/Slime
     Use quicklisp
     #+BEGIN_SRC emacs-lisp
-    (if (file-directory-p "~/quicklisp")
-        (progn
-          (load (expand-file-name "~/quicklisp/slime-helper.el"))
-          (setq inferior-lisp-program "sbcl")
-          (load "~/quicklisp/clhs-use-local.el" t)))
+    ;(if (file-directory-p "~/quicklisp")
+    ;    (progn
+    ;      (load (expand-file-name "~/quicklisp/slime-helper.el"))
+    ;      (setq inferior-lisp-program "sbcl")
+    ;      (load "~/quicklisp/clhs-use-local.el" t)))
+
+    ;      ;("quicklisp-slime-helper")
     #+END_SRC
 
 ** Treemacs
-    Use the fancy icons in ~dired~ mode
-    #+BEGIN_SRC emacs-lisp
-    (after! treemacs-icons-dired
-      (treemacs-icons-dired-mode))
-    #+END_SRC
+Use the fancy icons in ~dired~ mode
+#+BEGIN_SRC emacs-lisp
+(after! treemacs-icons-dired
+  (treemacs-icons-dired-mode))
+#+END_SRC
+
+** Elfeed
+Keybindings
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-x w") 'elfeed)
+#+END_SRC
+
+Feed list
+#+BEGIN_SRC emacs-lisp
+(setq elfeed-feeds
+  '("http://nullprogram.com/feed/"
+    "https://hnrss.org/frontpage?points=100&comments=25"
+    ))
+#+END_SRC
+
+Auto update
+#+BEGIN_SRC emacs-lisp
+(add-hook! 'elfeed-search-mode-hook #'elfeed-update)
+#+END_SRC
+
 
 ** Web-mode
-    Set indentation to 2 spaces
-    #+BEGIN_SRC emacs-lisp
-    (use-package web-mode
-      :mode "\\.erb\\'")
-    (add-hook! web-mode
-               (setq web-mode-markup-indent-offset 2)
-               (setq web-mode-css-indent-offset 2)
-               (setq web-mode-code-indent-offset 2))
-    #+END_SRC
+Set indentation to 2 spaces
+#+BEGIN_SRC emacs-lisp
+(use-package web-mode
+  :mode "\\.erb\\'")
+(add-hook! web-mode
+           (setq web-mode-markup-indent-offset 2)
+           (setq web-mode-css-indent-offset 2)
+           (setq web-mode-code-indent-offset 2))
+#+END_SRC
 
-** Golang
-    Add the go bin directory to emacs executable path
-    #+BEGIN_SRC emacs-lisp
-    ; TODO put this behind a flag
-    ;(setenv "PATH" (concat (getenv "PATH") ":~/go/bin"))
-    ;(setq exec-path (append exec-path '("~/go/bin")))
-    #+END_SRC emacs-lisp
+** Golang :disabled:
+Add the go bin directory to emacs executable path
+#+BEGIN_SRC emacs-lisp
+; TODO put this behind a flag
+;(setenv "PATH" (concat (getenv "PATH") ":~/go/bin"))
+;(setq exec-path (append exec-path '("~/go/bin")))
+#+END_SRC emacs-lisp
 
 ** Custom key chords
-    Will become a standalong package
-    #+BEGIN_SRC emacs-lisp
-    (defun hh/toggle-debugger (name)
-      "Toggles a debugging statement depending on language."
-      (interactive "p")
+Will become a standalong package
+#+BEGIN_SRC emacs-lisp
+(defun hh/toggle-debugger (name)
+  "Toggles a debugging statement depending on language."
+  (interactive "p")
 
-      (message "this goes to *Messages*")
+  (message "this goes to *Messages*")
 
-      (let (message-log-max) ; minibuffer only, don't log to *Messages*
-        (message "Debugger toggled"))
-    )
-    ;(map! :leader
-    ;  (:prefix-map ("a" . "applications")
-    ;   (:prefix ("j" . "journal")
-    ;    :desc "New journal entry" "j" #'hh/toggle-debugger)))
-    #+END_SRC
+  (let (message-log-max) ; minibuffer only, don't log to *Messages*
+    (message "Debugger toggled"))
+)
+;(map! :leader
+;  (:prefix-map ("a" . "applications")
+;   (:prefix ("j" . "journal")
+;    :desc "New journal entry" "j" #'hh/toggle-debugger)))
+#+END_SRC
 
-** Ruby
-    Set up ruby packages
-    #+BEGIN_SRC emacs-lisp
-    ;(require 'chruby)
-    ;(chruby "ruby-2.7.4")
-    ;(use-package enh-ruby-mode
-    ;  :ensure t
-    ;  :defer t
-    ;  :config
-    ;  (setq enh-ruby-deep-indent-paren nil)
-    ;  (setq enh-ruby-add-encoding-comment-on-save nil)
-    ;  :mode (("\\.rb\\'" . enh-ruby-mode)
-    ;         ("\\.ru\\'" . enh-ruby-mode)
-    ;         ("\\.gemspec\\'" . enh-ruby-mode)
-    ;         ("Rakefile\\'" . enh-ruby-mode)
-    ;         ("Gemfile\\'" . enh-ruby-mode)
-    ;         ("Capfile\\'" . enh-ruby-mode)
-    ;         ("Guardfile\\'" . enh-ruby-mode)))
-    #+END_SRC
-** Rubocop
-    Use bundler
-    #+BEGIN_SRC emacs-lisp
-    ;(setq flycheck-command-wrapper-function
-    ;      (lambda (command)
-    ;        (append '("bundle" "exec") command)))
-    #+END_SRC
+** Ruby :disabled:
+Set up ruby packages
+#+BEGIN_SRC emacs-lisp
+;(require 'chruby)
+;(chruby "ruby-2.7.4")
+;(use-package enh-ruby-mode
+;  :ensure t
+;  :defer t
+;  :config
+;  (setq enh-ruby-deep-indent-paren nil)
+;  (setq enh-ruby-add-encoding-comment-on-save nil)
+;  :mode (("\\.rb\\'" . enh-ruby-mode)
+;         ("\\.ru\\'" . enh-ruby-mode)
+;         ("\\.gemspec\\'" . enh-ruby-mode)
+;         ("Rakefile\\'" . enh-ruby-mode)
+;         ("Gemfile\\'" . enh-ruby-mode)
+;         ("Capfile\\'" . enh-ruby-mode)
+;         ("Guardfile\\'" . enh-ruby-mode)))
+#+END_SRC
+** Rubocop :disabled:
+Use bundler
+#+BEGIN_SRC emacs-lisp
+;(setq flycheck-command-wrapper-function
+;      (lambda (command)
+;        (append '("bundle" "exec") command)))
+#+END_SRC
 
 ** Custom packages
 Add custom packages to load path.
+
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'load-path "~/.doom.d/lisp/")
 ; add descendant directories
@@ -202,7 +249,7 @@ Add custom packages to load path.
 
 (defun work/log-ticket (number description)
   (interactive)
-  (message (number-to-string number))
+  (message number)
   (message description)
   ; add a line under Task heading on work.org
   ;(with-current-buffer "work.org"
@@ -253,6 +300,7 @@ Add custom packages to load path.
   (interactive)
   )
 #+END_SRC
+
 
 * Meta
   Evaluate code blocks with: =<C-c><C-e>=
