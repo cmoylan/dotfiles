@@ -18,6 +18,9 @@ function gittool -a cmd opts -d "git utilities"
 	    case ca
 	        echo "using new package"
 	        git_tool commit-ammend
+	    case res
+	        echo "using new package"
+	        git_tool reset
 	    case t 
 	        gt-test
             case '*'
@@ -39,6 +42,7 @@ function _show-help-and-prompt
     echo "branch new   - bn"
     echo "rebase       - rb"
     echo "force push   - fp"
+    echo "reset        - res"
     read -l -P "Enter a command and arguments: " command
     echo "got command: " $command
     gittool (string split ' ' $command)

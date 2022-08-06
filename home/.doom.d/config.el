@@ -1,6 +1,8 @@
+;#+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-readtheorg.setup
 
 
-(setq doom-theme 'doom-snazzy)
+
+(setq doom-theme 'kaolin-eclipse)
 
 (if (string-equal system-type "gnu/linux")
     (set-face-attribute 'default nil :height 120)
@@ -11,14 +13,58 @@
 (defmacro csetq (sym val)
   `(funcall (or (get ',sym 'custom-set) 'set-default) ',sym ,val))
 
-(csetq org-log-done t)
-(csetq org-directory "~/Dropbox/org")
+;(setq org-refile-targets
+;    '(("Archive.org" :maxlevel . 1)
+;      ("Tasks.org" :maxlevel . 1)))
 
-(setq org-capture-templates
+(advice-add 'org-refile :after 'org-save-all-org-buffers)
+
+; TODO consider creating agenda.org to hold all events
+; TODO create current.org and have that represent the current month
+; TODO every month break off the DONE items and events to a monthly archive
+  (csetq org-log-done t)
+  (csetq org-directory "~/Dropbox/org")
+
+(after! org
+  (setq org-capture-templates
   '(("t" "Todo" entry (file+headline "~/Dropbox/org/gtd.org" "Tasks")
-     "* TODO %?\n  %i\n  %a")
+     "* TODO %?\n %a")
     ("j" "Journal" entry (file+datetree "~/Dropbox/org/journal.org")
-     "* %?\nEntered on %U\n  %i\n  %a")))
+     "* %?\n\nEntered on %U from %i\n %a"
+     :empty-lines 1)
+    ("n" "Note" entry (file+headline "~/Dropbox/org/gtd.org" "Notes")
+     "* %?\n %i %a"))))
+
+(setq org-todo-keywords
+      '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+        (sequence "BACKLOG(b)" "READY(r)" "ACTIVE(a)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k)")
+              ))
+
+(setq org-tag-alist
+      '((:startgroup)
+        ; put mutually exclusive tags here
+        (:endgroup)
+        ("@house" . ?H)
+        ("@work" . ?W)
+        ("@computer" . ?C)
+        ("reading" . ?r)
+        ("shopping". ?s)
+        ("easy" .?e)
+                ))
+
+(setq org-agenda-custom-commands
+      '(("d" "Dashboard"
+         ((agenda "" ((org-deadline-warning-days 7)))
+          (todo "NEXT"
+               ((org-agenda-overriding-header "Next Tasks")))
+          ; need this to pull in the list of projects
+          (tags-todo "agenda/ACTIVE" ((org-agenda-overriding-header "Active Projects")))))
+        ("q" "Shopping list" tags-todo "+shopping")
+        ("e" tags-todo "+easy"
+         ((org-agenda-overriding-header "Low Effort Tasks")
+          (org-agenda-max-todos 20)
+          (org-agenda-files org-agenda-files)))
+                ))
 
 (csetq org-roam-directory "~/Dropbox/org")
 (csetq org-roam-completion-system 'ivy)
@@ -44,14 +90,6 @@
       (org-journal-file-format "%Y-%m-%d.org")
       (org-journal-date-format "%A, %d %B %Y"))
     (setq org-journal-enable-agenda-integration t)
-
-;(if (file-directory-p "~/quicklisp")
-;    (progn
-;      (load (expand-file-name "~/quicklisp/slime-helper.el"))
-;      (setq inferior-lisp-program "sbcl")
-;      (load "~/quicklisp/clhs-use-local.el" t)))
-
-;      ;("quicklisp-slime-helper")
 
 (after! treemacs-icons-dired
   (treemacs-icons-dired-mode))
@@ -85,26 +123,6 @@
 ;  (:prefix-map ("a" . "applications")
 ;   (:prefix ("j" . "journal")
 ;    :desc "New journal entry" "j" #'hh/toggle-debugger)))
-
-;(require 'chruby)
-;(chruby "ruby-2.7.4")
-;(use-package enh-ruby-mode
-;  :ensure t
-;  :defer t
-;  :config
-;  (setq enh-ruby-deep-indent-paren nil)
-;  (setq enh-ruby-add-encoding-comment-on-save nil)
-;  :mode (("\\.rb\\'" . enh-ruby-mode)
-;         ("\\.ru\\'" . enh-ruby-mode)
-;         ("\\.gemspec\\'" . enh-ruby-mode)
-;         ("Rakefile\\'" . enh-ruby-mode)
-;         ("Gemfile\\'" . enh-ruby-mode)
-;         ("Capfile\\'" . enh-ruby-mode)
-;         ("Guardfile\\'" . enh-ruby-mode)))
-
-;(setq flycheck-command-wrapper-function
-;      (lambda (command)
-;        (append '("bundle" "exec") command)))
 
 (add-to-list 'load-path "~/.doom.d/lisp/")
 ; add descendant directories
@@ -177,3 +195,31 @@
   "Start a new day in the current month"
   (interactive)
   )
+
+;(if (file-directory-p "~/quicklisp")
+;    (progn
+;      (load (expand-file-name "~/quicklisp/slime-helper.el"))
+;      (setq inferior-lisp-program "sbcl")
+;      (load "~/quicklisp/clhs-use-local.el" t)))
+
+;      ;("quicklisp-slime-helper")
+
+;(require 'chruby)
+;(chruby "ruby-2.7.4")
+;(use-package enh-ruby-mode
+;  :ensure t
+;  :defer t
+;  :config
+;  (setq enh-ruby-deep-indent-paren nil)
+;  (setq enh-ruby-add-encoding-comment-on-save nil)
+;  :mode (("\\.rb\\'" . enh-ruby-mode)
+;         ("\\.ru\\'" . enh-ruby-mode)
+;         ("\\.gemspec\\'" . enh-ruby-mode)
+;         ("Rakefile\\'" . enh-ruby-mode)
+;         ("Gemfile\\'" . enh-ruby-mode)
+;         ("Capfile\\'" . enh-ruby-mode)
+;         ("Guardfile\\'" . enh-ruby-mode)))
+
+;(setq flycheck-command-wrapper-function
+;      (lambda (command)
+;        (append '("bundle" "exec") command)))

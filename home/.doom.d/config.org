@@ -1,7 +1,10 @@
 #+TITLE: Doom Emacs configuration
 #+VERSION: 1.0
 #+PROPERTY: header-args :results silent
-# +SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-readtheorg.setup
+
+#+BEGIN_SRC emacs-lisp
+;#+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-readtheorg.setup
+#+END_SRC
 
 * Table of Contents :TOC_3_gh:
 - [[#tasks][Tasks]]
@@ -9,19 +12,26 @@
   - [[#general][General]]
     - [[#setq][setq]]
   - [[#hotkeys][Hotkeys]]
+    - [[#search-at-point][search at point]]
   - [[#org-mode-config][Org mode config]]
+    - [[#general-1][General]]
+    - [[#record-the-timestamp-when-a-todo-item-was-completed][Record the timestamp when a TODO item was completed]]
+    - [[#capture-templates][Capture templates]]
+    - [[#keywords][keywords]]
+    - [[#tags][Tags]]
+    - [[#agenda-views][Agenda views]]
     - [[#roam][Roam]]
     - [[#journal][Journal]]
-  - [[#slyslime][Sly/Slime]]
   - [[#treemacs][Treemacs]]
   - [[#elfeed][Elfeed]]
   - [[#web-mode][Web-mode]]
-  - [[#golang][Golang]]
   - [[#custom-key-chords][Custom key chords]]
-  - [[#ruby][Ruby]]
-  - [[#rubocop][Rubocop]]
   - [[#custom-packages][Custom packages]]
   - [[#external-hooks][External hooks]]
+  - [[#slyslime][Sly/Slime]]
+  - [[#golang][Golang]]
+  - [[#ruby][Ruby]]
+  - [[#rubocop][Rubocop]]
 - [[#meta][Meta]]
 
 * Tasks
@@ -35,7 +45,7 @@ Empty code block
 
 Set the default theme
 #+BEGIN_SRC emacs-lisp
-(setq doom-theme 'doom-snazzy)
+(setq doom-theme 'kaolin-eclipse)
 #+END_SRC
 
 Set the font size
@@ -59,27 +69,88 @@ If you use setq in your init file, to change the value of such an option, the se
 If you are using the use-package macro, the :custom keyword will handle this for you.
 
 ** Hotkeys
-- search at point
+*** search at point
     #+BEGIN_SRC
       (global-set-key (kbd "C-*") 'evil-search-symbol-forward)
       (global-set-key (kbd "C-#") 'evil-search-symbol-backward)
     #+END_SRC
 
 ** Org mode config
-Record the timestamp when a TODO item was completed
+*** General
+Lots of good stuff here: [[https://github.com/daviwil/emacs-from-scratch/blob/c55d0f5e309f7ed8ffa3c00bc35c75937a5184e4/init.el][emacs-from-scratch]]
+
+Refile targets
 #+BEGIN_SRC emacs-lisp
-(csetq org-log-done t)
-(csetq org-directory "~/Dropbox/org")
+;(setq org-refile-targets
+;    '(("Archive.org" :maxlevel . 1)
+;      ("Tasks.org" :maxlevel . 1)))
 #+END_SRC
 
-Setup some capture templates
-- TODO fix the hardcoded Dropbox path
+Save Org buffers after refiling
 #+BEGIN_SRC emacs-lisp
-(setq org-capture-templates
+(advice-add 'org-refile :after 'org-save-all-org-buffers)
+#+END_SRC
+*** Record the timestamp when a TODO item was completed
+#+BEGIN_SRC emacs-lisp
+; TODO consider creating agenda.org to hold all events
+; TODO create current.org and have that represent the current month
+; TODO every month break off the DONE items and events to a monthly archive
+  (csetq org-log-done t)
+  (csetq org-directory "~/Dropbox/org")
+#+END_SRC
+
+*** Capture templates
+[[https://orgmode.org/guide/Capture.html][Docs]]
+#+BEGIN_SRC emacs-lisp
+(after! org
+  (setq org-capture-templates
   '(("t" "Todo" entry (file+headline "~/Dropbox/org/gtd.org" "Tasks")
-     "* TODO %?\n  %i\n  %a")
+     "* TODO %?\n %a")
     ("j" "Journal" entry (file+datetree "~/Dropbox/org/journal.org")
-     "* %?\nEntered on %U\n  %i\n  %a")))
+     "* %?\n\nEntered on %U from %i\n %a"
+     :empty-lines 1)
+    ("n" "Note" entry (file+headline "~/Dropbox/org/gtd.org" "Notes")
+     "* %?\n %i %a"))))
+#+END_SRC
+**** TODO fix the hardcoded Dropbox path
+*** Todo keywords
+#+BEGIN_SRC emacs-lisp
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+          (sequence "BACKLOG(b)" "READY(r)" "ACTIVE(a)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k)")
+                ))
+#+END_SRC
+
+*** Tags
+#+BEGIN_SRC emacs-lisp
+(setq org-tag-alist
+      '((:startgroup)
+        ; put mutually exclusive tags here
+        (:endgroup)
+        ("@house" . ?H)
+        ("@work" . ?W)
+        ("@computer" . ?C)
+        ("reading" . ?r)
+        ("shopping". ?s)
+        ("easy" .?e)
+                ))
+#+END_SRC
+
+*** Agenda views
+#+BEGIN_SRC emacs-lisp
+(setq org-agenda-custom-commands
+      '(("d" "Dashboard"
+         ((agenda "" ((org-deadline-warning-days 7)))
+          (todo "NEXT"
+               ((org-agenda-overriding-header "Next Tasks")))
+          ; need this to pull in the list of projects
+          (tags-todo "agenda/ACTIVE" ((org-agenda-overriding-header "Active Projects")))))
+        ("q" "Shopping list" tags-todo "+shopping")
+        ("e" tags-todo "+easy"
+         ((org-agenda-overriding-header "Low Effort Tasks")
+          (org-agenda-max-todos 20)
+          (org-agenda-files org-agenda-files)))
+                ))
 #+END_SRC
 
 *** Roam
@@ -106,6 +177,7 @@ Shortcuts
 #+END_SRC
 
 *** Journal
+not really used right now
 #+BEGIN_SRC emacs-lisp
 (use-package org-journal
       :bind
@@ -117,18 +189,6 @@ Shortcuts
       (org-journal-date-format "%A, %d %B %Y"))
     (setq org-journal-enable-agenda-integration t)
 #+END_SRC
-
-** Sly/Slime
-    Use quicklisp
-    #+BEGIN_SRC emacs-lisp
-    ;(if (file-directory-p "~/quicklisp")
-    ;    (progn
-    ;      (load (expand-file-name "~/quicklisp/slime-helper.el"))
-    ;      (setq inferior-lisp-program "sbcl")
-    ;      (load "~/quicklisp/clhs-use-local.el" t)))
-
-    ;      ;("quicklisp-slime-helper")
-    #+END_SRC
 
 ** Treemacs
 Use the fancy icons in ~dired~ mode
@@ -168,14 +228,6 @@ Set indentation to 2 spaces
            (setq web-mode-code-indent-offset 2))
 #+END_SRC
 
-** Golang :disabled:
-Add the go bin directory to emacs executable path
-#+BEGIN_SRC emacs-lisp
-; TODO put this behind a flag
-;(setenv "PATH" (concat (getenv "PATH") ":~/go/bin"))
-;(setq exec-path (append exec-path '("~/go/bin")))
-#+END_SRC emacs-lisp
-
 ** Custom key chords
 Will become a standalong package
 #+BEGIN_SRC emacs-lisp
@@ -192,33 +244,6 @@ Will become a standalong package
 ;  (:prefix-map ("a" . "applications")
 ;   (:prefix ("j" . "journal")
 ;    :desc "New journal entry" "j" #'hh/toggle-debugger)))
-#+END_SRC
-
-** Ruby :disabled:
-Set up ruby packages
-#+BEGIN_SRC emacs-lisp
-;(require 'chruby)
-;(chruby "ruby-2.7.4")
-;(use-package enh-ruby-mode
-;  :ensure t
-;  :defer t
-;  :config
-;  (setq enh-ruby-deep-indent-paren nil)
-;  (setq enh-ruby-add-encoding-comment-on-save nil)
-;  :mode (("\\.rb\\'" . enh-ruby-mode)
-;         ("\\.ru\\'" . enh-ruby-mode)
-;         ("\\.gemspec\\'" . enh-ruby-mode)
-;         ("Rakefile\\'" . enh-ruby-mode)
-;         ("Gemfile\\'" . enh-ruby-mode)
-;         ("Capfile\\'" . enh-ruby-mode)
-;         ("Guardfile\\'" . enh-ruby-mode)))
-#+END_SRC
-** Rubocop :disabled:
-Use bundler
-#+BEGIN_SRC emacs-lisp
-;(setq flycheck-command-wrapper-function
-;      (lambda (command)
-;        (append '("bundle" "exec") command)))
 #+END_SRC
 
 ** Custom packages
@@ -299,6 +324,53 @@ Add custom packages to load path.
   "Start a new day in the current month"
   (interactive)
   )
+#+END_SRC
+
+** Sly/Slime :disabled:
+    Use quicklisp
+    #+BEGIN_SRC emacs-lisp
+    ;(if (file-directory-p "~/quicklisp")
+    ;    (progn
+    ;      (load (expand-file-name "~/quicklisp/slime-helper.el"))
+    ;      (setq inferior-lisp-program "sbcl")
+    ;      (load "~/quicklisp/clhs-use-local.el" t)))
+
+    ;      ;("quicklisp-slime-helper")
+    #+END_SRC
+
+** Golang :disabled:
+Add the go bin directory to emacs executable path
+#+BEGIN_SRC emacs-lisp
+; TODO put this behind a flag
+;(setenv "PATH" (concat (getenv "PATH") ":~/go/bin"))
+;(setq exec-path (append exec-path '("~/go/bin")))
+#+END_SRC emacs-lisp
+
+** Ruby :disabled:
+Set up ruby packages
+#+BEGIN_SRC emacs-lisp
+;(require 'chruby)
+;(chruby "ruby-2.7.4")
+;(use-package enh-ruby-mode
+;  :ensure t
+;  :defer t
+;  :config
+;  (setq enh-ruby-deep-indent-paren nil)
+;  (setq enh-ruby-add-encoding-comment-on-save nil)
+;  :mode (("\\.rb\\'" . enh-ruby-mode)
+;         ("\\.ru\\'" . enh-ruby-mode)
+;         ("\\.gemspec\\'" . enh-ruby-mode)
+;         ("Rakefile\\'" . enh-ruby-mode)
+;         ("Gemfile\\'" . enh-ruby-mode)
+;         ("Capfile\\'" . enh-ruby-mode)
+;         ("Guardfile\\'" . enh-ruby-mode)))
+#+END_SRC
+** Rubocop :disabled:
+Use bundler
+#+BEGIN_SRC emacs-lisp
+;(setq flycheck-command-wrapper-function
+;      (lambda (command)
+;        (append '("bundle" "exec") command)))
 #+END_SRC
 
 
