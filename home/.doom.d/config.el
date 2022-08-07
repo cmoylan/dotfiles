@@ -10,35 +10,64 @@
 
 (setq confirm-kill-emacs nil)
 
+(fset 'src-block
+   (kmacro-lambda-form [?i ?# ?+ ?B ?E ?G ?I ?N ?_ ?S ?R ?C ?  ?e ?m ?a ?c ?s ?- ?l ?i ?p backspace ?s ?p return ?# ?+ ?E ?N ?D ?_ ?S ?R ?C] 0 "%d"))
+
 (defmacro csetq (sym val)
   `(funcall (or (get ',sym 'custom-set) 'set-default) ',sym ,val))
 
-;(setq org-refile-targets
-;    '(("Archive.org" :maxlevel . 1)
-;      ("Tasks.org" :maxlevel . 1)))
+(setq org-refile-targets
+    '(("archive.org" :maxlevel . 1)
+      ("notes.org" :maxlevel . 1)
+      ("current.org" :maxlevel . 1)
+      ("projects.org" :maxlevel . 1)
+      ("someday-maybe.org" :maxlevel . 1)
+      ("tickler.org" :maxlevel . 1)))
+
+; TODO can make a cut of the archive file every month as a log of what was done,
+; or just leave it as one big file. There will be dates in the archival metadata.
+(after! org
+  (setq org-archive-location "~/Dropbox/org/archive/archive.org::* From %s"))
 
 (advice-add 'org-refile :after 'org-save-all-org-buffers)
 
-; TODO consider creating agenda.org to hold all events
-; TODO create current.org and have that represent the current month
-; TODO every month break off the DONE items and events to a monthly archive
-  (csetq org-log-done t)
-  (csetq org-directory "~/Dropbox/org")
+(csetq org-log-done t)
+(csetq org-directory "~/Dropbox/org")
 
 (after! org
   (setq org-capture-templates
   '(("t" "Todo" entry (file+headline "~/Dropbox/org/gtd.org" "Tasks")
-     "* TODO %?\n %a")
+     "* TODO %?\n %U\n %a\n %i"
+     :empty-lines 1)
+
     ("j" "Journal" entry (file+datetree "~/Dropbox/org/journal.org")
      "* %?\n\nEntered on %U from %i\n %a"
      :empty-lines 1)
+
     ("n" "Note" entry (file+headline "~/Dropbox/org/gtd.org" "Notes")
-     "* %?\n %i %a"))))
+     "* %?\n %U\n %a\n %i")
+
+    ("b" "Book" entry (file+headline "~/Dropbox/org/books.org" "To read")
+     "* %?\n %i")
+
+    ("c" "Contact" entry (file "~/Dropbox/org/contacts.org")
+     "* %?\n %i")
+
+    ("B" "Birthday" entry (file+headline "~/Dropbox/org/calendar.org" "Birthdays")
+     "* %?'s birthday\n %i")
+    )))
 
 (setq org-todo-keywords
       '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
         (sequence "BACKLOG(b)" "READY(r)" "ACTIVE(a)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k)")
               ))
+
+(defun org-summary-todo (n-done n-not-done)
+  "Switch entry to DONE when all subentries are done, to TODO otherwise."
+  (let (org-log-done org-log-states)   ; turn off logging
+    (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+
+(add-hook 'org-after-todo-statistics-hook #'org-summary-todo)
 
 (setq org-tag-alist
       '((:startgroup)
@@ -46,6 +75,9 @@
         (:endgroup)
         ("@house" . ?H)
         ("@work" . ?W)
+        ("@garage" . ?G)
+        ("@yard" . ?Y)
+        ("@basement" . ?B)
         ("@computer" . ?C)
         ("reading" . ?r)
         ("shopping". ?s)
@@ -59,7 +91,9 @@
                ((org-agenda-overriding-header "Next Tasks")))
           ; need this to pull in the list of projects
           (tags-todo "agenda/ACTIVE" ((org-agenda-overriding-header "Active Projects")))))
+
         ("q" "Shopping list" tags-todo "+shopping")
+
         ("e" tags-todo "+easy"
          ((org-agenda-overriding-header "Low Effort Tasks")
           (org-agenda-max-todos 20)
