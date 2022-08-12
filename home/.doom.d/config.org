@@ -2,41 +2,6 @@
 #+VERSION: 1.0
 #+PROPERTY: header-args :results silent
 
-#+BEGIN_SRC emacs-lisp
-;#+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-readtheorg.setup
-#+END_SRC
-
-* Table of Contents
-- [[#tasks][Tasks]]
-- [[#configuration][Configuration]]
-  - [[#general][General]]
-    - [[#src-block-macro][src block macro]]
-    - [[#setq][setq]]
-  - [[#hotkeys][Hotkeys]]
-    - [[#search-at-point][search at point]]
-  - [[#org-mode-config][Org mode config]]
-    - [[#general-1][General]]
-    - [[#record-the-timestamp-when-a-todo-item-was-completed][Record the timestamp when a TODO item was completed]]
-    - [[#capture-templates][Capture templates]]
-    - [[#keywords][keywords]]
-    - [[#tags][Tags]]
-    - [[#agenda-views][Agenda views]]
-    - [[#roam][Roam]]
-    - [[#journal][Journal]]
-  - [[#treemacs][Treemacs]]
-  - [[#elfeed][Elfeed]]
-  - [[#web-mode][Web-mode]]
-  - [[#custom-key-chords][Custom key chords]]
-  - [[#custom-packages][Custom packages]]
-  - [[#external-hooks][External hooks]]
-  - [[#slyslime][Sly/Slime]]
-  - [[#golang][Golang]]
-  - [[#ruby][Ruby]]
-  - [[#rubocop][Rubocop]]
-- [[#meta][Meta]]
-
-* Tasks
-
 * Configuration
 ** General
 Empty code block
@@ -66,6 +31,7 @@ Do not confirm to quit
 (fset 'src-block
    (kmacro-lambda-form [?i ?# ?+ ?B ?E ?G ?I ?N ?_ ?S ?R ?C ?  ?e ?m ?a ?c ?s ?- ?l ?i ?p backspace ?s ?p return ?# ?+ ?E ?N ?D ?_ ?S ?R ?C] 0 "%d"))
 #+END_SRC
+
 *** setq
 If you use setq in your init file, to change the value of such an option, the setter function will not run. To set such an option correctly with Elisp, you need to use the function customize-set-variable. Alternatively, people use various versions of csetq macros in their configs to automatically take care of this (you can use GitHub code search to discover more sophisticated variants if you like):
 #+BEGIN_SRC emacs-lisp
@@ -109,6 +75,17 @@ Save Org buffers after refiling
 (advice-add 'org-refile :after 'org-save-all-org-buffers)
 #+END_SRC
 
+Usability tweaks - doesn't seem to do anything
+#+BEGIN_SRC emacs-lisp
+(after! org
+(setq org-agenda-skip-scheduled-if-done t
+      org-agenda-skip-deadline-if-done t
+      org-agenda-include-deadlines t
+      org-agenda-block-separator #x2501
+      org-agenda-compact-blocks t
+      org-agenda-start-with-log-mode t))
+#+END_SRC
+
 *** Record the timestamp when a TODO item was completed
 #+BEGIN_SRC emacs-lisp
   (csetq org-log-done t)
@@ -139,15 +116,24 @@ Save Org buffers after refiling
 
     ("B" "Birthday" entry (file+headline "~/Dropbox/org/calendar.org" "Birthdays")
      "* %?'s birthday\n %i")
+
+    ("q" "Quote" entry (file "~/Dropbox/org/quotes.org")
+     "* %?\n %i")
+
+    ("w" "Weight" table-line (file+headline "~/Dropbox/org/fitness.org" "Weight")
+     "| %U | %^{Weight} | %^{Notes} |" :kill-buffer t)
+
+
     )))
 #+END_SRC
 **** TODO fix the hardcoded Dropbox path
 *** Todo keywords
 #+BEGIN_SRC emacs-lisp
+(after! org
   (setq org-todo-keywords
         '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
           (sequence "BACKLOG(b)" "READY(r)" "ACTIVE(a)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k)")
-                ))
+                )))
 #+END_SRC
 
 TODO entry automatically changes to DONE when all children are done
@@ -224,8 +210,6 @@ Shortcuts
 not really used right now
 #+BEGIN_SRC emacs-lisp
 (use-package org-journal
-      :bind
-      ("C-c n j" . org-journal-new-entry)
       :custom
       (org-journal-dir org-roam-directory)
       (org-journal-date-prefix "#+TITLE: ")

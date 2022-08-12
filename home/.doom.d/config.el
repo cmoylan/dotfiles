@@ -1,5 +1,3 @@
-;#+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-readtheorg.setup
-
 
 
 (setq doom-theme 'kaolin-eclipse)
@@ -31,6 +29,14 @@
 
 (advice-add 'org-refile :after 'org-save-all-org-buffers)
 
+(after! org
+(setq org-agenda-skip-scheduled-if-done t
+      org-agenda-skip-deadline-if-done t
+      org-agenda-include-deadlines t
+      org-agenda-block-separator #x2501
+      org-agenda-compact-blocks t
+      org-agenda-start-with-log-mode t))
+
 (csetq org-log-done t)
 (csetq org-directory "~/Dropbox/org")
 
@@ -55,12 +61,21 @@
 
     ("B" "Birthday" entry (file+headline "~/Dropbox/org/calendar.org" "Birthdays")
      "* %?'s birthday\n %i")
+
+    ("q" "Quote" entry (file "~/Dropbox/org/quotes.org")
+     "* %?\n %i")
+
+    ("w" "Weight" table-line (file+headline "~/Dropbox/org/fitness.org" "Weight")
+     "| %U | %^{Weight} | %^{Notes} |" :kill-buffer t)
+
+
     )))
 
-(setq org-todo-keywords
-      '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-        (sequence "BACKLOG(b)" "READY(r)" "ACTIVE(a)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k)")
-              ))
+(after! org
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+          (sequence "BACKLOG(b)" "READY(r)" "ACTIVE(a)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k)")
+                )))
 
 (defun org-summary-todo (n-done n-not-done)
   "Switch entry to DONE when all subentries are done, to TODO otherwise."
@@ -116,8 +131,6 @@
             :desc "org-roam-capture" "c" #'org-roam-capture ))
 
 (use-package org-journal
-      :bind
-      ("C-c n j" . org-journal-new-entry)
       :custom
       (org-journal-dir org-roam-directory)
       (org-journal-date-prefix "#+TITLE: ")
