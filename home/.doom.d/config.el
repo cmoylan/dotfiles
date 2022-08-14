@@ -42,7 +42,7 @@
 
 (after! org
   (setq org-capture-templates
-  '(("t" "Todo" entry (file+headline "~/Dropbox/org/gtd.org" "Tasks")
+  '(("t" "Todo" entry (file+headline "~/Dropbox/org/inbox.org" "Tasks")
      "* TODO %?\n %U\n %a\n %i"
      :empty-lines 1)
 
@@ -50,7 +50,7 @@
      "* %?\n\nEntered on %U from %i\n %a"
      :empty-lines 1)
 
-    ("n" "Note" entry (file+headline "~/Dropbox/org/gtd.org" "Notes")
+    ("n" "Note" entry (file+headline "~/Dropbox/org/inbox.org" "Notes")
      "* %?\n %U\n %a\n %i")
 
     ("b" "Book" entry (file+headline "~/Dropbox/org/books.org" "To read")
