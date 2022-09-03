@@ -3,258 +3,7 @@
 #+PROPERTY: header-args :results silent
 
 * Configuration
-** General
-Empty code block
-#+BEGIN_SRC emacs-lisp
-
-#+END_SRC
-
-Set the default theme
-#+BEGIN_SRC emacs-lisp
-(setq doom-theme 'kaolin-eclipse)
-#+END_SRC
-
-Set the font size
-#+BEGIN_SRC emacs-lisp
-(if (string-equal system-type "gnu/linux")
-    (set-face-attribute 'default nil :height 120)
-  (set-face-attribute 'default nil :height 130))
-#+END_SRC
-
-Do not confirm to quit
-#+BEGIN_SRC emacs-lisp
-(setq confirm-kill-emacs nil)
-#+END_SRC
-
-*** src block macro
-#+BEGIN_SRC emacs-lisp
-(fset 'src-block
-   (kmacro-lambda-form [?i ?# ?+ ?B ?E ?G ?I ?N ?_ ?S ?R ?C ?  ?e ?m ?a ?c ?s ?- ?l ?i ?p backspace ?s ?p return ?# ?+ ?E ?N ?D ?_ ?S ?R ?C] 0 "%d"))
-#+END_SRC
-
-*** setq
-If you use setq in your init file, to change the value of such an option, the setter function will not run. To set such an option correctly with Elisp, you need to use the function customize-set-variable. Alternatively, people use various versions of csetq macros in their configs to automatically take care of this (you can use GitHub code search to discover more sophisticated variants if you like):
-#+BEGIN_SRC emacs-lisp
-(defmacro csetq (sym val)
-  `(funcall (or (get ',sym 'custom-set) 'set-default) ',sym ,val))
-#+END_SRC
-If you are using the use-package macro, the :custom keyword will handle this for you.
-
-** Hotkeys
-*** search at point
-    #+BEGIN_SRC
-      (global-set-key (kbd "C-*") 'evil-search-symbol-forward)
-      (global-set-key (kbd "C-#") 'evil-search-symbol-backward)
-    #+END_SRC
-
-** Org mode config
-*** General
-Lots of good stuff here: [[https://github.com/daviwil/emacs-from-scratch/blob/c55d0f5e309f7ed8ffa3c00bc35c75937a5184e4/init.el][emacs-from-scratch]]
-
-Refile targets
-#+BEGIN_SRC emacs-lisp
-(setq org-refile-targets
-    '(("archive.org" :maxlevel . 1)
-      ("notes.org" :maxlevel . 1)
-      ("current.org" :maxlevel . 1)
-      ("projects.org" :maxlevel . 1)
-      ("someday-maybe.org" :maxlevel . 1)
-      ("tickler.org" :maxlevel . 1)))
-#+END_SRC
-
-Archive target
-#+BEGIN_SRC emacs-lisp
-; TODO can make a cut of the archive file every month as a log of what was done,
-; or just leave it as one big file. There will be dates in the archival metadata.
-(after! org
-  (setq org-archive-location "~/Dropbox/org/archive/archive.org::* From %s"))
-#+END_SRC
-
-Save Org buffers after refiling
-#+BEGIN_SRC emacs-lisp
-(advice-add 'org-refile :after 'org-save-all-org-buffers)
-#+END_SRC
-
-Usability tweaks - doesn't seem to do anything
-#+BEGIN_SRC emacs-lisp
-(after! org
-(setq org-agenda-skip-scheduled-if-done t
-      org-agenda-skip-deadline-if-done t
-      org-agenda-include-deadlines t
-      org-agenda-block-separator #x2501
-      org-agenda-compact-blocks t
-      org-agenda-start-with-log-mode t))
-#+END_SRC
-
-*** Record the timestamp when a TODO item was completed
-#+BEGIN_SRC emacs-lisp
-  (csetq org-log-done t)
-  (csetq org-directory "~/Dropbox/org")
-#+END_SRC
-
-*** Capture templates
-[[https://orgmode.org/guide/Capture.html][Docs]]
-#+BEGIN_SRC emacs-lisp
-(after! org
-  (setq org-capture-templates
-  '(("t" "Todo" entry (file+headline "~/Dropbox/org/inbox.org" "Tasks")
-     "* TODO %?\n %U\n %a\n %i"
-     :empty-lines 1)
-
-    ("j" "Journal" entry (file+datetree "~/Dropbox/org/journal.org")
-     "* %?\n\nEntered on %U from %i\n %a"
-     :empty-lines 1)
-
-    ("n" "Note" entry (file+headline "~/Dropbox/org/inbox.org" "Notes")
-     "* %?\n %U\n %a\n %i")
-
-    ("b" "Book" entry (file+headline "~/Dropbox/org/books.org" "To read")
-     "* %?\n %i")
-
-    ("c" "Contact" entry (file "~/Dropbox/org/contacts.org")
-     "* %?\n %i")
-
-    ("B" "Birthday" entry (file+headline "~/Dropbox/org/calendar.org" "Birthdays")
-     "* %?'s birthday\n %i")
-
-    ("q" "Quote" entry (file "~/Dropbox/org/quotes.org")
-     "* %?\n %i")
-
-    ("w" "Weight" table-line (file+headline "~/Dropbox/org/fitness.org" "Weight")
-     "| %U | %^{Weight} | %^{Notes} |" :kill-buffer t)
-
-
-    )))
-#+END_SRC
-**** TODO fix the hardcoded Dropbox path
-*** Todo keywords
-#+BEGIN_SRC emacs-lisp
-(after! org
-  (setq org-todo-keywords
-        '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-          (sequence "BACKLOG(b)" "READY(r)" "ACTIVE(a)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k)")
-                )))
-#+END_SRC
-
-TODO entry automatically changes to DONE when all children are done
-#+BEGIN_SRC emacs-lisp
-(defun org-summary-todo (n-done n-not-done)
-  "Switch entry to DONE when all subentries are done, to TODO otherwise."
-  (let (org-log-done org-log-states)   ; turn off logging
-    (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
-
-(add-hook 'org-after-todo-statistics-hook #'org-summary-todo)
-#+END_SRC
-
-*** Tags
-#+BEGIN_SRC emacs-lisp
-(setq org-tag-alist
-      '((:startgroup)
-        ; put mutually exclusive tags here
-        (:endgroup)
-        ("@house" . ?H)
-        ("@work" . ?W)
-        ("@garage" . ?G)
-        ("@yard" . ?Y)
-        ("@basement" . ?B)
-        ("@computer" . ?C)
-        ("reading" . ?r)
-        ("shopping". ?s)
-        ("easy" .?e)
-                ))
-#+END_SRC
-
-*** Agenda views
-#+BEGIN_SRC emacs-lisp
-(setq org-agenda-custom-commands
-      '(("d" "Dashboard"
-         ((agenda "" ((org-deadline-warning-days 7)))
-          (todo "NEXT"
-               ((org-agenda-overriding-header "Next Tasks")))
-          ; need this to pull in the list of projects
-          (tags-todo "agenda/ACTIVE" ((org-agenda-overriding-header "Active Projects")))))
-
-        ("q" "Shopping list" tags-todo "+shopping")
-
-        ("e" tags-todo "+easy"
-         ((org-agenda-overriding-header "Low Effort Tasks")
-          (org-agenda-max-todos 20)
-          (org-agenda-files org-agenda-files)))
-                ))
-#+END_SRC
-
-*** Roam
-Set the org directory and general options
-#+BEGIN_SRC emacs-lisp
-(csetq org-roam-directory "~/Dropbox/org")
-(csetq org-roam-completion-system 'ivy)
-(add-hook 'after-init-hook 'org-roam-mode)
-#+END_SRC
-
-
-Shortcuts
-#+BEGIN_SRC emacs-lisp
-(after! org-roam
-        (map! :leader
-            :prefix "n"
-            :desc "org-roam" "l" #'org-roam
-            :desc "org-roam-insert" "i" #'org-roam-insert
-            :desc "org-roam-switch-to-buffer" "b" #'org-roam-switch-to-buffer
-            :desc "org-roam-find-file" "f" #'org-roam-find-file
-            :desc "org-roam-show-graph" "g" #'org-roam-show-graph
-            :desc "org-roam-insert" "i" #'org-roam-insert
-            :desc "org-roam-capture" "c" #'org-roam-capture ))
-#+END_SRC
-
-*** Journal
-not really used right now
-#+BEGIN_SRC emacs-lisp
-(use-package org-journal
-      :custom
-      (org-journal-dir org-roam-directory)
-      (org-journal-date-prefix "#+TITLE: ")
-      (org-journal-file-format "%Y-%m-%d.org")
-      (org-journal-date-format "%A, %d %B %Y"))
-    (setq org-journal-enable-agenda-integration t)
-#+END_SRC
-
-** Treemacs
-Use the fancy icons in ~dired~ mode
-#+BEGIN_SRC emacs-lisp
-(after! treemacs-icons-dired
-  (treemacs-icons-dired-mode))
-#+END_SRC
-
-** Elfeed
-Keybindings
-#+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-x w") 'elfeed)
-#+END_SRC
-
-Feed list
-#+BEGIN_SRC emacs-lisp
-(setq elfeed-feeds
-  '("http://nullprogram.com/feed/"
-    "https://hnrss.org/frontpage?points=100&comments=25"
-    ))
-#+END_SRC
-
-Auto update
-#+BEGIN_SRC emacs-lisp
-(add-hook! 'elfeed-search-mode-hook #'elfeed-update)
-#+END_SRC
-
-
-** Web-mode
-Set indentation to 2 spaces
-#+BEGIN_SRC emacs-lisp
-(use-package web-mode
-  :mode "\\.erb\\'")
-(add-hook! web-mode
-           (setq web-mode-markup-indent-offset 2)
-           (setq web-mode-css-indent-offset 2)
-           (setq web-mode-code-indent-offset 2))
-#+END_SRC
+- NOTE the order of blocks matters if vars are referenced
 
 ** Custom key chords
 Will become a standalong package
@@ -282,6 +31,25 @@ Add custom packages to load path.
 ; add descendant directories
 (let ((default-directory  "~/.doom.d/lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
+#+END_SRC
+
+** Elfeed
+Keybindings
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-x w") 'elfeed)
+#+END_SRC
+
+Feed list
+#+BEGIN_SRC emacs-lisp
+(setq elfeed-feeds
+  '("http://nullprogram.com/feed/"
+    "https://hnrss.org/frontpage?points=100&comments=25"
+    ))
+#+END_SRC
+
+Auto update
+#+BEGIN_SRC emacs-lisp
+(add-hook! 'elfeed-search-mode-hook #'elfeed-update)
 #+END_SRC
 
 ** External hooks
@@ -354,17 +122,42 @@ Add custom packages to load path.
   )
 #+END_SRC
 
-** Sly/Slime :disabled:
-    Use quicklisp
-    #+BEGIN_SRC emacs-lisp
-    ;(if (file-directory-p "~/quicklisp")
-    ;    (progn
-    ;      (load (expand-file-name "~/quicklisp/slime-helper.el"))
-    ;      (setq inferior-lisp-program "sbcl")
-    ;      (load "~/quicklisp/clhs-use-local.el" t)))
+** General
+Empty code block
+#+BEGIN_SRC emacs-lisp
 
-    ;      ;("quicklisp-slime-helper")
-    #+END_SRC
+#+END_SRC
+
+Set the default theme
+#+BEGIN_SRC emacs-lisp
+(setq doom-theme 'kaolin-eclipse)
+#+END_SRC
+
+Set the font size
+#+BEGIN_SRC emacs-lisp
+(if (string-equal system-type "gnu/linux")
+    (set-face-attribute 'default nil :height 120)
+  (set-face-attribute 'default nil :height 130))
+#+END_SRC
+
+Do not confirm to quit
+#+BEGIN_SRC emacs-lisp
+(setq confirm-kill-emacs nil)
+#+END_SRC
+
+*** src block macro
+#+BEGIN_SRC emacs-lisp
+(fset 'src-block
+   (kmacro-lambda-form [?i ?# ?+ ?B ?E ?G ?I ?N ?_ ?S ?R ?C ?  ?e ?m ?a ?c ?s ?- ?l ?i ?p backspace ?s ?p return ?# ?+ ?E ?N ?D ?_ ?S ?R ?C] 0 "%d"))
+#+END_SRC
+
+*** setq
+If you use setq in your init file, to change the value of such an option, the setter function will not run. To set such an option correctly with Elisp, you need to use the function customize-set-variable. Alternatively, people use various versions of csetq macros in their configs to automatically take care of this (you can use GitHub code search to discover more sophisticated variants if you like):
+#+BEGIN_SRC emacs-lisp
+(defmacro csetq (sym val)
+  `(funcall (or (get ',sym 'custom-set) 'set-default) ',sym ,val))
+#+END_SRC
+If you are using the use-package macro, the :custom keyword will handle this for you.
 
 ** Golang :disabled:
 Add the go bin directory to emacs executable path
@@ -373,6 +166,202 @@ Add the go bin directory to emacs executable path
 ;(setenv "PATH" (concat (getenv "PATH") ":~/go/bin"))
 ;(setq exec-path (append exec-path '("~/go/bin")))
 #+END_SRC emacs-lisp
+
+** Hotkeys
+*** search at point
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-*") 'evil-search-symbol-forward)
+(global-set-key (kbd "C-#") 'evil-search-symbol-backward)
+#+END_SRC
+
+** Magit
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-x g") 'magit-status)
+#+END_SRC
+
+** Org mode config
+*** Agenda views
+#+BEGIN_SRC emacs-lisp
+(setq org-agenda-custom-commands
+      '(("d" "Dashboard"
+         ((agenda "" ((org-deadline-warning-days 7)))
+          (todo "NEXT"
+               ((org-agenda-overriding-header "Next Tasks")))
+          ; need this to pull in the list of projects
+          (tags-todo "agenda/ACTIVE" ((org-agenda-overriding-header "Active Projects")))))
+
+        ("q" "Shopping list" tags-todo "+shopping")
+
+        ("e" tags-todo "+easy"
+         ((org-agenda-overriding-header "Low Effort Tasks")
+          (org-agenda-max-todos 20)
+          (org-agenda-files org-agenda-files)))
+                ))
+#+END_SRC
+
+*** Bookmarks
+#+BEGIN_SRC emacs-lisp
+#+END_SRC
+*** Capture templates
+[[https://orgmode.org/guide/Capture.html][Docs]]
+#+BEGIN_SRC emacs-lisp
+(after! org
+  (setq org-capture-templates
+  '(("t" "Todo" entry (file+headline "~/Dropbox/org/inbox.org" "Tasks")
+     "* TODO %?\n %U\n %a\n %i"
+     :empty-lines 1)
+
+    ("j" "Journal" entry (file+datetree "~/Dropbox/org/journal.org")
+     "* %?\n\nEntered on %U from %i\n %a"
+     :empty-lines 1)
+
+    ("n" "Note" entry (file+headline "~/Dropbox/org/inbox.org" "Notes")
+     "* %?\n %U\n %a\n %i")
+
+    ("b" "Book" entry (file+headline "~/Dropbox/org/books.org" "To read")
+     "* %?\n %i")
+
+    ("c" "Contact" entry (file "~/Dropbox/org/contacts.org")
+     "* %?\n %i")
+
+    ("B" "Birthday" entry (file+headline "~/Dropbox/org/calendar.org" "Birthdays")
+     "* %?'s birthday\n %i")
+
+    ("q" "Quote" entry (file "~/Dropbox/org/quotes.org")
+     "* %?\n %i")
+
+    ("w" "Weight" table-line (file+headline "~/Dropbox/org/fitness.org" "Weight")
+     "| %U | %^{Weight} | %^{Notes} |" :kill-buffer t)
+
+
+    )))
+#+END_SRC
+**** TODO fix the hardcoded Dropbox path
+*** General
+Lots of good stuff here: [[https://github.com/daviwil/emacs-from-scratch/blob/c55d0f5e309f7ed8ffa3c00bc35c75937a5184e4/init.el][emacs-from-scratch]]
+
+Refile targets
+#+BEGIN_SRC emacs-lisp
+(setq org-refile-targets
+    '(("archive.org" :maxlevel . 1)
+      ("notes.org" :maxlevel . 1)
+      ("current.org" :maxlevel . 1)
+      ("projects.org" :maxlevel . 1)
+      ("someday-maybe.org" :maxlevel . 1)
+      ("tickler.org" :maxlevel . 1)))
+#+END_SRC
+
+Archive target
+#+BEGIN_SRC emacs-lisp
+; TODO can make a cut of the archive file every month as a log of what was done,
+; or just leave it as one big file. There will be dates in the archival metadata.
+(after! org
+  (setq org-archive-location "~/Dropbox/org/archive/archive.org::* From %s"))
+#+END_SRC
+
+Save Org buffers after refiling
+#+BEGIN_SRC emacs-lisp
+(advice-add 'org-refile :after 'org-save-all-org-buffers)
+#+END_SRC
+
+Usability tweaks - doesn't seem to do anything
+#+BEGIN_SRC emacs-lisp
+(after! org
+(setq org-agenda-skip-scheduled-if-done t
+      org-agenda-skip-deadline-if-done t
+      org-agenda-include-deadlines t
+      org-agenda-block-separator #x2501
+      org-agenda-compact-blocks t
+      org-agenda-start-with-log-mode t))
+#+END_SRC
+
+*** Record the timestamp when a TODO item was completed
+#+BEGIN_SRC emacs-lisp
+  (csetq org-log-done t)
+  (csetq org-directory "~/Dropbox/org")
+#+END_SRC
+
+*** Roam
+Set the org directory and general options
+#+BEGIN_SRC emacs-lisp
+(csetq org-roam-directory "~/Dropbox/org-roam")
+(csetq org-roam-completion-system 'ivy)
+(add-hook 'after-init-hook 'org-roam-mode)
+#+END_SRC
+
+
+Shortcuts
+#+BEGIN_SRC emacs-lisp
+(after! org-roam
+        (map! :leader
+            :prefix "n"
+            :desc "org-roam" "l" #'org-roam
+            :desc "org-roam-insert" "i" #'org-roam-insert
+            :desc "org-roam-switch-to-buffer" "b" #'org-roam-switch-to-buffer
+            :desc "org-roam-find-file" "f" #'org-roam-find-file
+            :desc "org-roam-show-graph" "g" #'org-roam-show-graph
+            :desc "org-roam-insert" "i" #'org-roam-insert
+            :desc "org-roam-capture" "c" #'org-roam-capture ))
+#+END_SRC
+
+*** Journal
+not really used right now
+#+BEGIN_SRC emacs-lisp
+(use-package org-journal
+      :custom
+      (org-journal-dir org-roam-directory)
+      (org-journal-date-prefix "#+TITLE: ")
+      (org-journal-file-format "%Y-%m-%d.org")
+      (org-journal-date-format "%A, %d %B %Y"))
+(setq org-journal-enable-agenda-integration t)
+#+END_SRC
+*** org-habit
+#+BEGIN_SRC emacs-lisp
+#+END_SRC
+
+*** Tags
+#+BEGIN_SRC emacs-lisp
+(setq org-tag-alist
+      '((:startgroup)
+        ; put mutually exclusive tags here
+        (:endgroup)
+        ("@house" . ?H)
+        ("@work" . ?W)
+        ("@garage" . ?G)
+        ("@yard" . ?Y)
+        ("@basement" . ?B)
+        ("@computer" . ?C)
+        ("reading" . ?r)
+        ("shopping". ?s)
+        ("easy" .?e)
+                ))
+#+END_SRC
+
+*** Todo keywords
+#+BEGIN_SRC emacs-lisp
+(after! org
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+          (sequence "BACKLOG(b)" "READY(r)" "ACTIVE(a)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k)")
+                )))
+#+END_SRC
+
+TODO entry automatically changes to DONE when all children are done
+#+BEGIN_SRC emacs-lisp
+(defun org-summary-todo (n-done n-not-done)
+  "Switch entry to DONE when all subentries are done, to TODO otherwise."
+  (let (org-log-done org-log-states)   ; turn off logging
+    (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+
+(add-hook 'org-after-todo-statistics-hook #'org-summary-todo)
+#+END_SRC
+** Rubocop :disabled:
+Use bundler
+#+BEGIN_SRC emacs-lisp
+;(setq flycheck-command-wrapper-function
+;      (lambda (command)
+;        (append '("bundle" "exec") command)))
+#+END_SRC
 
 ** Ruby :disabled:
 Set up ruby packages
@@ -393,14 +382,35 @@ Set up ruby packages
 ;         ("Capfile\\'" . enh-ruby-mode)
 ;         ("Guardfile\\'" . enh-ruby-mode)))
 #+END_SRC
-** Rubocop :disabled:
-Use bundler
+** Sly/Slime :disabled:
+    Use quicklisp
+    #+BEGIN_SRC emacs-lisp
+    ;(if (file-directory-p "~/quicklisp")
+    ;    (progn
+    ;      (load (expand-file-name "~/quicklisp/slime-helper.el"))
+    ;      (setq inferior-lisp-program "sbcl")
+    ;      (load "~/quicklisp/clhs-use-local.el" t)))
+
+    ;      ;("quicklisp-slime-helper")
+    #+END_SRC
+
+** Treemacs
+Use the fancy icons in ~dired~ mode
 #+BEGIN_SRC emacs-lisp
-;(setq flycheck-command-wrapper-function
-;      (lambda (command)
-;        (append '("bundle" "exec") command)))
+(after! treemacs-icons-dired
+  (treemacs-icons-dired-mode))
 #+END_SRC
 
+** Web-mode
+Set indentation to 2 spaces
+#+BEGIN_SRC emacs-lisp
+(use-package web-mode
+  :mode "\\.erb\\'")
+(add-hook! web-mode
+           (setq web-mode-markup-indent-offset 2)
+           (setq web-mode-css-indent-offset 2)
+           (setq web-mode-code-indent-offset 2))
+#+END_SRC
 
 * Meta
   Evaluate code blocks with: =<C-c><C-e>=

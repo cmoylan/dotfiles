@@ -1,162 +1,3 @@
-
-
-(setq doom-theme 'kaolin-eclipse)
-
-(if (string-equal system-type "gnu/linux")
-    (set-face-attribute 'default nil :height 120)
-  (set-face-attribute 'default nil :height 130))
-
-(setq confirm-kill-emacs nil)
-
-(fset 'src-block
-   (kmacro-lambda-form [?i ?# ?+ ?B ?E ?G ?I ?N ?_ ?S ?R ?C ?  ?e ?m ?a ?c ?s ?- ?l ?i ?p backspace ?s ?p return ?# ?+ ?E ?N ?D ?_ ?S ?R ?C] 0 "%d"))
-
-(defmacro csetq (sym val)
-  `(funcall (or (get ',sym 'custom-set) 'set-default) ',sym ,val))
-
-(setq org-refile-targets
-    '(("archive.org" :maxlevel . 1)
-      ("notes.org" :maxlevel . 1)
-      ("current.org" :maxlevel . 1)
-      ("projects.org" :maxlevel . 1)
-      ("someday-maybe.org" :maxlevel . 1)
-      ("tickler.org" :maxlevel . 1)))
-
-; TODO can make a cut of the archive file every month as a log of what was done,
-; or just leave it as one big file. There will be dates in the archival metadata.
-(after! org
-  (setq org-archive-location "~/Dropbox/org/archive/archive.org::* From %s"))
-
-(advice-add 'org-refile :after 'org-save-all-org-buffers)
-
-(after! org
-(setq org-agenda-skip-scheduled-if-done t
-      org-agenda-skip-deadline-if-done t
-      org-agenda-include-deadlines t
-      org-agenda-block-separator #x2501
-      org-agenda-compact-blocks t
-      org-agenda-start-with-log-mode t))
-
-(csetq org-log-done t)
-(csetq org-directory "~/Dropbox/org")
-
-(after! org
-  (setq org-capture-templates
-  '(("t" "Todo" entry (file+headline "~/Dropbox/org/inbox.org" "Tasks")
-     "* TODO %?\n %U\n %a\n %i"
-     :empty-lines 1)
-
-    ("j" "Journal" entry (file+datetree "~/Dropbox/org/journal.org")
-     "* %?\n\nEntered on %U from %i\n %a"
-     :empty-lines 1)
-
-    ("n" "Note" entry (file+headline "~/Dropbox/org/inbox.org" "Notes")
-     "* %?\n %U\n %a\n %i")
-
-    ("b" "Book" entry (file+headline "~/Dropbox/org/books.org" "To read")
-     "* %?\n %i")
-
-    ("c" "Contact" entry (file "~/Dropbox/org/contacts.org")
-     "* %?\n %i")
-
-    ("B" "Birthday" entry (file+headline "~/Dropbox/org/calendar.org" "Birthdays")
-     "* %?'s birthday\n %i")
-
-    ("q" "Quote" entry (file "~/Dropbox/org/quotes.org")
-     "* %?\n %i")
-
-    ("w" "Weight" table-line (file+headline "~/Dropbox/org/fitness.org" "Weight")
-     "| %U | %^{Weight} | %^{Notes} |" :kill-buffer t)
-
-
-    )))
-
-(after! org
-  (setq org-todo-keywords
-        '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-          (sequence "BACKLOG(b)" "READY(r)" "ACTIVE(a)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k)")
-                )))
-
-(defun org-summary-todo (n-done n-not-done)
-  "Switch entry to DONE when all subentries are done, to TODO otherwise."
-  (let (org-log-done org-log-states)   ; turn off logging
-    (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
-
-(add-hook 'org-after-todo-statistics-hook #'org-summary-todo)
-
-(setq org-tag-alist
-      '((:startgroup)
-        ; put mutually exclusive tags here
-        (:endgroup)
-        ("@house" . ?H)
-        ("@work" . ?W)
-        ("@garage" . ?G)
-        ("@yard" . ?Y)
-        ("@basement" . ?B)
-        ("@computer" . ?C)
-        ("reading" . ?r)
-        ("shopping". ?s)
-        ("easy" .?e)
-                ))
-
-(setq org-agenda-custom-commands
-      '(("d" "Dashboard"
-         ((agenda "" ((org-deadline-warning-days 7)))
-          (todo "NEXT"
-               ((org-agenda-overriding-header "Next Tasks")))
-          ; need this to pull in the list of projects
-          (tags-todo "agenda/ACTIVE" ((org-agenda-overriding-header "Active Projects")))))
-
-        ("q" "Shopping list" tags-todo "+shopping")
-
-        ("e" tags-todo "+easy"
-         ((org-agenda-overriding-header "Low Effort Tasks")
-          (org-agenda-max-todos 20)
-          (org-agenda-files org-agenda-files)))
-                ))
-
-(csetq org-roam-directory "~/Dropbox/org")
-(csetq org-roam-completion-system 'ivy)
-(add-hook 'after-init-hook 'org-roam-mode)
-
-(after! org-roam
-        (map! :leader
-            :prefix "n"
-            :desc "org-roam" "l" #'org-roam
-            :desc "org-roam-insert" "i" #'org-roam-insert
-            :desc "org-roam-switch-to-buffer" "b" #'org-roam-switch-to-buffer
-            :desc "org-roam-find-file" "f" #'org-roam-find-file
-            :desc "org-roam-show-graph" "g" #'org-roam-show-graph
-            :desc "org-roam-insert" "i" #'org-roam-insert
-            :desc "org-roam-capture" "c" #'org-roam-capture ))
-
-(use-package org-journal
-      :custom
-      (org-journal-dir org-roam-directory)
-      (org-journal-date-prefix "#+TITLE: ")
-      (org-journal-file-format "%Y-%m-%d.org")
-      (org-journal-date-format "%A, %d %B %Y"))
-    (setq org-journal-enable-agenda-integration t)
-
-(after! treemacs-icons-dired
-  (treemacs-icons-dired-mode))
-
-(global-set-key (kbd "C-x w") 'elfeed)
-
-(setq elfeed-feeds
-  '("http://nullprogram.com/feed/"
-    "https://hnrss.org/frontpage?points=100&comments=25"
-    ))
-
-(add-hook! 'elfeed-search-mode-hook #'elfeed-update)
-
-(use-package web-mode
-  :mode "\\.erb\\'")
-(add-hook! web-mode
-           (setq web-mode-markup-indent-offset 2)
-           (setq web-mode-css-indent-offset 2)
-           (setq web-mode-code-indent-offset 2))
-
 (defun hh/toggle-debugger (name)
   "Toggles a debugging statement depending on language."
   (interactive "p")
@@ -175,6 +16,15 @@
 ; add descendant directories
 (let ((default-directory  "~/.doom.d/lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
+
+(global-set-key (kbd "C-x w") 'elfeed)
+
+(setq elfeed-feeds
+  '("http://nullprogram.com/feed/"
+    "https://hnrss.org/frontpage?points=100&comments=25"
+    ))
+
+(add-hook! 'elfeed-search-mode-hook #'elfeed-update)
 
 (defun tt-get-heading-info ()
   "show org-heading-components result"
@@ -243,13 +93,158 @@
   (interactive)
   )
 
-;(if (file-directory-p "~/quicklisp")
-;    (progn
-;      (load (expand-file-name "~/quicklisp/slime-helper.el"))
-;      (setq inferior-lisp-program "sbcl")
-;      (load "~/quicklisp/clhs-use-local.el" t)))
 
-;      ;("quicklisp-slime-helper")
+
+(setq doom-theme 'kaolin-eclipse)
+
+(if (string-equal system-type "gnu/linux")
+    (set-face-attribute 'default nil :height 120)
+  (set-face-attribute 'default nil :height 130))
+
+(setq confirm-kill-emacs nil)
+
+(fset 'src-block
+   (kmacro-lambda-form [?i ?# ?+ ?B ?E ?G ?I ?N ?_ ?S ?R ?C ?  ?e ?m ?a ?c ?s ?- ?l ?i ?p backspace ?s ?p return ?# ?+ ?E ?N ?D ?_ ?S ?R ?C] 0 "%d"))
+
+(defmacro csetq (sym val)
+  `(funcall (or (get ',sym 'custom-set) 'set-default) ',sym ,val))
+
+(global-set-key (kbd "C-*") 'evil-search-symbol-forward)
+(global-set-key (kbd "C-#") 'evil-search-symbol-backward)
+
+(global-set-key (kbd "C-x g") 'magit-status)
+
+(setq org-agenda-custom-commands
+      '(("d" "Dashboard"
+         ((agenda "" ((org-deadline-warning-days 7)))
+          (todo "NEXT"
+               ((org-agenda-overriding-header "Next Tasks")))
+          ; need this to pull in the list of projects
+          (tags-todo "agenda/ACTIVE" ((org-agenda-overriding-header "Active Projects")))))
+
+        ("q" "Shopping list" tags-todo "+shopping")
+
+        ("e" tags-todo "+easy"
+         ((org-agenda-overriding-header "Low Effort Tasks")
+          (org-agenda-max-todos 20)
+          (org-agenda-files org-agenda-files)))
+                ))
+
+
+
+(after! org
+  (setq org-capture-templates
+  '(("t" "Todo" entry (file+headline "~/Dropbox/org/inbox.org" "Tasks")
+     "* TODO %?\n %U\n %a\n %i"
+     :empty-lines 1)
+
+    ("j" "Journal" entry (file+datetree "~/Dropbox/org/journal.org")
+     "* %?\n\nEntered on %U from %i\n %a"
+     :empty-lines 1)
+
+    ("n" "Note" entry (file+headline "~/Dropbox/org/inbox.org" "Notes")
+     "* %?\n %U\n %a\n %i")
+
+    ("b" "Book" entry (file+headline "~/Dropbox/org/books.org" "To read")
+     "* %?\n %i")
+
+    ("c" "Contact" entry (file "~/Dropbox/org/contacts.org")
+     "* %?\n %i")
+
+    ("B" "Birthday" entry (file+headline "~/Dropbox/org/calendar.org" "Birthdays")
+     "* %?'s birthday\n %i")
+
+    ("q" "Quote" entry (file "~/Dropbox/org/quotes.org")
+     "* %?\n %i")
+
+    ("w" "Weight" table-line (file+headline "~/Dropbox/org/fitness.org" "Weight")
+     "| %U | %^{Weight} | %^{Notes} |" :kill-buffer t)
+
+
+    )))
+
+(setq org-refile-targets
+    '(("archive.org" :maxlevel . 1)
+      ("notes.org" :maxlevel . 1)
+      ("current.org" :maxlevel . 1)
+      ("projects.org" :maxlevel . 1)
+      ("someday-maybe.org" :maxlevel . 1)
+      ("tickler.org" :maxlevel . 1)))
+
+; TODO can make a cut of the archive file every month as a log of what was done,
+; or just leave it as one big file. There will be dates in the archival metadata.
+(after! org
+  (setq org-archive-location "~/Dropbox/org/archive/archive.org::* From %s"))
+
+(advice-add 'org-refile :after 'org-save-all-org-buffers)
+
+(after! org
+(setq org-agenda-skip-scheduled-if-done t
+      org-agenda-skip-deadline-if-done t
+      org-agenda-include-deadlines t
+      org-agenda-block-separator #x2501
+      org-agenda-compact-blocks t
+      org-agenda-start-with-log-mode t))
+
+(csetq org-log-done t)
+(csetq org-directory "~/Dropbox/org")
+
+(csetq org-roam-directory "~/Dropbox/org-roam")
+(csetq org-roam-completion-system 'ivy)
+(add-hook 'after-init-hook 'org-roam-mode)
+
+(after! org-roam
+        (map! :leader
+            :prefix "n"
+            :desc "org-roam" "l" #'org-roam
+            :desc "org-roam-insert" "i" #'org-roam-insert
+            :desc "org-roam-switch-to-buffer" "b" #'org-roam-switch-to-buffer
+            :desc "org-roam-find-file" "f" #'org-roam-find-file
+            :desc "org-roam-show-graph" "g" #'org-roam-show-graph
+            :desc "org-roam-insert" "i" #'org-roam-insert
+            :desc "org-roam-capture" "c" #'org-roam-capture ))
+
+(use-package org-journal
+      :custom
+      (org-journal-dir org-roam-directory)
+      (org-journal-date-prefix "#+TITLE: ")
+      (org-journal-file-format "%Y-%m-%d.org")
+      (org-journal-date-format "%A, %d %B %Y"))
+(setq org-journal-enable-agenda-integration t)
+
+
+
+(setq org-tag-alist
+      '((:startgroup)
+        ; put mutually exclusive tags here
+        (:endgroup)
+        ("@house" . ?H)
+        ("@work" . ?W)
+        ("@garage" . ?G)
+        ("@yard" . ?Y)
+        ("@basement" . ?B)
+        ("@computer" . ?C)
+        ("reading" . ?r)
+        ("shopping". ?s)
+        ("easy" .?e)
+                ))
+
+(after! org
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+          (sequence "BACKLOG(b)" "READY(r)" "ACTIVE(a)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k)")
+                )))
+
+(defun org-summary-todo (n-done n-not-done)
+  "Switch entry to DONE when all subentries are done, to TODO otherwise."
+  (let (org-log-done org-log-states)   ; turn off logging
+    (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+
+(add-hook 'org-after-todo-statistics-hook #'org-summary-todo)
+
+;(setq flycheck-command-wrapper-function
+;      (lambda (command)
+;        (append '("bundle" "exec") command)))
 
 ;(require 'chruby)
 ;(chruby "ruby-2.7.4")
@@ -267,6 +262,20 @@
 ;         ("Capfile\\'" . enh-ruby-mode)
 ;         ("Guardfile\\'" . enh-ruby-mode)))
 
-;(setq flycheck-command-wrapper-function
-;      (lambda (command)
-;        (append '("bundle" "exec") command)))
+;(if (file-directory-p "~/quicklisp")
+;    (progn
+;      (load (expand-file-name "~/quicklisp/slime-helper.el"))
+;      (setq inferior-lisp-program "sbcl")
+;      (load "~/quicklisp/clhs-use-local.el" t)))
+
+;      ;("quicklisp-slime-helper")
+
+(after! treemacs-icons-dired
+  (treemacs-icons-dired-mode))
+
+(use-package web-mode
+  :mode "\\.erb\\'")
+(add-hook! web-mode
+           (setq web-mode-markup-indent-offset 2)
+           (setq web-mode-css-indent-offset 2)
+           (setq web-mode-code-indent-offset 2))
