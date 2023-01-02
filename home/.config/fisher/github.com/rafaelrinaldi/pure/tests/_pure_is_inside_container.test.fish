@@ -1,8 +1,11 @@
-source $current_dirname/fixtures/constants.fish
-source $current_dirname/../functions/_pure_is_inside_container.fish
-@mesg (_print_filename $current_filename)
+source (dirname (status filename))/fixtures/constants.fish
+source (dirname (status filename))/../functions/_pure_is_inside_container.fish
+source (dirname (status filename))/../functions/_pure_detect_container_by_pid_method.fish
+source (dirname (status filename))/../functions/_pure_detect_container_by_cgroup_method.fish
+@echo (_print_filename (status filename))
 
 
+# echo "SYSTEM CONTAINER: $container"
 function setup
     _purge_configs
     _disable_colors
@@ -11,36 +14,79 @@ function setup
     set --global namespace (dirname $cgroup_namespace)
     mkdir -p $namespace; and touch $cgroup_namespace
 end
+setup
 
-function teardown
-    rm -rf $namespace
-    set --erase cgroup_namespace
-    set --erase namespace
+function cleanup_detection_methods
+    functions --erase _pure_detect_container_by_pid_method
+    functions --erase _pure_detect_container_by_cgroup_method
+    set --global container ""
 end
 
-@test "_pure_is_inside_container: false for host OS" (
-    echo "1:name=systemd:/init.scope" > $cgroup_namespace
-    set --global container $EMPTY
+function cleanup_spy
+    functions --erase uname
+end
 
-    _pure_is_inside_container $cgroup_namespace
-) $status -eq $FAILURE
+function teardown
+    rm -rf \
+        $namespace \
+        $cgroup_namespace
+    set --erase cgroup_namespace
+    set --erase namespace
+    set --erase called
+end
 
-@test "_pure_is_inside_container: true for Docker's container" (
-    echo "1:name=systemd:/docker/54c541…af18c609c" > $cgroup_namespace
+@test "pure_enable_container_detection: feature is disabled" (
+    set --universal pure_enable_container_detection false
+    set --universal called "never"
+    function uname; set called once; echo "fake-os" ; end # spy
 
-    _pure_is_inside_container $cgroup_namespace
-) $status -eq $SUCCESS
+    _pure_is_inside_container
+    echo $called
+) = never
 
-@test "_pure_is_inside_container: true for LXC/LXD's container (using namespace detail)" (
-    echo "1:name=systemd:/lxc/54c541…af18c609c" > $cgroup_namespace
+@test "pure_enable_container_detection: feature is enabled" (
+    set --universal pure_enable_container_detection true
+    set --universal called "never"
+    function uname; set called once; echo "fake-os" ; end # spy
 
-    _pure_is_inside_container $cgroup_namespace
-) $status -eq $SUCCESS
+    _pure_is_inside_container
+    echo $called
+) = once
 
-@test "_pure_is_inside_container: true for LXC/LXD's container (using environment variable)" (
-    echo "$IS_PRESENT" > $cgroup_namespace
-    set --global container 'lxc'
+cleanup_spy
+@test "_pure_is_inside_container: true for Github Action" (
+    set --universal pure_enable_container_detection true
 
     _pure_is_inside_container
 ) $status -eq $SUCCESS
 
+@test "_pure_is_inside_container: detect with $container variable" (
+    set --universal pure_enable_container_detection true
+    set --global container "fake"
+
+    _pure_is_inside_container
+) $status -eq $SUCCESS
+
+cleanup_detection_methods
+if test (uname -s) = Linux
+    @test "_pure_is_inside_container: detect with pid method" (
+        set --universal pure_enable_container_detection true
+        function _pure_detect_container_by_cgroup_method; false; end # spy
+        function _pure_detect_container_by_pid_method; echo "called: "(status function); end # spy
+
+        _pure_is_inside_container
+    ) = "called: _pure_detect_container_by_pid_method"
+end
+
+cleanup_detection_methods
+if test (uname -s) = Linux
+    @test "_pure_is_inside_container: detect with cgroup method" (
+        set --universal pure_enable_container_detection true
+        function _pure_detect_container_by_cgroup_method; echo "called: "(status function); end # spy
+
+        _pure_is_inside_container
+    ) = "called: _pure_detect_container_by_cgroup_method"
+end
+
+
+teardown

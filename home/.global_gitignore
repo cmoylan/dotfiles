@@ -35,3 +35,4 @@ docker-compose.yml
 
 _NOTES.org
 .projectile
+.byebug_history

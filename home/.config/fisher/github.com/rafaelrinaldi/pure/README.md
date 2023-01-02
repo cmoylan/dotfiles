@@ -1,4 +1,4 @@
-> ##### :arrow_up: Hey! Want to migrate from v3.x to v4.x? Check our [**migration guide**](https://github.com/pure-fish/pure/releases/tag/v4.0.0), done with :heart:
+> ##### :arrow_up: Hey! Want to migrate from v3.x to v4.x? Check our [**migration guide**](https://github.com/pure-fish/pure/releases/tag/v4.0.0), done with :heart
 
 # pure [![github-ci-badge]][github-ci-link] ![fish-3]
 
@@ -36,24 +36,27 @@ Fully **customizable** (colors, symbols and features):
 
 - Excellent prompt character `❯` :
   - Change `❯` to red when previous command has failed ;
-  - Start prompt with _current working directory_ 🏳️ ;
-  - Compact-mode (single-line prompt) 🏳️ ;
+  - Start prompt with _current working directory_ 🏴 ;
+  - Compact-mode (single-line prompt) 🏴 ;
 - Display current directory tail ;
-- check for new release on start 🏳️ ;
+- check for new release on start 🏴 ;
 - Display _username_ and _hostname_ when in an `SSH` session ;
 - Display command _duration_ when longer than `5` seconds ;
 - Display `Python` _virtualenv_ when activated ;
-- Display `VI` mode and custom symbol for non-insert mode 🏳️ ;
-- Show system time 🏳️ ;
-- Show number of running jobs 🏳️ ;
-- Prefix when `root` 🏳️ ;
-- Display `git` branch name 🏳️ ;
+- Display `VI` mode and custom symbol for non-insert mode 🏴 ;
+- Show system time 🏴 ;
+- Show number of running jobs 🏴 ;
+- Prefix when `root` 🏴 ;
+- Display `git` branch name 🏴 ;
   - Display `*` when `git` repository is _dirty_ ;
   - Display `≡` when `git` repository is _stashed_ ;
   - Display `⇡` when branch is _ahead_ (commits to push) ;
   - Display `⇣` when branch is _behind_ (commits to pull) ;
   - Async update when [configured with fish-async-prompt](https://github.com/pure-fish/pure/wiki/Async-git-Prompt) ;
 - Update terminal title with _current folder_ and _command_ ;
+- Detect when running in a container
+
+🏴: Enabled or disabled via a [feature flag](#-features-flags).
 
 ## :paintbrush: Configuration
 
@@ -84,6 +87,7 @@ You can tweak `pure` behavior and color by changing [universal variables](https:
 | **`pure_begin_prompt_with_current_directory`** | `true`  | `true`: _`pwd` `git`, `SSH`, duration_.<br/>`false`: _`SSH` `pwd` `git`, duration_.             |
 | **`pure_check_for_new_release`**               | `false` | `true`: check repo for new release (on every shell start)                                       |
 | **`pure_enable_git`**                          | `true`  | Show info about Git repository.                                                                 |
+| **`pure_enable_container_detection`**           | `true` | `false`: Do not check if run in container (e.g. `docker`, `podman`, `LXC`/`LXD`, etc.).<br/>:warning: Detection is a bit [tricky across OSes][container-detection].                                                         |
 | **`pure_enable_single_line_prompt`**           | `false` | `true`: Compact prompt as a single line                                                         |
 | **`pure_reverse_prompt_symbol_in_vimode`**     | `true`  | `true`: `❮` indicate a non-insert mode.<br/>`false`: indicate vi mode with `[I]`, `[N]`, `[V]`. |
 | **`pure_separate_prompt_on_error`**            | `false` | Show last command [exit code as a separate character][exit-code].                               |
@@ -99,17 +103,17 @@ You can tweak `pure` behavior and color by changing [universal variables](https:
 
 > :warning: The absence of `$` sign is expected in `pure_` named colours.
 
-| Base Color               | Inherited by                                                                                                                                                                                                                  | Default   |
-| :----------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------- |
-| **`pure_color_danger`**  | **`pure_color_prompt_on_error`**                                                                                                                                                                                              | `red`     |
-| **`pure_color_dark`**    |                                                                                                                                                                                                                               | `black`   |
-| **`pure_color_info`**    | **`pure_color_git_unpulled_commits`**<br>**`pure_color_git_unpushed_commits`**                                                                                                                                                | `cyan`    |
-| **`pure_color_light`**   | **`pure_color_username_root`**                                                                                                                                                                                                | `white`   |
+| Base Color               | Inherited by                                                                                                                                                                                                        | Default   |
+| :----------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :-------- |
+| **`pure_color_danger`**  | **`pure_color_prompt_on_error`**                                                                                                                                                                                    | `red`     |
+| **`pure_color_dark`**    |                                                                                                                                                                                                                     | `black`   |
+| **`pure_color_info`**    | **`pure_color_git_unpulled_commits`**<br>**`pure_color_git_unpushed_commits`**                                                                                                                                      | `cyan`    |
+| **`pure_color_light`**   | **`pure_color_username_root`**                                                                                                                                                                                      | `white`   |
 | **`pure_color_mute`**    | **`pure_color_git_branch`**<br>**`pure_color_git_dirty`**<br>**`pure_color_git_stash`**<br>**`pure_color_hostname`**<br>**`pure_color_at_sign`**<br>**`pure_color_username_normal`**<br>**`pure_color_virtualenv`** | `brblack` |
-| **`pure_color_normal`**  | **`pure_color_jobs`**                                                                                                                                                                                                         | `normal`  |
-| **`pure_color_primary`** | **`pure_color_current_directory`**                                                                                                                                                                                            | `blue`    |
-| **`pure_color_success`** | **`pure_color_prompt_on_success`**                                                                                                                                                                                            | `magenta` |
-| **`pure_color_warning`** | **`pure_color_command_duration`**                                                                                                                                                                                             | `yellow`  |
+| **`pure_color_normal`**  | **`pure_color_jobs`**                                                                                                                                                                                               | `normal`  |
+| **`pure_color_primary`** | **`pure_color_current_directory`**                                                                                                                                                                                  | `blue`    |
+| **`pure_color_success`** | **`pure_color_prompt_on_success`**                                                                                                                                                                                  | `magenta` |
+| **`pure_color_warning`** | **`pure_color_command_duration`**                                                                                                                                                                                   | `yellow`  |
 
 ## :+1:  Contribute
 
@@ -117,8 +121,8 @@ You can tweak `pure` behavior and color by changing [universal variables](https:
 
 Specify the [`FISH_VERSION`][fish-releases] you want, and the `CMD` executed by the container:
 
-    make build-pure-on FISH_VERSION=3.1.2
-    make dev-pure-on FISH_VERSION=3.1.2 CMD="fishtape tests/*.test.fish"
+    make build-pure-on FISH_VERSION=3.3.1
+    make dev-pure-on FISH_VERSION=3.3.1 CMD="fishtape tests/*.test.fish"
 
 ## :man_technologist: Maintainer
 
@@ -126,9 +130,9 @@ Specify the [`FISH_VERSION`][fish-releases] you want, and the `CMD` executed by 
 
 ## :clap: Thanks
 
-* [@andreiborisov](https://github.com/andreiborisov) for the [docker images][docker-images] ;
-* [@jorgebucaran](https://github.com/jorgebucaran/) for [fishtape](https://github.com/jorgebucaran/fishtape) ;
-* [@rafaelrinaldi](https://github.com/pure-fish/pure) for starting the project ;
+- [@andreiborisov](https://github.com/andreiborisov) for the [docker images][docker-images] ;
+- [@jorgebucaran](https://github.com/jorgebucaran/) for [fishtape](https://github.com/jorgebucaran/fishtape) ;
+- [@rafaelrinaldi](https://github.com/pure-fish/pure) for starting the project ;
 
 ## :classical_building: License
 
@@ -142,3 +146,4 @@ Specify the [`FISH_VERSION`][fish-releases] you want, and the `CMD` executed by 
 [docker-images]: https://github.com/andreiborisov/docker-fish/
 [MIT]: LICENSE.md
 [fish-set-color]: https://fishshell.com/docs/current/cmds/set_color.html
+[container-detection]: https://stackoverflow.com/q/23513045/802365
