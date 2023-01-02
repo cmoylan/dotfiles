@@ -186,6 +186,28 @@
       org-agenda-compact-blocks t
       org-agenda-start-with-log-mode t))
 
+(require 'ox-publish)
+(setq org-publish-project-alist
+      '(("chrismoylandotcom-pages"
+         :base-directory "~/Dropbox/org/chrismoylandotcom/"
+         :base-extension "org"
+         :publishing-directory "~/public_html/"
+         :recursive t
+         :publishing-function org-html-publish-to-html
+         :headline-levels 4             ; Just the default for this project.
+         :auto-preamble t )
+("chrismoylandotcom-static"
+ :base-directory "~/Dropbox/org/chrismoylandotcom/"
+ :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+ :publishing-directory "~/public_html/"
+ :recursive t
+ :publishing-function org-publish-attachment
+ )
+("chrismoylandotcom" :components ("chrismoylandotcom-pages" "chrismoylandotcom-static"))
+
+
+                ))
+
 (csetq org-log-done t)
 (csetq org-directory "~/Dropbox/org")
 

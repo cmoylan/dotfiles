@@ -1,3 +1,3 @@
 function confedit
-  vi ~/.config/fish/config.fish
+  nvim ~/.config/fish/config.fish
 end
