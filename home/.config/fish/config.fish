@@ -17,8 +17,8 @@ set default_path /usr/bin /usr/sbin /bin /sbin
 
 
 # ----- Aliases ----- #
-alias vim "nvim"
-alias vi "nvim"
+#alias vim "nvim"
+#alias vi "nvim"
 alias nf "new_function"
 alias gt "gittool"
 
@@ -28,8 +28,8 @@ alias gt "gittool"
 #eval (direnv hook fish)
 
 # chruby
-source /usr/local/share/chruby/chruby.fish
-source /usr/local/share/chruby/auto.fish
+#source /usr/local/share/chruby/chruby.fish
+#source /usr/local/share/chruby/auto.fish
 
 
 # ----- OS-specific ----- #
@@ -47,3 +47,10 @@ end
 # ----- Work things ----- #
 set -x PRINTAVO_DEV_LOCALHOST "printavo-dev.com"
 set -x DISABLE_SPRING true
+
+function nvm
+   bass source (brew --prefix nvm)/nvm.sh --no-use ';' nvm $argv
+   end
+
+   set -x NVM_DIR ~/.nvm
+   nvm use default --silent
