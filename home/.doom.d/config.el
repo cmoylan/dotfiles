@@ -108,6 +108,31 @@
 
 (global-set-key (kbd "C-x g") 'magit-status)
 
+(setq org-agenda-files (list "~/Dropbox/org/"))
+
+(setq org-refile-targets
+    '(("archive.org" :maxlevel . 1)
+      ("notes.org" :maxlevel . 1)
+      ("current.org" :maxlevel . 1)
+      ("projects.org" :maxlevel . 1)
+      ("someday-maybe.org" :maxlevel . 1)
+      ("tickler.org" :maxlevel . 1)))
+
+; TODO can make a cut of the archive file every month as a log of what was done,
+; or just leave it as one big file. There will be dates in the archival metadata.
+(after! org
+  (setq org-archive-location "~/Dropbox/org/archive/archive.org::* From %s"))
+
+(advice-add 'org-refile :after 'org-save-all-org-buffers)
+
+(after! org
+(setq org-agenda-skip-scheduled-if-done t
+      org-agenda-skip-deadline-if-done t
+      org-agenda-include-deadlines t
+      org-agenda-block-separator #x2501
+      org-agenda-compact-blocks t
+      org-agenda-start-with-log-mode t))
+
 (setq org-agenda-custom-commands
       '(("d" "Dashboard"
          ((agenda "" ((org-deadline-warning-days 7)))
@@ -156,29 +181,6 @@
 
 
     )))
-
-(setq org-refile-targets
-    '(("archive.org" :maxlevel . 1)
-      ("notes.org" :maxlevel . 1)
-      ("current.org" :maxlevel . 1)
-      ("projects.org" :maxlevel . 1)
-      ("someday-maybe.org" :maxlevel . 1)
-      ("tickler.org" :maxlevel . 1)))
-
-; TODO can make a cut of the archive file every month as a log of what was done,
-; or just leave it as one big file. There will be dates in the archival metadata.
-(after! org
-  (setq org-archive-location "~/Dropbox/org/archive/archive.org::* From %s"))
-
-(advice-add 'org-refile :after 'org-save-all-org-buffers)
-
-(after! org
-(setq org-agenda-skip-scheduled-if-done t
-      org-agenda-skip-deadline-if-done t
-      org-agenda-include-deadlines t
-      org-agenda-block-separator #x2501
-      org-agenda-compact-blocks t
-      org-agenda-start-with-log-mode t))
 
 (require 'ox-publish)
 (setq org-publish-project-alist
