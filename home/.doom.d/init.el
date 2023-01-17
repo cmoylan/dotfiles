@@ -142,7 +142,7 @@
        ;;racket            ; a DSL for DSLs
        ;;rest              ; Emacs as a REST client
        (ruby              ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
-        +chruby
+        +rbenv
         +rails
         +lsp
         )
