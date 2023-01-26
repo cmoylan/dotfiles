@@ -150,7 +150,7 @@
 (after! org
   (setq org-capture-templates
   `(("t" "Todo" entry (file+headline ,(format "%s/inbox.org" org-home) "Tasks")
-     "* TODO %?\n %U\n %a\n %i"
+     "* TODO %?\n %U - %a\n %i"
      :empty-lines 1)
 
     ("j" "Journal" entry (file+datetree ,(format "%s/journal.org" org-home))
@@ -158,7 +158,7 @@
      :empty-lines 1)
 
     ("n" "Note" entry (file+headline ,(format "%s/inbox.org" org-home) "Notes")
-     "* %?\n %U\n %a\n %i")
+     "* %?\n %U - %a\n %i")
 
     ("b" "Book" entry (file+headline ,(format "%s/books.org" org-home) "To read")
      "* %?\n %i")
