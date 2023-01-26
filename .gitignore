@@ -1,4 +1,10 @@
 home/.vim/plugged
 home/.vim/bundle
 home/.config/fish/functions/_pure*
+home/.config/fish/completions/
+home/.config/fish/plugins/
+home/.config/fish/fish_plugins/
+home/.config/fish/conf.d/
+home/.config/fish/fish_variables
 home/.doom.d/custom.el
+home/.vim/autoload/plug.vim

@@ -24,7 +24,6 @@ alias gt "gittool"
 
 
 # ----- Plugins ----- #
-#eval (python -m virtualfish)
 #eval (direnv hook fish)
 
 # chruby
@@ -49,8 +48,10 @@ set -x PRINTAVO_DEV_LOCALHOST "printavo-dev.com"
 set -x DISABLE_SPRING true
 
 function nvm
-   bass source (brew --prefix nvm)/nvm.sh --no-use ';' nvm $argv
-   end
+  bass source (brew --prefix nvm)/nvm.sh --no-use ';' nvm $argv
+end
 
-   set -x NVM_DIR ~/.nvm
-   nvm use default --silent
+set -x NVM_DIR ~/.nvm
+nvm use default --silent
+
+rbenv init - | source

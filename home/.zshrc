@@ -104,8 +104,7 @@ zrcl="$HOME/.zshrc.local"
 # add $HOME/path to $PATH, if present
 [[ -s "$HOME/bin" ]] && export PATH=$PATH:$HOME/bin
 
-source /usr/local/share/chruby/chruby.sh
-source /usr/local/share/chruby/auto.sh
-
 alias dc="docker-compose"
 alias be="bundle exec"
+
+fish
