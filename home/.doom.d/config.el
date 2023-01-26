@@ -7,10 +7,6 @@
   (let (message-log-max) ; minibuffer only, don't log to *Messages*
     (message "Debugger toggled"))
 )
-;(map! :leader
-;  (:prefix-map ("a" . "applications")
-;   (:prefix ("j" . "journal")
-;    :desc "New journal entry" "j" #'hh/toggle-debugger)))
 
 (add-to-list 'load-path "~/.doom.d/lisp/")
 ; add descendant directories
@@ -54,9 +50,10 @@
 
 (defun bujo/finalize-month ()
   "Finalize the last month and create the next month"
+  ; DEPRECATED I just change the #+TITLE and move archive.org to <month>-<year>.org 1/24/2023
   (interactive)
   (let* ((filename (downcase (format-time-string "%B-%Y.org")))
-         (filepath (concat (file-name-as-directory org-directory) filename))
+         (filepath (concat (file-name-as-directory org-home) filename))
          (next-month)
          (next-year)
          (next-filename)
@@ -67,7 +64,7 @@
         (setq next-year (read-string "Enter year: "))
       (setq next-year (format-time-string "%Y")))
 
-    (setq next-filepath (concat (file-name-as-directory org-directory) next-month "-" next-year ".org" ))
+    (setq next-filepath (concat (file-name-as-directory org-home) next-month "-" next-year ".org" ))
 
     (if (file-exists-p next-filepath)
         (progn
@@ -87,11 +84,6 @@
     ; TODO: copy birthdays and holidays into events
     ; TODO: move monthly notes to central notes doc
     (message "got to the end")))
-
-(defun bujo/new-day ()
-  "Start a new day in the current month"
-  (interactive)
-  )
 
 
 
@@ -114,7 +106,8 @@
 
 (global-set-key (kbd "C-x g") 'magit-status)
 
-(setq org-agenda-files (list "~/Dropbox/org/"))
+(defvar org-home "~/Dropbox/org")
+(setq org-agenda-files (list org-home))
 
 (setq org-refile-targets
     '(("archive.org" :maxlevel . 1)
@@ -124,10 +117,8 @@
       ("someday-maybe.org" :maxlevel . 1)
       ("tickler.org" :maxlevel . 1)))
 
-; TODO can make a cut of the archive file every month as a log of what was done,
-; or just leave it as one big file. There will be dates in the archival metadata.
 (after! org
-  (setq org-archive-location "~/Dropbox/org/archive/archive.org::* From %s"))
+  (setq org-archive-location (concat org-home "/archive/archive.org::* From %s")))
 
 (advice-add 'org-refile :after 'org-save-all-org-buffers)
 
@@ -159,30 +150,30 @@
 
 (after! org
   (setq org-capture-templates
-  '(("t" "Todo" entry (file+headline "~/Dropbox/org/inbox.org" "Tasks")
+  `(("t" "Todo" entry (file+headline ,(format "%s/inbox.org" org-home) "Tasks")
      "* TODO %?\n %U\n %a\n %i"
      :empty-lines 1)
 
-    ("j" "Journal" entry (file+datetree "~/Dropbox/org/journal.org")
+    ("j" "Journal" entry (file+datetree ,(format "%s/journal.org" org-home))
      "* %?\n\nEntered on %U from %i\n %a"
      :empty-lines 1)
 
-    ("n" "Note" entry (file+headline "~/Dropbox/org/inbox.org" "Notes")
+    ("n" "Note" entry (file+headline ,(format "%s/inbox.org" org-home) "Notes")
      "* %?\n %U\n %a\n %i")
 
-    ("b" "Book" entry (file+headline "~/Dropbox/org/books.org" "To read")
+    ("b" "Book" entry (file+headline ,(format "%s/books.org" org-home) "To read")
      "* %?\n %i")
 
-    ("c" "Contact" entry (file "~/Dropbox/org/contacts.org")
+    ("c" "Contact" entry (file ,(format "%s/contacts.org" org-home))
      "* %?\n %i")
 
-    ("B" "Birthday" entry (file+headline "~/Dropbox/org/calendar.org" "Birthdays")
+    ("B" "Birthday" entry (file+headline ,(format "%s/calendar.org" org-home) "Birthdays")
      "* %?'s birthday\n %i")
 
-    ("q" "Quote" entry (file "~/Dropbox/org/quotes.org")
+    ("q" "Quote" entry (file ,(format "%s/quotes.org" org-home))
      "* %?\n %i")
 
-    ("w" "Weight" table-line (file+headline "~/Dropbox/org/fitness.org" "Weight")
+    ("w" "Weight" table-line (file+headline ,(format "%s/fitness.org" org-home) "Weight")
      "| %U | %^{Weight} | %^{Notes} |" :kill-buffer t)
 
 
@@ -190,28 +181,23 @@
 
 (require 'ox-publish)
 (setq org-publish-project-alist
-      '(("chrismoylandotcom-pages"
-         :base-directory "~/Dropbox/org/chrismoylandotcom/"
+      `(("chrismoylandotcom-pages"
+         :base-directory ,(format "%s/chrismoylandotcom/" org-home)
          :base-extension "org"
          :publishing-directory "~/public_html/"
          :recursive t
          :publishing-function org-html-publish-to-html
          :headline-levels 4             ; Just the default for this project.
          :auto-preamble t )
-("chrismoylandotcom-static"
- :base-directory "~/Dropbox/org/chrismoylandotcom/"
- :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
- :publishing-directory "~/public_html/"
- :recursive t
- :publishing-function org-publish-attachment
- )
-("chrismoylandotcom" :components ("chrismoylandotcom-pages" "chrismoylandotcom-static"))
-
-
-                ))
+        ("chrismoylandotcom-static"
+         :base-directory ,(format "%s/chrismoylandotcom/" org-home)
+         :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+         :publishing-directory "~/public_html/"
+         :recursive t
+         :publishing-function org-publish-attachment )
+        ("chrismoylandotcom" :components ("chrismoylandotcom-pages" "chrismoylandotcom-static"))))
 
 (csetq org-log-done t)
-(csetq org-directory "~/Dropbox/org")
 
 (csetq org-roam-directory "~/Dropbox/org-roam")
 (csetq org-roam-completion-system 'ivy)
@@ -228,12 +214,12 @@
             :desc "org-roam-insert" "i" #'org-roam-insert
             :desc "org-roam-capture" "c" #'org-roam-capture ))
 
-(use-package org-journal
-      :custom
-      (org-journal-dir org-roam-directory)
-      (org-journal-date-prefix "#+TITLE: ")
-      (org-journal-file-format "%Y-%m-%d.org")
-      (org-journal-date-format "%A, %d %B %Y"))
+;(use-package org-journal
+;      :custom
+;      (org-journal-dir org-roam-directory)
+;      (org-journal-date-prefix "#+TITLE: ")
+;      (org-journal-file-format "%Y-%m-%d.org")
+;      (org-journal-date-format "%A, %d %B %Y"))
 (setq org-journal-enable-agenda-integration t)
 
 
@@ -265,26 +251,6 @@
     (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
 
 (add-hook 'org-after-todo-statistics-hook #'org-summary-todo)
-
-;(setq flycheck-command-wrapper-function
-;      (lambda (command)
-;        (append '("bundle" "exec") command)))
-
-;(require 'chruby)
-;(chruby "ruby-2.7.4")
-;(use-package enh-ruby-mode
-;  :ensure t
-;  :defer t
-;  :config
-;  (setq enh-ruby-deep-indent-paren nil)
-;  (setq enh-ruby-add-encoding-comment-on-save nil)
-;  :mode (("\\.rb\\'" . enh-ruby-mode)
-;         ("\\.ru\\'" . enh-ruby-mode)
-;         ("\\.gemspec\\'" . enh-ruby-mode)
-;         ("Rakefile\\'" . enh-ruby-mode)
-;         ("Gemfile\\'" . enh-ruby-mode)
-;         ("Capfile\\'" . enh-ruby-mode)
-;         ("Guardfile\\'" . enh-ruby-mode)))
 
 ;(if (file-directory-p "~/quicklisp")
 ;    (progn
