@@ -17,7 +17,6 @@
 (package! vue-mode)
 (package! base16-theme)
 (package! yaml-mode)
-(package! chruby)
 (package! rubocop)
 (package! solaire-mode :disable t)
 (package! envrc)

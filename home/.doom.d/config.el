@@ -37,16 +37,15 @@
       (print x))))
 
 (defun work/log-ticket (number description)
-  (interactive)
+  (interactive "sTicket#: \nsDescription:")
   (message number)
   (message description)
-  ; add a line under Task heading on work.org
-  ;(with-current-buffer "work.org"
-  ;  (org-element-parse-buffer))
-  ; add a line under Task heading on work.org
-  ;
-  ; (write-region <STRING> nil <FILENAME> 'append)
-  )
+
+  (write-region
+   (concat "** STARTED " description " [#" number "]")
+   nil
+   (concat (file-name-as-directory org-directory) "work.org")
+   'append))
 
 (defun bujo/finalize-month ()
   "Finalize the last month and create the next month"
@@ -251,6 +250,8 @@
     (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
 
 (add-hook 'org-after-todo-statistics-hook #'org-summary-todo)
+
+(setq projectile-enable-caching nil)
 
 ;(if (file-directory-p "~/quicklisp")
 ;    (progn
