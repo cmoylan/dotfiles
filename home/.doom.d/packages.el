@@ -22,4 +22,5 @@
 (package! envrc)
 (package! zig-mode)
 (package! tea-time)
+(package! f)
 ;(package! enh-ruby-mode)

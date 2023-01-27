@@ -110,8 +110,9 @@
 
 (setq org-refile-targets
     '(("archive.org" :maxlevel . 1)
-      ("notes.org" :maxlevel . 1)
+      ("notes.org" :maxlevel . 3)
       ("current.org" :maxlevel . 1)
+      ("calendar.org" :maxlevel . 1)
       ("projects.org" :maxlevel . 1)
       ("someday-maybe.org" :maxlevel . 1)
       ("tickler.org" :maxlevel . 1)))
