@@ -121,6 +121,7 @@
   (setq org-archive-location (concat org-home "/archive/archive.org::* From %s")))
 
 (advice-add 'org-refile :after 'org-save-all-org-buffers)
+(advice-add 'org-store-log-note :after 'org-save-all-org-buffers)
 
 (after! org
 (setq org-agenda-skip-scheduled-if-done t
@@ -188,7 +189,12 @@
          :recursive t
          :publishing-function org-html-publish-to-html
          :headline-levels 4             ; Just the default for this project.
-         :auto-preamble t )
+         :auto-preamble t
+         :with-author nil
+         :with-creator nil
+         :with-toc nil
+         :time-stamp-file nil
+                )
         ("chrismoylandotcom-static"
          :base-directory ,(format "%s/chrismoylandotcom/" org-home)
          :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"

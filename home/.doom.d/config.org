@@ -198,9 +198,10 @@ Archive target
   (setq org-archive-location (concat org-home "/archive/archive.org::* From %s")))
 #+END_SRC
 
-Save Org buffers after refiling
+Save Org buffers after refiling, marking a chore as done, etc.
 #+BEGIN_SRC emacs-lisp
 (advice-add 'org-refile :after 'org-save-all-org-buffers)
+(advice-add 'org-store-log-note :after 'org-save-all-org-buffers)
 #+END_SRC
 
 Usability tweaks - doesn't seem to do anything
@@ -284,7 +285,12 @@ Work in progress
          :recursive t
          :publishing-function org-html-publish-to-html
          :headline-levels 4             ; Just the default for this project.
-         :auto-preamble t )
+         :auto-preamble t
+         :with-author nil
+         :with-creator nil
+         :with-toc nil
+         :time-stamp-file nil
+                )
         ("chrismoylandotcom-static"
          :base-directory ,(format "%s/chrismoylandotcom/" org-home)
          :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
