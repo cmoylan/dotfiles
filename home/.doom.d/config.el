@@ -180,10 +180,20 @@
 
     )))
 
+(setq cmdc/base-dir (format "%s/chrismoylandotcom/" org-home))
+(setq cmdc/website-header
+  (let ((header-partial (concat (file-name-as-directory cmdc/base-dir) "_header.html")))
+    (with-temp-buffer
+      (insert-file-contents header-partial)
+      (buffer-string)
+      )
+      )
+    )
+
 (require 'ox-publish)
 (setq org-publish-project-alist
       `(("chrismoylandotcom-pages"
-         :base-directory ,(format "%s/chrismoylandotcom/" org-home)
+         :base-directory ,cmdc/base-dir
          :base-extension "org"
          :publishing-directory "~/public_html/"
          :recursive t
@@ -194,6 +204,7 @@
          :with-creator nil
          :with-toc nil
          :time-stamp-file nil
+         :html-preamble ,cmdc/website-header
                 )
         ("chrismoylandotcom-static"
          :base-directory ,(format "%s/chrismoylandotcom/" org-home)
