@@ -108,3 +108,7 @@ alias dc="docker-compose"
 alias be="bundle exec"
 
 fish
+
+if [ -f /Users/chrismoylan/.docker/init-zsh.sh ]; then
+  source /Users/chrismoylan/.docker/init-zsh.sh || true # Added by Docker Desktop
+fi

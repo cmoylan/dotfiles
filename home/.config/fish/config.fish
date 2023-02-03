@@ -55,3 +55,7 @@ set -x NVM_DIR ~/.nvm
 nvm use default --silent
 
 rbenv init - | source
+
+if test -e /Users/chrismoylan/.docker/init-fish.sh
+  source /Users/chrismoylan/.docker/init-fish.sh || true # Added by Docker Desktop
+end
