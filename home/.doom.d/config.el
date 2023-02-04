@@ -185,7 +185,7 @@
 
 (setq cmdc/styles-and-scripts
       (concat
-       "<link rel='stylesheet' href='css/site.css' />\n" ; fonts
+       "<link rel='stylesheet' href='/css/site.css' />\n" ; fonts
        )
       )
 
@@ -196,7 +196,7 @@
           (buffer-string))))
 
 (setq cmdc/website-footer
-      (concat "</section>"))
+      (concat "footer"))
 
 (require 'ox-publish)
 (setq org-publish-project-alist
@@ -214,6 +214,7 @@
          :time-stamp-file nil
          :html-head-extra ,cmdc/styles-and-scripts
          :html-preamble ,cmdc/website-header
+         :html-postamble ,cmdc/website-footer
          )
         ("chrismoylandotcom-static"
          :base-directory ,(format "%s/chrismoylandotcom/" org-home)
