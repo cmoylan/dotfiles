@@ -177,6 +177,7 @@ Lots of good stuff here: [[https://github.com/daviwil/emacs-from-scratch/blob/c5
 Basic config
 #+BEGIN_SRC emacs-lisp
 (defvar org-home "~/Dropbox/org")
+(setq org-directory org-home)
 (setq org-agenda-files (list org-home))
 #+END_SRC
 

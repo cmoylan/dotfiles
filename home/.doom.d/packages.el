@@ -24,3 +24,4 @@
 (package! tea-time)
 (package! f)
 (package! simple-httpd)
+(package! nvm)
