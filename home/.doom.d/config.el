@@ -186,7 +186,8 @@
 
 (setq cmdc/styles-and-scripts
       (concat
-       "<link rel='stylesheet' href='/css/site.css' />\n" ; fonts
+       "<link rel='stylesheet' href='/css/reset.css' />\n"
+       "<link rel='stylesheet' href='/css/site.css' />\n"
        )
       )
 
@@ -197,7 +198,10 @@
           (buffer-string))))
 
 (setq cmdc/website-footer
-      (concat "footer"))
+      (let ((footer-partial (concat (file-name-as-directory cmdc/base-dir) "_footer.html")))
+        (with-temp-buffer
+          (insert-file-contents footer-partial)
+          (buffer-string))))
 
 (require 'ox-publish)
 (setq org-publish-project-alist
