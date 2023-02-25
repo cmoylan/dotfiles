@@ -13,7 +13,7 @@
 
 
 # ----- PATH ----- #
-set default_path /usr/bin /usr/sbin /bin /sbin
+set default_path /usr/bin /usr/sbin /bin /sbin ~/.cargo/bin
 
 
 # ----- Aliases ----- #

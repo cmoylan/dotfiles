@@ -24,4 +24,4 @@
 (package! tea-time)
 (package! f)
 (package! simple-httpd)
-;(package! enh-ruby-mode)
+(package! nvm)

@@ -106,6 +106,7 @@
 (global-set-key (kbd "C-x g") 'magit-status)
 
 (defvar org-home "~/Dropbox/org")
+(setq org-directory org-home)
 (setq org-agenda-files (list org-home))
 
 (setq org-refile-targets
