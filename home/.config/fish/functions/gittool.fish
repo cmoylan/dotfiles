@@ -2,7 +2,7 @@ function gittool -a cmd opts -d "git utilities"
     if test (count $cmd) -gt 0
         switch "$cmd"
             case bc
-              echo "FIXME port to rust"
+              git_tool branch-clean
             case bs
               echo "FIXME port to rust"
             case bn

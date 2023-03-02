@@ -84,6 +84,14 @@
     ; TODO: move monthly notes to central notes doc
     (message "got to the end")))
 
+(defun nutrio/ratio (unknown known cal prot)
+  "convert a known mass of cal/prot to a new mass"
+  (interactive "nMass to calculate: \nnKnown mass: \nnCalories: \nnProtein:")
+  (message (format "For %s, calories: %s, protein: %s"
+                   unknown
+                   (/ (* unknown cal) (float known))
+                   (/ (* unknown prot) (float known)))))
+
 
 
 (setq doom-theme 'kaolin-eclipse)

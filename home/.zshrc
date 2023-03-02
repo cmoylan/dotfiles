@@ -103,11 +103,12 @@ zrcl="$HOME/.zshrc.local"
 
 # add $HOME/path to $PATH, if present
 [[ -s "$HOME/bin" ]] && export PATH=$PATH:$HOME/bin
+[[ -s "$HOME/.cargo/bin" ]] && export PATH=$PATH:$HOME/.cargo/bin
 
 alias dc="docker-compose"
 alias be="bundle exec"
 
-fish
+#fish
 
 if [ -f /Users/chrismoylan/.docker/init-zsh.sh ]; then
   source /Users/chrismoylan/.docker/init-zsh.sh || true # Added by Docker Desktop
