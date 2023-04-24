@@ -70,7 +70,7 @@ Auto update
   (message description)
 
   (write-region
-   (concat "** STARTED " description " [#" number "]")
+   (concat "\n** STARTED " description " [#" number "]")
    nil
    (concat (file-name-as-directory org-directory) "work.org")
    'append))
@@ -378,6 +378,11 @@ not really used right now
 *** org-habit
 #+BEGIN_SRC emacs-lisp
 #+END_SRC
+*** org-webtools
+#+BEGIN_SRC emacs-lisp
+(setq org-web-tools-pandoc-sleep-time 1)
+#+END_SRC
+
 
 *** Tags
 #+BEGIN_SRC emacs-lisp

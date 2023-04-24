@@ -42,7 +42,7 @@
   (message description)
 
   (write-region
-   (concat "** STARTED " description " [#" number "]")
+   (concat "\n** STARTED " description " [#" number "]")
    nil
    (concat (file-name-as-directory org-directory) "work.org")
    'append))
@@ -263,6 +263,8 @@
 (setq org-journal-enable-agenda-integration t)
 
 
+
+(setq org-web-tools-pandoc-sleep-time 1)
 
 (setq org-tag-alist
       '((:startgroup)

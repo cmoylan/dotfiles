@@ -25,3 +25,4 @@
 (package! f)
 (package! simple-httpd)
 (package! nvm)
+(package! org-web-tools)
