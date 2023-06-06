@@ -338,6 +338,7 @@ Inspired by https://ogbe.net/emacs/emacs
 *** Record the timestamp when a TODO item was completed
 #+BEGIN_SRC emacs-lisp
   (csetq org-log-done t)
+  (csetq org-log-into-drawer t)
 #+END_SRC
 
 *** Roam

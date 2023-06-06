@@ -238,6 +238,7 @@
         ("chrismoylandotcom" :components ("chrismoylandotcom-pages" "chrismoylandotcom-static"))))
 
 (csetq org-log-done t)
+(csetq org-log-into-drawer t)
 
 (csetq org-roam-directory "~/Dropbox/org-roam")
 (csetq org-roam-completion-system 'ivy)
