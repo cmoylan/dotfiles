@@ -94,7 +94,8 @@
 
 
 
-(setq doom-theme 'kaolin-eclipse)
+;(setq doom-theme 'kaolin-eclipse) ; winter
+(setq doom-theme 'doom-monokai-machine) ; summer
 
 (if (string-equal system-type "gnu/linux")
     (set-face-attribute 'default nil :height 120)
@@ -254,6 +255,8 @@
         :desc "org-roam-show-graph" "g" #'org-roam-show-graph
         :desc "org-roam-insert" "i" #'org-roam-insert
         :desc "org-roam-capture" "c" #'org-roam-capture ))
+
+(setq rspec-spec-command "bundle exec rspec")
 
 ;(use-package org-journal
 ;      :custom

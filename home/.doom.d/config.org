@@ -129,7 +129,8 @@ Empty code block
 
 Set the default theme
 #+BEGIN_SRC emacs-lisp
-(setq doom-theme 'kaolin-eclipse)
+;(setq doom-theme 'kaolin-eclipse) ; winter
+(setq doom-theme 'doom-monokai-machine) ; summer
 #+END_SRC
 
 Set the font size
@@ -363,6 +364,12 @@ Shortcuts
         :desc "org-roam-show-graph" "g" #'org-roam-show-graph
         :desc "org-roam-insert" "i" #'org-roam-insert
         :desc "org-roam-capture" "c" #'org-roam-capture ))
+#+END_SRC
+
+*** RSpec
+go through dip
+#+BEGIN_SRC emacs-lisp
+(setq rspec-spec-command "bundle exec rspec")
 #+END_SRC
 
 *** Journal

@@ -26,3 +26,5 @@
 (package! simple-httpd)
 (package! nvm)
 (package! org-web-tools)
+(package! coffee-mode)
+(package! rjsx-mode)
