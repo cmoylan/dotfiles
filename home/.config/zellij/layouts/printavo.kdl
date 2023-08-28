@@ -6,7 +6,12 @@ layout {
     }
 
     pane split_direction="vertical" {
-      pane
+      pane split_direction="horizontal" {
+        pane
+        pane command="fish" {
+          args "-c rc"
+        }
+      }
 
       pane split_direction="horizontal" {
         pane command="fish" {
@@ -17,7 +22,7 @@ layout {
 
         }
         pane command="fish" {
-          args "-c" "tail -f printavo.kdl"
+          args "-c" "bin/vite dev"
         }
       }
     }
