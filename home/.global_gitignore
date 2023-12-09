@@ -30,7 +30,6 @@ interactive_selector.rb
 docker-compose.yml.dev
 .env.dev
 .docker_compose_volumes
-docker-compose.yml
 
 
 _NOTES.org

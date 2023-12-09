@@ -1,3 +1,5 @@
+(add-to-list 'exec-path "~/.cargo/bin")
+
 (defun hh/toggle-debugger (name)
   "Toggles a debugging statement depending on language."
   (interactive "p")
