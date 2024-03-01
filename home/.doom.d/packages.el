@@ -28,3 +28,5 @@
 (package! org-web-tools)
 (package! coffee-mode)
 (package! rjsx-mode)
+(package! vue-mode)
+(package! docker-mode)
