@@ -5,6 +5,11 @@
 * Configuration
 - NOTE the order of blocks matters if vars are referenced
 
+** Variables
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'exec-path "~/.cargo/bin")
+#+END_SRC
+
 ** Custom key chords
 Will become a standalong package
 #+BEGIN_SRC emacs-lisp
@@ -18,7 +23,6 @@ Will become a standalong package
     (message "Debugger toggled"))
 )
 #+END_SRC
-
 ** Custom packages
 Add custom packages to load path.
 
