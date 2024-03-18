@@ -42,7 +42,7 @@
   (message description)
 
   (write-region
-   (concat "\n** STARTED " description " [#" number "]")
+   (concat "\n** STARTED " description " [" number "]")
    nil
    (concat (file-name-as-directory org-directory) "work.org")
    'append))
