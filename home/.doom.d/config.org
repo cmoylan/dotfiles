@@ -8,6 +8,7 @@
 ** Variables
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'exec-path "~/.cargo/bin")
+(add-to-list 'exec-path "~/.rbenv/shims")
 #+END_SRC
 
 ** Custom key chords
@@ -134,7 +135,8 @@ Empty code block
 Set the default theme
 #+BEGIN_SRC emacs-lisp
 ;(setq doom-theme 'kaolin-eclipse) ; winter
-(setq doom-theme 'doom-monokai-machine) ; summer
+;(setq doom-theme 'doom-monokai-machine) ; summer
+(setq doom-theme 'kaolin-aurora) ; autumn
 #+END_SRC
 
 Set the font size

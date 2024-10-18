@@ -1,4 +1,5 @@
 (add-to-list 'exec-path "~/.cargo/bin")
+(add-to-list 'exec-path "~/.rbenv/shims")
 
 (defun hh/toggle-debugger (name)
   "Toggles a debugging statement depending on language."
@@ -97,7 +98,8 @@
 
 
 ;(setq doom-theme 'kaolin-eclipse) ; winter
-(setq doom-theme 'doom-monokai-machine) ; summer
+;(setq doom-theme 'doom-monokai-machine) ; summer
+(setq doom-theme 'kaolin-aurora) ; autumn
 
 (if (string-equal system-type "gnu/linux")
     (set-face-attribute 'default nil :height 120)

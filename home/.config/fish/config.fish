@@ -24,7 +24,7 @@ alias gt "gittool"
 
 
 # ----- Plugins ----- #
-#eval (direnv hook fish)
+eval (direnv hook fish)
 
 # chruby
 #source /usr/local/share/chruby/chruby.fish
@@ -59,3 +59,5 @@ rbenv init - | source
 if test -e /Users/chrismoylan/.docker/init-fish.sh
   source /Users/chrismoylan/.docker/init-fish.sh || true # Added by Docker Desktop
 end
+
+source /Users/chrismoylan/.docker/init-fish.sh || true # Added by Docker Desktop

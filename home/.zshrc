@@ -64,24 +64,26 @@ SAVEHIST=1000
 
 #Aliases
 ##ls, the common ones I use a lot shortened for rapid fire usage
-alias ls='ls' #I like color, -G
+#alias ls='ls' #I like color, -G
 #alias l='ls -lFh'     #size,show type,human readable
-alias la='ls -lAFh'   #long list,show almost all,show type,human readable
-alias lr='ls -tRFh'   #sorted by date,recursive,show type,human readable
-alias lt='ls -ltFh'   #long list,sorted by date,show type,human readable
+#alias la='ls -lAFh'   #long list,show almost all,show type,human readable
+#alias lr='ls -tRFh'   #sorted by date,recursive,show type,human readable
+#alias lt='ls -ltFh'   #long list,sorted by date,show type,human readable
 
 # Ignore autocorrect on a few commands
 alias git="nocorrect git"
 
 ##cd, because typing the backslash is ALOT of work!!
-alias .='cd ../'
-alias ..='cd ../../'
-alias ...='cd ../../../'
-alias ....='cd ../../../../'
+#alias .='cd ../'
+#alias ..='cd ../../'
+#alias ...='cd ../../../'
+#alias ....='cd ../../../../'
 
 # alias random commands that I use a lot
 alias f='fg'
 alias v='vim'
+alias dc='docker-compose'
+alias gt='git_tool'
 
 # add come COLOR to grep
 alias grep='GREP_COLOR="1;37;41" LANG=C grep --color=auto'
@@ -113,3 +115,5 @@ alias be="bundle exec"
 if [ -f /Users/chrismoylan/.docker/init-zsh.sh ]; then
   source /Users/chrismoylan/.docker/init-zsh.sh || true # Added by Docker Desktop
 fi
+
+source /Users/chrismoylan/.docker/init-zsh.sh || true # Added by Docker Desktop

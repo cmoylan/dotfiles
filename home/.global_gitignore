@@ -34,3 +34,4 @@ docker-compose.yml.dev
 _NOTES.org
 .projectile
 .byebug_history
+.envrc
