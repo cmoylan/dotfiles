@@ -4,6 +4,8 @@ config/database.yml
 node_modules/*
 coverage/*
 .rspec
+.DS_Store
+.vscode
 
 # Emacs crap
 auto-save-list
