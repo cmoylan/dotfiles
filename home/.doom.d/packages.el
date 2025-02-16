@@ -30,3 +30,4 @@
 (package! rjsx-mode)
 (package! vue-mode)
 (package! terraform-mode)
+(package! emacsql :pin "491105a")
