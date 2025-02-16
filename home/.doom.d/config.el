@@ -113,6 +113,9 @@
 (defmacro csetq (sym val)
   `(funcall (or (get ',sym 'custom-set) 'set-default) ',sym ,val))
 
+(add-to-list 'exec-path "~/go/bin")
+; kobe
+
 (global-set-key (kbd "C-*") 'evil-search-symbol-forward)
 (global-set-key (kbd "C-#") 'evil-search-symbol-backward)
 

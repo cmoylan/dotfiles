@@ -1,33 +1,23 @@
 layout {
-    cwd "/Users/chrismoylan/Programs/Printavo"
-
-    pane size=1 borderless=true {
-        plugin location="zellij:tab-bar"
+    default_tab_template {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        children
+        pane size=2 borderless=true {
+            plugin location="zellij:status-bar"
+        }
     }
-
-    pane split_direction="vertical" {
-      pane split_direction="horizontal" {
-        pane
-        pane command="fish" {
-          args "-c rc"
-        }
-      }
-
-      pane split_direction="horizontal" {
-        pane command="fish" {
-          args "-c" "rs"
-        }
-        pane command="fish" {
-          args "-c" "be sidekiq"
-
-        }
-        pane command="fish" {
-          args "-c" "bin/vite dev"
-        }
-      }
+    tab name="shell" {
+        pane command="sudo zsh"
     }
-
-    pane size=2 borderless=true {
-        plugin location="zellij:status-bar"
+    tab name="pritnavo" cwd="~/Programs/Printavo"{
+        pane split_direction="vertical" {
+            pane command="fish"
+            pane command="fish"
+        }
+    }
+    tab name="regex" cwd="~/Programs/regex.ai"{
+        pane command="bash"
     }
 }

@@ -165,13 +165,12 @@ If you use setq in your init file, to change the value of such an option, the se
 #+END_SRC
 If you are using the use-package macro, the :custom keyword will handle this for you.
 
-** Golang :disabled:
+** Golang
 Add the go bin directory to emacs executable path
 #+BEGIN_SRC emacs-lisp
-; TODO put this behind a flag
-;(setenv "PATH" (concat (getenv "PATH") ":~/go/bin"))
-;(setq exec-path (append exec-path '("~/go/bin")))
-#+END_SRC emacs-lisp
+(add-to-list 'exec-path "~/go/bin")
+; kobe
+#+END_SRC
 
 ** Hotkeys
 *** search at point
