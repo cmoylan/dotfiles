@@ -324,3 +324,11 @@
            (setq web-mode-markup-indent-offset 2)
            (setq web-mode-css-indent-offset 2)
            (setq web-mode-code-indent-offset 2))
+
+(defun my/kill-other-workspace-buffers ()
+  "Kill all buffers in the current workspace except the current buffer."
+  (interactive)
+  (let ((current (current-buffer)))
+    (dolist (buf (doom-buffer-list)) ; doom-buffer-list is workspace-local
+      (unless (eq buf current)
+        (kill-buffer buf)))))
