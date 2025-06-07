@@ -395,6 +395,15 @@ not really used right now
 #+BEGIN_SRC emacs-lisp
 (setq org-web-tools-pandoc-sleep-time 1)
 #+END_SRC
+*** org-autosort
+#+BEGIN_SRC emacs-lisp
+(use-package! org-autosort
+  :after org
+  :config
+  (setq org-autosort-sort-at-file-open t) ; Sort entries when file opens
+  ;; Set your global sorting strategy, e.g., by priority then TODO
+  (setq org-autosort-global-sorting-strategy '(priority-down todo-up)))
+#+END_SRC
 
 
 *** Tags

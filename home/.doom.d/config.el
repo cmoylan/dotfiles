@@ -277,6 +277,13 @@
 
 (setq org-web-tools-pandoc-sleep-time 1)
 
+(use-package! org-autosort
+  :after org
+  :config
+  (setq org-autosort-sort-at-file-open t) ; Sort entries when file opens
+  ;; Set your global sorting strategy, e.g., by priority then TODO
+  (setq org-autosort-global-sorting-strategy '(priority-down todo-up)))
+
 (setq org-tag-alist
       '((:startgroup)
         ; put mutually exclusive tags here
