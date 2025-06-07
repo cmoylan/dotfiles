@@ -368,3 +368,11 @@
 
   (message "Workspace creation completed"))
 ;(add-hook 'emacs-startup-hook 'create-default-workspaces)
+
+(defun my/kill-other-workspace-buffers ()
+  "Kill all buffers in the current workspace except the current buffer."
+  (interactive)
+  (let ((current (current-buffer)))
+    (dolist (buf (doom-buffer-list)) ; doom-buffer-list is workspace-local
+      (unless (eq buf current)
+        (kill-buffer buf)))))
