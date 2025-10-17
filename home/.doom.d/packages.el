@@ -30,3 +30,6 @@
 (package! rjsx-mode)
 (package! vue-mode)
 (package! terraform-mode)
+(package! emacsql :pin "491105a")
+(package! org-autosort
+  :recipe (:host github :repo "yantar92/org-autosort"))

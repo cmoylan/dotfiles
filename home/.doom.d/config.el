@@ -99,11 +99,11 @@
 
 ;(setq doom-theme 'kaolin-eclipse) ; winter
 ;(setq doom-theme 'doom-monokai-machine) ; summer
-(setq doom-theme 'kaolin-aurora) ; autumn
+;(setq doom-theme 'kaolin-aurora) ; autumn
 
 (if (string-equal system-type "gnu/linux")
-    (set-face-attribute 'default nil :height 120)
-  (set-face-attribute 'default nil :height 130))
+    (set-face-attribute 'default nil :height 110)
+  (set-face-attribute 'default nil :height 100))
 
 (setq confirm-kill-emacs nil)
 
@@ -277,6 +277,14 @@
 
 (setq org-web-tools-pandoc-sleep-time 1)
 
+(use-package! org-autosort
+  :after org
+  :config
+
+  (setq org-autosort-sort-at-file-open t) ; Sort entries when file opens
+  ;; Set your global sorting strategy, e.g., by priority then TODO
+  (setq org-autosort-global-sorting-strategy '(priority-down todo-up)))
+
 (setq org-tag-alist
       '((:startgroup)
         ; put mutually exclusive tags here
@@ -324,6 +332,43 @@
            (setq web-mode-markup-indent-offset 2)
            (setq web-mode-css-indent-offset 2)
            (setq web-mode-code-indent-offset 2))
+
+(defun create-default-workspaces ()
+  "Create 'org' and 'roam' workspaces on Emacs startup."
+  (interactive)
+  (persp-mode 1)
+  (message "Starting workspace creation...")
+
+  ;; Ensure workspace mode is enabled
+  (when (fboundp 'workspace-mode)
+    (workspace-mode 1)
+    (message "Workspace mode enabled"))
+
+  ;; Create and switch to "org" workspace
+  (when (fboundp '+workspace/new)
+    (+workspace/new "org")
+    (message "Created 'org' workspace")
+    (+workspace/switch-to "org")
+    (message "Switched to 'org' workspace")
+    (find-file "~/Dropbox/org/current.org")
+    (message "Opened org index file"))
+
+  ;; Create and switch to "roam" workspace
+  (when (fboundp '+workspace/new)
+    (+workspace/new "roam")
+    (message "Created 'roam' workspace")
+    (+workspace/switch-to "roam")
+    (message "Switched to 'roam' workspace")
+    (find-file "~/Dropbox/org-roam")
+    (message "Opened roam index file"))
+
+  ;; Switch back to "org" workspace
+  (when (fboundp '+workspace/switch-to)
+    (+workspace/switch-to "org")
+    (message "Switched back to 'org' workspace"))
+
+  (message "Workspace creation completed"))
+;(add-hook 'emacs-startup-hook 'create-default-workspaces)
 
 (defun my/kill-other-workspace-buffers ()
   "Kill all buffers in the current workspace except the current buffer."
