@@ -172,6 +172,15 @@ Add the go bin directory to emacs executable path
 ; kobe
 #+END_SRC
 
+** Code Folding
+Use LSP folding ranges with origami for automatic code folding
+#+BEGIN_SRC emacs-lisp
+(setq lsp-enable-folding t)
+
+(use-package! lsp-origami
+  :hook (lsp-after-open . lsp-origami-try-enable))
+#+END_SRC
+
 ** Hotkeys
 *** search at point
 #+BEGIN_SRC emacs-lisp

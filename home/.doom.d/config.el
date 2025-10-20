@@ -116,6 +116,11 @@
 (add-to-list 'exec-path "~/go/bin")
 ; kobe
 
+(setq lsp-enable-folding t)
+
+(use-package! lsp-origami
+  :hook (lsp-after-open . lsp-origami-try-enable))
+
 (global-set-key (kbd "C-*") 'evil-search-symbol-forward)
 (global-set-key (kbd "C-#") 'evil-search-symbol-backward)
 
