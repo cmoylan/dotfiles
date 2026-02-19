@@ -8,8 +8,6 @@
 ;; More information about these modules (and what flags they support) can be
 ;; found in modules/README.org.
 
-(setq evil-want-keybinding nil)
-
 (doom! :input
        ;;chinese
        ;;japanese
@@ -49,7 +47,7 @@
        (evil +everywhere); come to the dark side, we have cookies
        file-templates    ; auto-snippets for empty files
        ;;fold              ; (nigh) universal code folding - using lsp-origami instead
-       ;(format +onsave)  ; automated prettiness
+       (format +onsave)  ; automated prettiness
        ;;lispy             ; vim for lisp, for people who dont like vim
        multiple-cursors  ; editing in many places at once
        ;;objed             ; text object editing for the innocent
@@ -116,7 +114,7 @@
        ;;hy                ; readability of scheme w/ speed of python
        ;;idris             ;
        ;;(java +meghanada) ; the poster child for carpal tunnel syndrome
-       javascript        ; all(hope(abandon(ye(who(enter(here))))))
+       (javascript +lsp)        ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
        ;;latex             ; writing papers in Emacs has never been so fun
@@ -131,7 +129,7 @@
         +ipython         ; ipython support for babel
         +pandoc          ; pandoc integration into org's exporter
         +present         ; using Emacs for presentations
-        +roam2
+        +roam
         +journal)
        ;;perl              ; write code no one else can comprehend
        ;;php               ; perl's insecure younger brother

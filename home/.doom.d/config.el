@@ -114,12 +114,29 @@
   `(funcall (or (get ',sym 'custom-set) 'set-default) ',sym ,val))
 
 (add-to-list 'exec-path "~/go/bin")
-; kobe
 
-(setq lsp-enable-folding t)
-
+; Code folding with lsp-origami
 (use-package! lsp-origami
-  :hook (lsp-after-open . lsp-origami-try-enable))
+  :hook (lsp-mode . lsp-origami-mode))
+
+(add-hook! 'lsp-after-open-hook #'lsp-origami-try-enable)
+
+; autoimport on save (formatting handled by format +onsave)
+(add-hook 'go-mode-hook
+          (lambda ()
+            (add-hook 'before-save-hook #'lsp-organize-imports nil t)))
+
+; use fuzzy matching for lsp suggestions
+ (after! lsp-mode
+    (lsp-register-custom-settings
+     '(("gopls.matcher" "Fuzzy"))))
+
+(use-package! vue-mode
+    :mode "\\.vue\\'"
+    :hook (vue-mode . lsp!))
+(after! format
+    (set-formatter! 'prettier '("prettier" "--stdin-filepath" filepath)
+      :modes '(vue-mode)))
 
 (global-set-key (kbd "C-*") 'evil-search-symbol-forward)
 (global-set-key (kbd "C-#") 'evil-search-symbol-backward)
@@ -129,6 +146,7 @@
 (defvar org-home "~/Dropbox/org")
 (setq org-directory org-home)
 (setq org-agenda-files (list org-home))
+(setq org-agenda-file-exclude-regexp "fitness\\.org")
 
 (setq org-refile-targets
       '(("archive.org" :maxlevel . 1)
@@ -202,70 +220,70 @@
 
           )))
 
-(setq cmdc/base-dir (format "%s/chrismoylandotcom/" org-home))
-(setq cmdc/publish-dir "~/public_html/")
-
-(setq cmdc/styles-and-scripts
-      (concat
-       "<link rel='stylesheet' href='/css/reset.css' />\n"
-       "<link rel='stylesheet' href='/css/site.css' />\n"
-       )
-      )
-
-(setq cmdc/website-header
-      (let ((header-partial (concat (file-name-as-directory cmdc/base-dir) "_header.html")))
-        (with-temp-buffer
-          (insert-file-contents header-partial)
-          (buffer-string))))
-
-(setq cmdc/website-footer
-      (let ((footer-partial (concat (file-name-as-directory cmdc/base-dir) "_footer.html")))
-        (with-temp-buffer
-          (insert-file-contents footer-partial)
-          (buffer-string))))
-
-(require 'ox-publish)
-(setq org-publish-project-alist
-      `(("chrismoylandotcom-pages"
-         :base-directory ,cmdc/base-dir
-         :base-extension "org"
-         :publishing-directory ,cmdc/publish-dir
-         :recursive t
-         :publishing-function org-html-publish-to-html
-         :headline-levels 4             ; Just the default for this project.
-         :auto-preamble t
-         :with-author nil
-         :with-creator nil
-         :with-toc nil
-         :time-stamp-file nil
-         :html-head-extra ,cmdc/styles-and-scripts
-         :html-preamble ,cmdc/website-header
-         :html-postamble ,cmdc/website-footer
-         )
-        ("chrismoylandotcom-static"
-         :base-directory ,(format "%s/chrismoylandotcom/" org-home)
-         :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
-         :publishing-directory ,cmdc/publish-dir
-         :recursive t
-         :publishing-function org-publish-attachment )
-        ("chrismoylandotcom" :components ("chrismoylandotcom-pages" "chrismoylandotcom-static"))))
+;(setq cmdc/base-dir (format "%s/chrismoylandotcom/" org-home))
+;(setq cmdc/publish-dir "~/public_html/")
+;
+;(setq cmdc/styles-and-scripts
+;      (concat
+;       "<link rel='stylesheet' href='/css/reset.css' />\n"
+;       "<link rel='stylesheet' href='/css/site.css' />\n"
+;       )
+;      )
+;
+;(setq cmdc/website-header
+;      (let ((header-partial (concat (file-name-as-directory cmdc/base-dir) "_header.html")))
+;        (with-temp-buffer
+;          (insert-file-contents header-partial)
+;          (buffer-string))))
+;
+;(setq cmdc/website-footer
+;      (let ((footer-partial (concat (file-name-as-directory cmdc/base-dir) "_footer.html")))
+;        (with-temp-buffer
+;          (insert-file-contents footer-partial)
+;          (buffer-string))))
+;
+;(require 'ox-publish)
+;(setq org-publish-project-alist
+;      `(("chrismoylandotcom-pages"
+;         :base-directory ,cmdc/base-dir
+;         :base-extension "org"
+;         :publishing-directory ,cmdc/publish-dir
+;         :recursive t
+;         :publishing-function org-html-publish-to-html
+;         :headline-levels 4             ; Just the default for this project.
+;         :auto-preamble t
+;         :with-author nil
+;         :with-creator nil
+;         :with-toc nil
+;         :time-stamp-file nil
+;         :html-head-extra ,cmdc/styles-and-scripts
+;         :html-preamble ,cmdc/website-header
+;         :html-postamble ,cmdc/website-footer
+;         )
+;        ("chrismoylandotcom-static"
+;         :base-directory ,(format "%s/chrismoylandotcom/" org-home)
+;         :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+;         :publishing-directory ,cmdc/publish-dir
+;         :recursive t
+;         :publishing-function org-publish-attachment )
+;        ("chrismoylandotcom" :components ("chrismoylandotcom-pages" "chrismoylandotcom-static"))))
 
 (csetq org-log-done t)
 (csetq org-log-into-drawer t)
 
 (csetq org-roam-directory "~/Dropbox/org-roam")
 (csetq org-roam-completion-system 'ivy)
-(add-hook 'after-init-hook 'org-roam-mode)
+;; org-roam-mode doesn't exist in org-roam v2 - removed
+;; (add-hook 'after-init-hook 'org-roam-mode)
 
 (after! org-roam
   (map! :leader
         :prefix "n"
-        :desc "org-roam" "l" #'org-roam
-        :desc "org-roam-insert" "i" #'org-roam-insert
-        :desc "org-roam-switch-to-buffer" "b" #'org-roam-switch-to-buffer
-        :desc "org-roam-find-file" "f" #'org-roam-find-file
-        :desc "org-roam-show-graph" "g" #'org-roam-show-graph
-        :desc "org-roam-insert" "i" #'org-roam-insert
+        :desc "org-roam" "l" #'org-roam-buffer-toggle
+        :desc "org-roam-node-insert" "i" #'org-roam-node-insert
+        :desc "org-roam-buffer-toggle" "b" #'org-roam-buffer-toggle
+        :desc "org-roam-node-find" "f" #'org-roam-node-find
+        :desc "org-roam-graph" "g" #'org-roam-graph
         :desc "org-roam-capture" "c" #'org-roam-capture ))
 
 (setq rspec-spec-command "bundle exec rspec")
@@ -382,3 +400,14 @@
     (dolist (buf (doom-buffer-list)) ; doom-buffer-list is workspace-local
       (unless (eq buf current)
         (kill-buffer buf)))))
+
+(defun my/log-bp (reading notes)
+  "Log a blood pressure reading to ~/Dropbox/org/fitness/bp.org."
+  (interactive "sReading: \nsNotes: ")
+  (let ((timestamp (format-time-string "<%Y-%m-%d %a %H:%M>"))
+        (bp-file (expand-file-name "~/Dropbox/org/fitness/bp.org")))
+    (with-current-buffer (find-file-noselect bp-file)
+      (goto-char (point-max))
+      (insert (concat "| " timestamp " | " reading " | " notes " |\n"))
+      (org-table-align)
+      (save-buffer))))
